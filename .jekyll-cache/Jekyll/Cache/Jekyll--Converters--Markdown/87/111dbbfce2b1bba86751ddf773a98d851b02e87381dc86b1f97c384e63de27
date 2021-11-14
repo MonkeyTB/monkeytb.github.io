@@ -1,0 +1,317 @@
+I"��<p>layout:post
+title:code
+description:平时遇到的一些代码，方便查找
+tag:code</p>
+
+<hr />
+
+<h2 id="两个list关联排序">两个list关联排序</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 打包
+</span><span class="n">zipped</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sen</span><span class="p">,</span><span class="n">count</span><span class="p">)</span>
+<span class="c1"># 排序
+</span><span class="n">sort_zipped</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">zipped</span><span class="p">,</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:(</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span><span class="n">reverse</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># 还原
+</span><span class="n">result</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">sort_zipped</span><span class="p">)</span>
+<span class="n">sen</span><span class="p">,</span><span class="n">count</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">result</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="pandas-行列显示不全解决方式">pandas 行列显示不全解决方式</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#显示所有列
+</span><span class="n">pd</span><span class="p">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'display.max_columns'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="c1">#显示所有行
+</span><span class="n">pd</span><span class="p">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'display.max_rows'</span><span class="p">,</span> <span class="bp">None</span><span class="p">)</span>
+<span class="c1">#设置value的显示长度为100，默认为50
+</span><span class="n">pd</span><span class="p">.</span><span class="n">set_option</span><span class="p">(</span><span class="s">'max_colwidth'</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="git">git</h2>
+
+<pre><code class="language-reStructuredText"># 撤回上一次的commit
+git reset --soft HEAD^
+# 删除远程分支
+git push origin --delete branch-zlf
+# 删除本地分支
+git branch -d branch-zlf
+# 创建分支
+git branch branch-zlf
+# 切换分支
+git checkout branch-zlf
+</code></pre>
+
+<h2 id="tensor-flow-addons-版本问题">Tensor Flow Addons 版本问题</h2>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Tensor Flow Addons</td>
+      <td>TensorFlow</td>
+      <td>Python</td>
+    </tr>
+    <tr>
+      <td>tfa-nightly</td>
+      <td>2.2</td>
+      <td>3.5,3.6,3.7,3.8</td>
+    </tr>
+    <tr>
+      <td>twnsorflow-addons-0.10.0</td>
+      <td>2.2</td>
+      <td>3.5,3.6,3.7,3.8</td>
+    </tr>
+    <tr>
+      <td>tensorflow-addons-0.9.1</td>
+      <td>2.1,2.2</td>
+      <td>3.5,3.6,3.7</td>
+    </tr>
+    <tr>
+      <td>tensorflow-addons-0.8.3</td>
+      <td>2.1</td>
+      <td>3.5,3.6,3.7</td>
+    </tr>
+    <tr>
+      <td>tensorflow-addons-0.7.1</td>
+      <td>2.1</td>
+      <td>2.7,3.5,3.6,3.7</td>
+    </tr>
+    <tr>
+      <td>tensorflow-addons-0.6.0</td>
+      <td>2.0</td>
+      <td>2.7,3.5,3.6,3.7</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="pandas-删除nan值">pandas 删除Nan值</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># dataframe 行至少有两个不为 Nan 保留,inplace True 原dataframe上进行操作
+</span><span class="n">df_mark</span><span class="p">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span> <span class="o">=</span> <span class="s">'all'</span><span class="p">,</span><span class="n">thresh</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># dataframe 行全为 Nan 删除
+</span><span class="n">df_mark</span><span class="p">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span> <span class="o">=</span> <span class="s">'all'</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># dataframe 行有一个 Nan 删除
+</span><span class="n">df_mark</span><span class="p">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">how</span> <span class="o">=</span> <span class="s">'any'</span><span class="p">,</span><span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="字符串查找首次出现的位置">字符串查找首次出现的位置</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">content</span> <span class="o">=</span> <span class="s">'1、中专以上学历，农业相关专业，从事农业技术应用与实践工作一年以上； 2、热爱农业，为人踏实稳重，能吃苦耐劳，工作认真细致，有责任感，团队协作意识强。'</span>
+<span class="n">i</span> <span class="o">=</span> <span class="s">'农业'</span>
+<span class="n">re</span><span class="p">.</span><span class="n">search</span><span class="p">(</span><span class="n">re</span><span class="p">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="n">content</span><span class="p">).</span><span class="n">span</span><span class="p">()</span>
+<span class="c1"># output 
+</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="pandas-一行切分变多行">pandas 一行切分变多行</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df_jd_content_split</span> <span class="o">=</span> <span class="n">df_jd_content</span><span class="p">[</span><span class="s">'detail'</span><span class="p">].</span><span class="nb">str</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'&lt;br&gt;|。|；\d、'</span><span class="p">,</span><span class="n">expand</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">stack</span><span class="p">()</span>
+<span class="n">df_jd_content_split</span> <span class="o">=</span> <span class="n">df_jd_content_split</span><span class="p">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">drop</span><span class="o">=</span><span class="bp">True</span><span class="p">).</span><span class="n">rename</span><span class="p">(</span><span class="s">'detail'</span><span class="p">)</span>
+<span class="n">df_jd_content_split</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">df_jd_content_split</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="pyhanlp-依存句法分析结果解析">pyhanlp 依存句法分析结果解析</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">In</span> <span class="p">[</span><span class="mi">56</span><span class="p">]:</span> <span class="k">print</span><span class="p">(</span><span class="n">HanLP</span><span class="p">.</span><span class="n">parseDependency</span><span class="p">(</span><span class="s">'宽带微波收发电路设计'</span><span class="p">))</span>                                                                                       
+<span class="mi">1</span>       <span class="n">宽带微波</span>        <span class="n">宽带微波</span>        <span class="n">nh</span>      <span class="n">nr</span>      <span class="n">_</span>       <span class="mi">2</span>       <span class="n">主谓关系</span>        <span class="n">_</span>       <span class="n">_</span>
+<span class="mi">2</span>       <span class="n">收发</span>    <span class="n">收发</span>    <span class="n">v</span>       <span class="n">v</span>       <span class="n">_</span>       <span class="mi">0</span>       <span class="n">核心关系</span>        <span class="n">_</span>       <span class="n">_</span>
+<span class="mi">3</span>       <span class="n">电路设计</span>        <span class="n">电路设计</span>        <span class="n">nz</span>      <span class="n">nz</span>      <span class="n">_</span>       <span class="mi">2</span>       <span class="n">动宾关系</span>        <span class="n">_</span>       <span class="n">_</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">62</span><span class="p">]:</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">HanLP</span><span class="p">.</span><span class="n">parseDependency</span><span class="p">(</span><span class="s">'宽带微波收发电路设计'</span><span class="p">):</span> 
+    <span class="p">...:</span>     <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">ID</span><span class="p">)</span> 
+    <span class="p">...:</span>     <span class="k">print</span><span class="p">(</span><span class="n">word</span><span class="p">.</span><span class="n">LEMMA</span><span class="p">)</span> 
+    <span class="p">...:</span>                                                                                                                                            
+<span class="mi">1</span>
+<span class="n">宽带微波</span>
+<span class="mi">2</span>
+<span class="n">收发</span>
+<span class="mi">3</span>
+<span class="n">电路设计</span>
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * ID  当前词在句子中的序号，１开始.
+ */</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="no">ID</span><span class="o">;</span>
+<span class="cm">/**
+ * 当前词语（或标点）的原型或词干，在中文中，此列与FORM相同
+ */</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="no">LEMMA</span><span class="o">;</span>
+<span class="cm">/**
+ * 当前词语的词性（粗粒度）
+ */</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="no">CPOSTAG</span><span class="o">;</span>
+<span class="cm">/**
+ * 当前词语的词性（细粒度）
+ */</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="no">POSTAG</span><span class="o">;</span>
+<span class="cm">/**
+ * 当前词语的中心词
+ */</span>
+<span class="kd">public</span> <span class="nc">CoNLLWord</span> <span class="no">HEAD</span><span class="o">;</span>
+<span class="cm">/**
+ * 当前词语与中心词的依存关系
+ */</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="no">DEPREL</span><span class="o">;</span>
+
+<span class="cm">/**
+ * 等效字符串
+ */</span>
+<span class="kd">public</span> <span class="nc">String</span> <span class="no">NAME</span><span class="o">;</span>
+
+<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="no">ID</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">LEMMA</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">LEMMA</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">CPOSTAG</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">)</span> <span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="no">POSTAG</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'_'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">HEAD</span><span class="o">.</span><span class="na">ID</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">DEPREL</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'_'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'_'</span><span class="o">);</span>
+
+<span class="n">sb</span><span class="o">.</span><span class="na">append</span><span class="o">(</span><span class="no">ID</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">LEMMA</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">LEMMA</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">CPOSTAG</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">POSTAG</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'_'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">HEAD</span><span class="o">.</span><span class="na">ID</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="no">DEPREL</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'_'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'\t'</span><span class="o">).</span><span class="na">append</span><span class="o">(</span><span class="sc">'_'</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h2 id="pandas-某列-按某个值删除">pandas 某列 按某个值删除</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># content：列名，''：可以换成其他的，None等
+</span><span class="n">df_search_space</span> <span class="o">=</span> <span class="n">df_search_space</span><span class="p">[</span><span class="o">~</span><span class="n">df_search_space</span><span class="p">.</span><span class="n">content</span><span class="p">.</span><span class="n">isin</span><span class="p">([</span><span class="s">''</span><span class="p">])]</span>
+</code></pre></div></div>
+
+<h2 id="python-判断字符串异常">python 判断字符串异常</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">judge</span><span class="p">(</span><span class="n">hostip</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">hostip</span> <span class="ow">is</span> <span class="bp">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">hostip</span> <span class="ow">or</span> <span class="n">hostip</span> <span class="o">==</span> <span class="s">''</span> <span class="ow">or</span> <span class="n">hostip</span> <span class="o">==</span> <span class="s">'null'</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<h2 id="sql-group-by-每个类随机抽取">sql group by 每个类随机抽取</h2>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">select</span>
+	<span class="o">*</span>
+<span class="k">from</span>
+  <span class="p">(</span>
+    <span class="k">select</span>
+      <span class="o">*</span><span class="p">,</span>
+      <span class="n">row_number</span><span class="p">()</span> <span class="n">over</span><span class="p">(</span>
+        <span class="n">partition</span> <span class="k">by</span> <span class="n">job_init_title</span>
+        <span class="k">order</span> <span class="k">by</span>
+          <span class="n">rand</span><span class="p">()</span>
+      <span class="p">)</span> <span class="k">as</span> <span class="n">rn</span>
+    <span class="k">from</span>
+      <span class="n">dw_chihiro_algo_d_job_feature</span>
+    <span class="k">where</span>
+      <span class="n">p_date</span> <span class="o">==</span> <span class="s1">'20210419'</span>
+  <span class="p">)</span> <span class="n">a</span>
+<span class="k">where</span>
+  <span class="n">a</span><span class="p">.</span><span class="n">rn</span> <span class="o">&lt;=</span> <span class="mi">500</span>
+  
+<span class="c1">-- https://blog.csdn.net/qq_29232943/article/details/104635492</span>
+</code></pre></div></div>
+
+<h2 id="pandas-增加两列">pandas 增加两列</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">cut_match</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">num</span> <span class="o">=</span> <span class="mi">0</span> 
+    <span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">jieba</span><span class="p">.</span><span class="n">cut</span><span class="p">(</span><span class="n">x</span><span class="p">.</span><span class="n">job_title</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">x</span><span class="p">.</span><span class="n">content</span><span class="p">:</span>
+            <span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">num</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+<span class="n">df_match</span><span class="p">[[</span><span class="s">'contain'</span><span class="p">,</span><span class="s">'total'</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df_match</span><span class="p">.</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="n">cut_match</span><span class="p">(</span><span class="n">x</span><span class="p">),</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">result_type</span><span class="o">=</span><span class="s">'expand'</span><span class="p">)</span>
+<span class="c1"># result_type='expand' 必须加
+</span></code></pre></div></div>
+
+<h2 id="pandas-转-dict行">pandas 转 dict【行】</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="p">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s">"姓名"</span><span class="p">:</span> <span class="p">[</span><span class="s">"古明地觉"</span><span class="p">],</span>
+                   <span class="s">"水果"</span><span class="p">:</span> <span class="p">[</span><span class="s">"草莓"</span><span class="p">],</span>
+                   <span class="s">"星期一"</span><span class="p">:</span> <span class="p">[</span><span class="s">"70斤"</span><span class="p">],</span>
+                   <span class="s">"星期二"</span><span class="p">:</span> <span class="p">[</span><span class="s">"72斤"</span><span class="p">],</span>
+                   <span class="s">"星期三"</span><span class="p">:</span> <span class="p">[</span><span class="s">"60斤"</span><span class="p">],</span>
+                   <span class="p">})</span>
+<span class="n">out</span><span class="p">:</span>
+<span class="n">姓名</span>	<span class="n">水果</span>	<span class="n">星期一</span>	<span class="n">星期二</span>	<span class="n">星期三</span>
+<span class="mi">0</span>	<span class="n">古明地觉</span>	<span class="n">草莓</span>	<span class="mi">70</span><span class="n">斤</span>	<span class="mi">72</span><span class="n">斤</span>	<span class="mi">60</span><span class="n">斤</span>
+
+<span class="n">pd</span><span class="p">.</span><span class="n">melt</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_vars</span><span class="o">=</span><span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">out</span><span class="p">:</span>
+    <span class="n">variable</span>	<span class="n">value</span>
+<span class="mi">0</span>	<span class="n">姓名</span>	<span class="n">古明地觉</span>
+<span class="mi">1</span>	<span class="n">水果</span>	<span class="n">草莓</span>
+<span class="mi">2</span>	<span class="n">星期一</span>	<span class="mi">70</span><span class="n">斤</span>
+<span class="mi">3</span>	<span class="n">星期二</span>	<span class="mi">72</span><span class="n">斤</span>
+<span class="mi">4</span>	<span class="n">星期三</span>	<span class="mi">60</span><span class="n">斤</span>
+
+<span class="n">pd</span><span class="p">.</span><span class="n">melt</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">value_vars</span><span class="o">=</span><span class="n">df</span><span class="p">.</span><span class="n">columns</span><span class="p">).</span><span class="n">set_index</span><span class="p">(</span><span class="s">'variable'</span><span class="p">)[</span><span class="s">'value'</span><span class="p">].</span><span class="n">to_dict</span><span class="p">()</span>
+<span class="n">out</span><span class="p">:</span>
+    <span class="p">{</span><span class="s">'姓名'</span><span class="p">:</span> <span class="s">'古明地觉'</span><span class="p">,</span> <span class="s">'水果'</span><span class="p">:</span> <span class="s">'草莓'</span><span class="p">,</span> <span class="s">'星期一'</span><span class="p">:</span> <span class="s">'70斤'</span><span class="p">,</span> <span class="s">'星期二'</span><span class="p">:</span> <span class="s">'72斤'</span><span class="p">,</span> <span class="s">'星期三'</span><span class="p">:</span> <span class="s">'60斤'</span><span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="pb模型打印详细信息">pb模型打印详细信息</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">saved_model_cli</span> <span class="n">show</span> <span class="o">--</span><span class="nb">dir</span> <span class="n">saved_model</span><span class="o">/</span><span class="mi">1</span><span class="o">/</span> <span class="o">--</span><span class="nb">all</span>
+</code></pre></div></div>
+
+<h2 id="pandas-按某列去重并按另外一列最大值保留">pandas 按某列去重，并按另外一列最大值保留</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df_loginip</span> <span class="o">=</span> <span class="n">df_loginip</span><span class="p">.</span><span class="n">groupby</span><span class="p">(</span><span class="s">'actor_id'</span><span class="p">,</span> <span class="n">group_keys</span><span class="o">=</span><span class="bp">False</span><span class="p">).</span><span class="nb">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">.</span><span class="n">loc</span><span class="p">[</span><span class="n">x</span><span class="p">.</span><span class="n">p_date</span><span class="p">.</span><span class="n">idxmax</span><span class="p">()])</span> <span class="c1"># 按照actor_id去重,并按照p_date最大的保留
+</span></code></pre></div></div>
+
+<h2 id="plt-画图">plt 画图</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">l1</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">p1</span><span class="p">,</span><span class="s">'r'</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s">'abnormal'</span><span class="p">)</span>
+<span class="n">l2</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">p0</span><span class="p">,</span><span class="s">'b'</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s">'normal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'precision'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p1</span> <span class="p">,</span><span class="n">p0</span><span class="p">):</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'left'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'bottom'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'left'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'top'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s">'upper left'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">hspace</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span><span class="c1">#调整子图间距
+</span><span class="n">l3</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">r1</span><span class="p">,</span><span class="s">'r'</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s">'abnormal'</span><span class="p">)</span>
+<span class="n">l4</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">r0</span><span class="p">,</span><span class="s">'b'</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s">'normal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'recall'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">r1</span> <span class="p">,</span><span class="n">r0</span><span class="p">):</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'left'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'bottom'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'left'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'top'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s">'upper left'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">hspace</span> <span class="o">=</span> <span class="mf">0.6</span><span class="p">)</span><span class="c1">#调整子图间距
+</span><span class="n">l5</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f1</span><span class="p">,</span><span class="s">'r'</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s">'abnormal'</span><span class="p">)</span>
+<span class="n">l6</span> <span class="o">=</span> <span class="n">plt</span><span class="p">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">f0</span><span class="p">,</span><span class="s">'b'</span><span class="p">,</span><span class="n">label</span> <span class="o">=</span> <span class="s">'normal'</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">title</span><span class="p">(</span><span class="s">'f1-score'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">f1</span> <span class="p">,</span><span class="n">f0</span><span class="p">):</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">b</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'left'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'bottom'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+    <span class="n">plt</span><span class="p">.</span><span class="n">text</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s">'left'</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s">'top'</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="p">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span> <span class="o">=</span> <span class="s">'upper left'</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'model/eval.png'</span><span class="p">,</span><span class="n">dpi</span><span class="o">=</span> <span class="mi">800</span><span class="p">)</span>
+<span class="n">plt</span><span class="p">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://imgtu.com/i/hjKWJf"><img src="https://z3.ax1x.com/2021/09/10/hjKWJf.png" alt="hjKWJf.png" /></a></p>
+
+<h2 id="ner实体解析代码简约版">NER实体解析代码（简约版）</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># 从预测的标签列表中获取实体
+</span><span class="k">def</span> <span class="nf">get_entity</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">):</span>
+
+    <span class="n">entity_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">list</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">char</span><span class="p">,</span> <span class="n">tag</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sent</span><span class="p">,</span> <span class="n">tags_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s">'B-'</span> <span class="ow">in</span> <span class="n">tag</span><span class="p">:</span>
+            <span class="n">entity</span> <span class="o">=</span> <span class="n">char</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">entity_type</span> <span class="o">=</span> <span class="n">tag</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">'-'</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sent</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">tags_list</span><span class="p">))</span> <span class="ow">and</span> <span class="s">'I-%s'</span> <span class="o">%</span> <span class="n">entity_type</span> <span class="ow">in</span> <span class="n">tags_list</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                <span class="n">entity</span> <span class="o">+=</span> <span class="n">sent</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="n">entity_dict</span><span class="p">[</span><span class="n">entity_type</span><span class="p">].</span><span class="n">append</span><span class="p">(</span><span class="n">entity</span><span class="p">)</span>
+
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">entity_dict</span><span class="p">)</span>
+<span class="c1"># 原文链接：https://blog.csdn.net/weixin_42691585/article/details/107617304
+</span></code></pre></div></div>
+
+:ET
