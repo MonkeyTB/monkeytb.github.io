@@ -5,9 +5,819 @@
     <description>欢迎来到我的个人站~</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 14 Nov 2021 10:41:51 +0800</pubDate>
-    <lastBuildDate>Sun, 14 Nov 2021 10:41:51 +0800</lastBuildDate>
+    <pubDate>Sun, 14 Nov 2021 15:19:28 +0800</pubDate>
+    <lastBuildDate>Sun, 14 Nov 2021 15:19:28 +0800</lastBuildDate>
     <generator>Jekyll v4.2.1</generator>
+    
+      <item>
+        <title>百问机器学习</title>
+        <description>&lt;head&gt;
+    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;h2 id=&quot;一特征工程&quot;&gt;一、特征工程&lt;/h2&gt;
+
+&lt;p&gt;巧妇难为无米之炊&lt;/p&gt;
+
+&lt;h3 id=&quot;1为什么归一化&quot;&gt;1、为什么归一化&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;归一化能够更快的找到迭代优化的方向，因此在实际中通过梯度下降求解的模型通常是需要归一化，eg：线性回归、逻辑回归、支持向量机、神经网络等，决策模型则不适用，eg：C4.5，决策树节点分裂主要依靠数据集D关于特征x的信息增益比，信息增益比与特征是否经过归一化是无关的。&lt;/li&gt;
+  &lt;li&gt;常用的归一化方法有线性函数归一化（最大最小值归一化），零均值归一化$z=\frac{x-\mu}{标准差}$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2类别特征数据预处理&quot;&gt;2、类别特征数据预处理&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;类别特征主要指性别（男女）、血腥（A、B、AB、O）等&lt;/li&gt;
+  &lt;li&gt;主要方法：序号编码、独热编码、二进制编码&lt;/li&gt;
+  &lt;li&gt;序号编码：分桶，成绩高中低&lt;/li&gt;
+  &lt;li&gt;独热编码：ont-hot编码
+    &lt;ul&gt;
+      &lt;li&gt;稀疏，可以用稀疏向量来节省空间&lt;/li&gt;
+      &lt;li&gt;配合特征选择来降低维度。高维度特征会带来几方面的问题。一是在K 近邻算法中，高维空间下两点之间的距离很难得到有效的衡量；二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题；三是通常只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;二进制编码：类别特征的个数最少用几位的二级制可以表示，转换成对应的二级制编码&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;3组合特征如何处理高维组合特征&quot;&gt;3、组合特征？如何处理高维组合特征？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;组合特征就是对当前的特征两两（nn）组合成为一个新的特征&lt;/li&gt;
+  &lt;li&gt;高维组合特征不一定有意义，并且有可能使得参数变多造成过拟合，因此可以通过矩阵分解的方式进行降维&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;4怎么有效的找到组合特征&quot;&gt;4、怎么有效的找到组合特征&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;利用决策树，决策树从根节点到叶子节点，路径上的组合特征即可以看成一种路径结合方式&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;5有那些文本表示模型他们各有什么优缺点&quot;&gt;5、有那些文本表示模型？他们各有什么优缺点？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;词袋模型和N-gram模型&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;词袋模型就是将一段文本看成一个袋子，忽略了每个词出现的顺序，一般采用TF-IDF计算权重 TF−IDF(t,d)=TF(t,d)∗IDF(t)TF-IDF(t,d) = TF(t,d)*IDF(t)TF−IDF(t,d)=TF(t,d)∗IDF(t)&lt;/p&gt;
+
+        &lt;p&gt;其中TF(t,d)为单词t再文档d中出现的频率，IDF(t)是逆文档频率，衡量单词t对表达语义所起的重要性，表示如下 IDF(t)=log文章总数包含单词t的文章总数+1IDF(t) = log^\frac{文章总数}{包含单词t的文章总数+1}IDF(t)=log包含单词t的文章总数+1文章总数&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;缺点：natural language processing（自然语言处理），分词后三个词表达的含义与之大相径庭。&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;主题模型&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;词嵌入和深度学习模型&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;词嵌入是一种词向量化的统称，核心思想就是将每个映射到低维空间K上的一个稠密向量，K上每一维可以看作是一个隐含的主题，只不过不像主题模型那么直观。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;6word2vec是如何工作的它和lda有什么区别和联系&quot;&gt;6、Word2Vec是如何工作的？它和LDA有什么区别和联系？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Word2Vec 见&lt;a href=&quot;https://www.cnblogs.com/monkeyT/p/12217490.html&quot;&gt;鄙人博客&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;不同
+    &lt;ul&gt;
+      &lt;li&gt;LDA是利用文档中单词的共现关系来对单词按主题聚类，可以理解为对“文档－单词”进行矩阵分解，得到“文档－主题”和“主题－单词”两个概率分布；而Word2Vec 是利用“文档-单词”矩阵学习上下文，因此Word2Vec融入了很多的上下文信息，因此两个词对应的词向量就比较相似了。&lt;/li&gt;
+      &lt;li&gt;最大的不同在于两者之间的模型本身，主题模型是一种基于概率图模型的生成式模型，而Word2Vec则利用神经网络最后映射到稠密向量。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;7图像任务中训练数据不足会带来什么问题如何缓解数据量不足带来的问题&quot;&gt;7、图像任务中，训练数据不足会带来什么问题？如何缓解数据量不足带来的问题？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;模型所能提供的信息一般来于两个方面，一个是训练数据中蕴含的信息；二十模型在形成过程中（包括构造、学习、推理等）人们提供的先验信息。&lt;/li&gt;
+  &lt;li&gt;训练数据不足容易导致过拟合，从两方面进行改进，
+    &lt;ul&gt;
+      &lt;li&gt;一方面简化模型，比如从非线性模型改为线性模型，或者添加约束条件（L1、L2）dropout等，&lt;/li&gt;
+      &lt;li&gt;另一方面就是增加数据，图像数据增加数据技术相对成熟，旋转、偏移、高斯噪声、颜色对比亮度等变换；自然语言处理中可以通过随机删除、替换以及利用深度模型等进行数据扩充；迁移学习等&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;二模型评估&quot;&gt;二、模型评估&lt;/h2&gt;
+
+&lt;p&gt;没有测量就没有科学&lt;/p&gt;
+
+&lt;h3 id=&quot;8准确率的局限性&quot;&gt;8、准确率的局限性&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;首先从数据出发，数据是否存在样本严重不平衡，在此数据下模型的准确率就不能衡量模型整体的指标，可以考虑采用平均准确率&lt;/li&gt;
+  &lt;li&gt;其次考虑模型是否存在过拟合或者欠拟合，这时候模型的准确率就不能代替实际效果&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;9精确率和召回率的权衡&quot;&gt;9、精确率和召回率的权衡&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;精确度是识别的个数中正确的占比，召回率是识别正确的占应该识别正确的总数的占比，如果只看精确度不看召回，存在线上搜索结果搜索显示不全，同样的只看召回存在召回准确性的问题&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;通常用 f1-score 来对两者进行权衡，即两者的调和平均值，计算如下$f1 = \frac{2&lt;em&gt;precision&lt;/em&gt;recall}{precision+recall}$&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;10平方根误差的意外&quot;&gt;10、平方根误差的“意外”&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;平方根误差一般用来衡量回归问题，计算公式如下$RMSE=\sqrt{\frac{\sum_{i=1}^n(y_i-\hat y_i)^2}{n}}$&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;从公式可以看出，RMSE可以衡量y的真实值和预测值之间的差距，但如果样本中存在离群点时，即使实际准确性较高，但是RMSE可能会存在较大的情况，这时候平方根误差就出现了意外，在实际中考虑两方面，一方面这些离群点是否是噪声，那么在数据处理阶段就应该踢除，另一方面如果不是噪声，那么模型应该在拟合的时候就考虑这些离群点。第一种情况时可以考虑换其他误差函数衡量，例如MPAE（平均绝对百分比误差），计算公式如下 $MPAE = \sum_{i=1}^n|\frac{y_i-\hat y_i}{y_i}|*\frac{100}{n}$&lt;/p&gt;
+
+&lt;p&gt;相比RMSE，MPAE相当于把每个点的误差都进行了归一化，这样就降低了离群点带来的绝对误差的影响；第二种情况就是一个很大的场景了，不展开叙述&lt;/p&gt;
+
+&lt;h3 id=&quot;11什么是roc曲线&quot;&gt;11、什么是ROC曲线&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;ROC曲线全称受试者工作曲线，横坐标为假阳性率（FPR），纵坐标为真阳性率（TPR），计算公式如下 $FRP=\frac{FP}{N},TPR=\frac{TP}{P}$&lt;/p&gt;
+
+    &lt;p&gt;简单点说FPR就是所有负类中识别为正类的占比，TPR就是所有正类中识别为正类的占比&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;12如何绘制roc曲线&quot;&gt;12、如何绘制ROC曲线&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;样本序号&lt;/th&gt;
+      &lt;th&gt;真实标签&lt;/th&gt;
+      &lt;th&gt;模型输出概率&lt;/th&gt;
+      &lt;th&gt;TPR&lt;/th&gt;
+      &lt;th&gt;FPR&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.9&lt;/td&gt;
+      &lt;td&gt;1/10&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.8&lt;/td&gt;
+      &lt;td&gt;2/10&lt;/td&gt;
+      &lt;td&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;3&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.7&lt;/td&gt;
+      &lt;td&gt;2/10&lt;/td&gt;
+      &lt;td&gt;1/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;4&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.6&lt;/td&gt;
+      &lt;td&gt;3/10&lt;/td&gt;
+      &lt;td&gt;1/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;5&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.55&lt;/td&gt;
+      &lt;td&gt;4/10&lt;/td&gt;
+      &lt;td&gt;1/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;6&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.54&lt;/td&gt;
+      &lt;td&gt;5/10&lt;/td&gt;
+      &lt;td&gt;1/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;7&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.53&lt;/td&gt;
+      &lt;td&gt;5/10&lt;/td&gt;
+      &lt;td&gt;2/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;8&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.52&lt;/td&gt;
+      &lt;td&gt;5/10&lt;/td&gt;
+      &lt;td&gt;3/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;9&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.51&lt;/td&gt;
+      &lt;td&gt;6/10&lt;/td&gt;
+      &lt;td&gt;3/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;10&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.505&lt;/td&gt;
+      &lt;td&gt;6/10&lt;/td&gt;
+      &lt;td&gt;4/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;11&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.4&lt;/td&gt;
+      &lt;td&gt;7/10&lt;/td&gt;
+      &lt;td&gt;4/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;12&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.39&lt;/td&gt;
+      &lt;td&gt;7/10&lt;/td&gt;
+      &lt;td&gt;5/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;13&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.38&lt;/td&gt;
+      &lt;td&gt;8/10&lt;/td&gt;
+      &lt;td&gt;5/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;14&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.37&lt;/td&gt;
+      &lt;td&gt;8/10&lt;/td&gt;
+      &lt;td&gt;6/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;15&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.36&lt;/td&gt;
+      &lt;td&gt;8/10&lt;/td&gt;
+      &lt;td&gt;7/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;16&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.35&lt;/td&gt;
+      &lt;td&gt;8/10&lt;/td&gt;
+      &lt;td&gt;8/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;17&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.34&lt;/td&gt;
+      &lt;td&gt;9/10&lt;/td&gt;
+      &lt;td&gt;8/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;18&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.33&lt;/td&gt;
+      &lt;td&gt;9/10&lt;/td&gt;
+      &lt;td&gt;9/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;19&lt;/td&gt;
+      &lt;td&gt;p&lt;/td&gt;
+      &lt;td&gt;0.30&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;9/10&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;20&lt;/td&gt;
+      &lt;td&gt;n&lt;/td&gt;
+      &lt;td&gt;0.1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+      &lt;td&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h3 id=&quot;13如何计算auc&quot;&gt;13、如何计算AUC&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;AUC是ROC曲线下方面积的大小，一般对横轴做积分即可，AUC的取值范围一般在[0.5-1]之间，原因是ROC曲线总在y=x之上，如果在下方，则把p换成1-p即可以得到一个更好的分类器&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;14roc曲线相比p-r曲线有什么特点&quot;&gt;14、ROC曲线相比P-R曲线有什么特点&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;ROC曲线有一个特点是当正负样本的分布发生变化（正负样本比例1/1000–&amp;gt; 1/10000）时，ROC曲线的形状能够基本保持不变，而P-R曲线的形状一般会发生较剧烈的变化，这就是的ROC曲线能尽量降低不同测试集带来的干扰，更加客观地衡量模型本身的性能&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;15结合你的学习和研究经历探讨为什么在一些场景中要使用余弦相似度而不-是欧氏距离&quot;&gt;15、结合你的学习和研究经历，探讨为什么在一些场景中要使用余弦相似度而不 是欧氏距离？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;总体来说，欧氏距离体现数值上的绝对差异，而余弦距离体现方向上的相对差异。
+    &lt;ul&gt;
+      &lt;li&gt;1）例如，统计两部剧的用户观看行为，用户A的观看向量为(0,1)，用户B为(1,0)；此时二者的余弦距很大，而欧氏距离很小；我们分析两个用户对于不同视频的偏好，更关注相对差异，显然应当使用余弦距离。&lt;/li&gt;
+      &lt;li&gt;2）而当我们分析用户活跃度，以登陆次数(单位：次)和平均观看时长(单：分钟)作为特征时，余弦距离会认为(1,10)、(10,100)两个用户距离很近；但显然这两个用户活跃度是有着极大差异的，此时我们更关注数值绝对差异，应当使用欧氏距离。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;余弦相似度的取值范围是[−1,1]， 相同的两个向量之间的相似度为1。如果希望得到类似于距离的表示，将1减去余 弦相似度即为余弦距离。因此，余弦距离的取值范围为[0,2]，相同的两个向量余 弦距离为0，空间余弦角度在0-90°，余弦相似度在1-0，余弦距离在0-1，因此我们在使用词向量计算余弦距离时也在0-1，越小越相似&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;16在对模型进行过充分的离线评估之后为什么还要进行在线ab测试&quot;&gt;16、在对模型进行过充分的离线评估之后，为什么还要进行在线A/B测试？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;离线评估无法完全消除模型过拟合的影响，所以离线评估无法代替线上评估&lt;/li&gt;
+  &lt;li&gt;离线评估无法完全还原线上工程环境&lt;/li&gt;
+  &lt;li&gt;线上系统的某些商业指标在离线评估中无法计算，eg：点击率等&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;17如何进行线上-ab-测试&quot;&gt;17、如何进行线上 A/B 测试？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;A/B测试主要手段是通过对用户分桶，即将用户分成实验组和对照组，对实验组用新模型，对照组用旧模型，在分桶中注意样本独立性和采样方式的无偏性。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;18如何划分实验组和对照组&quot;&gt;18、如何划分实验组和对照组&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;假设我们系统中对A国的用户替换了推荐模型，再上线时希望对比实验组和对照组的结果，那么如何划分实验组和对照组；由于我们是对A国的用户推荐替换模型，因此我们实验组和对照组都应该是A国用户，并且分的时候要注意独立和无偏，而不能混进其他类型的用户进行对照，一方面会稀释我们的结果，另一方面也有可能会导致我们对比不准确&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;19在模型评估过程中有哪些主要的验证方法它们的优缺点是什么&quot;&gt;19、在模型评估过程中，有哪些主要的验证方法，它们的优缺点是什么?&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;holdout方法：模型数据按照70%-30%分为训练集和测试集，70%的数据用来训练，30%的数据用来测试，这就存在一个问题，当数据切分不均匀时，会导致测试集评估结果和训练集存在和大的gap，因此提出下面的方法&lt;/li&gt;
+  &lt;li&gt;k-fold交叉验证：数据集分为k份，每次留一份进行测试，其他用来训练，最后k次测试的平均结果作为模型结果，缺点也很明显，时间增加很多，当数据很大时会很耗费时间，当数据较少时有不适用，因此提出下面的方法&lt;/li&gt;
+  &lt;li&gt;自助法：当数据较少时我们对数据（n）进行又放回的抽样(n)次，然后用没抽样到的样本进行测试&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;20在自助法的采样过程中对n个样本进行n次自助抽样当n趋于无穷大时-最终有多少数据从未被选择过&quot;&gt;20、在自助法的采样过程中，对n个样本进行n次自助抽样，当n趋于无穷大时， 最终有多少数据从未被选择过？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;1/e，因此样本很大时，大约有36.8%的样本从未被选择过，可作为验证集&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;21超参数有那些调优方法&quot;&gt;21、超参数有那些调优方法？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;网格搜索
+    &lt;ul&gt;
+      &lt;li&gt;通过搜索查找范围所有点来确定最优点，这里所有点其实是以较小的步长进行搜索，问题是非常消耗计算资源和时间，因此再使用的时候开始会以较大的步长进行搜索，找到最优点再以小步幅进行搜索，但一般目标函数是非凸优化问题，所以可能会错过全局最优值&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;随机搜索
+    &lt;ul&gt;
+      &lt;li&gt;在搜索范围内随机搜索点，理论上只要样本点足够多，那么通过随机采样就能找到最优点，随机搜索一般比网格搜索快一些，但是也没法保证得到最优点&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;贝叶斯优化算法
+    &lt;ul&gt;
+      &lt;li&gt;贝叶斯优化算法在寻找最优最值参数时，采用了与网格搜索、随机搜索完全 不同的方法。网格搜索和随机搜索在测试一个新点时，会忽略前一个点的信息； 而贝叶斯优化算法则充分利用了之前的信息。贝叶斯优化算法通过对目标函数形 状进行学习，找到使目标函数向全局最优值提升的参数。具体来说，它学习目标 函数形状的方法是，首先根据先验分布，假设一个搜集函数；然后，每一次使用 新的采样点来测试目标函数时，利用这个信息来更新目标函数的先验分布；最 后，算法测试由后验分布给出的全局最值最可能出现的位置的点。对于贝叶斯优 化算法，有一个需要注意的地方，一旦找到了一个局部最优值，它会在该区域不 断采样，所以很容易陷入局部最优值。为了弥补这个缺陷，贝叶斯优化算法会在 探索和利用之间找到一个平衡点，“探索”就是在还未取样的区域获取采样点； 而“利用”则是根据后验分布在最可能出现全局最值的区域进行采样。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;22在模型评估过程中过拟合和欠拟合具体是指什么现象&quot;&gt;22、在模型评估过程中，过拟合和欠拟合具体是指什么现象？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过拟合
+    &lt;ul&gt;
+      &lt;li&gt;模型在训练集上表现良好，测试集上表现很差&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;欠拟合
+    &lt;ul&gt;
+      &lt;li&gt;模型在训练集和测试集上表现都不好&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;23能否说出几种降低过拟合和欠拟合风险的方法&quot;&gt;23、能否说出几种降低过拟合和欠拟合风险的方法？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过拟合直观解释，再对训练数据上进行拟合时，需要照顾每个点，从而导致拟合函数波动大，即方差大。&lt;/li&gt;
+  &lt;li&gt;误差图判断过拟合还是欠拟合：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;模型再训练集与测试集上误差均很大，则说明模型bias很大，欠拟合&lt;/p&gt;
+
+  &lt;p&gt;训练集和测试集误差之间有很大的Gap，则说明Variance很大，过拟合&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;欠拟合解决方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;增加新的特征，考虑加入组合特征、高次特征，来增大假设空间&lt;/li&gt;
+    &lt;li&gt;尝试非线性模型，比如SVM、决策树、DNN等模型&lt;/li&gt;
+    &lt;li&gt;有正则项则尝试降低正则项参数\lambda&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过拟合解决方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;p&gt;交叉验证，通过交叉验证得到最优的模型&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;特征选择，减少特征数或者使用较少的特征组合，对于区间化离散特征，增大划分的空间&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;正则化，常用的有L_1,L_2正则，而且L_1正则还可以自动进行特征选择&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;如果有正则项考虑增大正则项参数\lambda&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;增加训练数据可以有效的避免过拟合&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Bagging，将多个弱学习器Bagging一下效果会好很多，比如随机森林&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;DNN中常用的方法&lt;/p&gt;
+
+      &lt;ul&gt;
+        &lt;li&gt;
+          &lt;p&gt;早停。本质还是交叉验证策略，选择合适的训练次数，避免训练的网络过度拟合训练数据&lt;/p&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;集成学习策略。利用Bagging思路来正则化，首先对原始的m个训练样本进行又放回的随机采样，构建N组m个样本的数据集，然后分别用N组数据训练DNN，即得到N个DNN模型的ｗ，ｂ参数组合，最后对N个DNN模型的输出用加权平均法或者投票法决定最终输出。缺点就是参数增加了N倍，导致训练花费更多的时间和空间，因此N一般不能太多，例如5-10个。&lt;/p&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;Dropout策略。&lt;/p&gt;
+
+          &lt;blockquote&gt;
+            &lt;p&gt;训练的时候一一定的概率p让神经元失活，类似于Bagging策略，测试时所有神经元都参与，但是在其输出上乘以1-p.&lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;simpler model structure（简化模型）&lt;/p&gt;
+
+          &lt;blockquote&gt;
+            &lt;p&gt;简单模型拟合复杂数据时，导致模型很难拟合数据的真实分布，这边是模型欠拟合了，同样的，复杂模型拟合简单数据，会导致数据的噪声也被拟合了，导致模型再训练集上效果非常好，但泛化性能很差。&lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;regularization（正则化）&lt;/p&gt;
+
+          &lt;ul&gt;
+            &lt;li&gt;
+              &lt;p&gt;$L_1$会产生稀疏解，&lt;/p&gt;
+            &lt;/li&gt;
+            &lt;li&gt;$L_2$正则会产生较小的解，&lt;/li&gt;
+            &lt;li&gt;假设均误差损失函数为$J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}||a^L-y||_2^2$;&lt;/li&gt;
+            &lt;li&gt;$L_2$通常只针对稀疏矩阵w，而不针对偏置系数b，则损失函数为$J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}||a^L-y||&lt;em&gt;2^2 + \frac{\lambda}{2m}\sum&lt;/em&gt;{l=2}^L|w|_2^2$&lt;/li&gt;
+            &lt;li&gt;反向传播从:$w^l =w^l −\alpha\sum_{i=1}^m\sigma^{i,l}(\alpha^{i,l-1})^T$变为$w^l =w^l −\alpha\sum_{i=1}^m\sigma^{i,l}(\alpha^{i,l-1})^T-\alpha\lambda w^l$&lt;/li&gt;
+          &lt;/ul&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;data augmentation(数据集扩增)&lt;/p&gt;
+
+      &lt;blockquote&gt;
+        &lt;p&gt;有效前提是训练集与将来的数据是&lt;strong&gt;独立同分布&lt;/strong&gt;的,或者近似独立同分布&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;从数据源头采集更多的数据&lt;/li&gt;
+          &lt;li&gt;复制原有数据并加上随机噪声&lt;/li&gt;
+          &lt;li&gt;重采样&lt;/li&gt;
+          &lt;li&gt;根据当前数据估计数据分布参数,使用该分布产生更多数据&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Bootstrap/Bagging（封装）&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;ensemble（集成）&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;early stopping（提前终止训练）&lt;/p&gt;
+
+      &lt;blockquote&gt;
+        &lt;p&gt;迭代次数截断的方法来防止过拟合,再模型对训练数据集迭代收敛之前停止迭代防止过拟合.&lt;/p&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;utilize invariance（利用不变性）&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Bayesian（贝叶斯方法）&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;三经典算法&quot;&gt;三、经典算法&lt;/h2&gt;
+
+&lt;h3 id=&quot;24在空间上线性可分的两类点分别向svm分类的超平面上做投影这些点在-超平面上的投影仍然是线性可分的吗&quot;&gt;24、在空间上线性可分的两类点，分别向SVM分类的超平面上做投影，这些点在 超平面上的投影仍然是线性可分的吗？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;对于任意线性可分的两组点，它们在SVM分类的超平面上的投影 都是线性不可分的&lt;/li&gt;
+  &lt;li&gt;该问题也可以通过凸优化理论中的超平面分离定理（Separating Hyperplane Theorem，SHT）更加轻巧地解决。该定理描述的是，对于不相交的两 个凸集，存在一个超平面，将两个凸集分离。对于二维的情况，两个凸集间距离 最短两点连线的中垂线就是一个将它们分离的超平面。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;25是否存在一组参数使svm训练误差为0&quot;&gt;25、是否存在一组参数使SVM训练误差为0？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;当所有样本都预测正确，训练误差即为0&lt;/li&gt;
+  &lt;li&gt;补充：
+    &lt;ul&gt;
+      &lt;li&gt;svm有三种，线性可分SVM（硬间隔），线性SVM（软间隔），非线性SVM（核技巧）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        <pubDate>Sun, 14 Nov 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021/11/%E7%99%BE%E9%97%AE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021/11/%E7%99%BE%E9%97%AE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
+        
+        <category>机器学习</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>机器学习过拟合欠拟合</title>
+        <description>&lt;div class=&quot;language-html highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;head&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;type=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;text/x-mathjax-config&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nx&quot;&gt;MathJax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Hub&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Config&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;tex2jax&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;skipTags&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;noscript&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;style&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;textarea&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;pre&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+            &lt;span class=&quot;na&quot;&gt;inlineMath&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[[&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;dl&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]]&lt;/span&gt;
+            &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/head&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;1、当遇到过拟合问题，当优化开发集和训练集的差异时，面临整体误差上升，有什么好的解决办法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过拟合，数据简单，模型复杂，开发训练分布不一致，优化数据，整体误差上升，欠拟合，模型不能拟合数据，第一：模型不适用这个数据，第二：数据量不够或者数据特征不够&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;2、拟牛顿法比牛顿法的优点是什么&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;strong&gt;牛顿法是迭代算法，每一步都需求解目标函数的海塞矩阵（Hessian Matrix），计算比较复杂。拟牛顿法通过正定矩阵近似海塞矩阵的逆矩阵或海塞矩阵，简化了这一计算过程。&lt;/strong&gt;&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;https://www.zhihu.com/equation?tex=x_{k%2B1}%3Dx_{k}-\lambda_k+H^{-1}_{k}g_k\\&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;img src=&quot;/images/posts/机器学习/v2-dac11d82ecb2566f54ce8b518d51293c_b.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;牛顿法虽然收敛速度快，但是需要计算海塞矩阵的逆矩阵 &lt;img src=&quot;https://www.zhihu.com/equation?tex=H%5E%7B-1%7D&quot; alt=&quot;img&quot; /&gt; ，而且有时目标函数的海塞矩阵无法保持正定，从而使得牛顿法失效。为了克服这两个问题，人们提出了拟牛顿法。这个方法的基本思想是：不用二阶偏导数而构造出可以近似海塞矩阵（或海塞矩阵的逆）的正定对称阵。不同的构造方法就产生了不同的拟牛顿法（&lt;strong&gt;DFP&lt;/strong&gt;/&lt;strong&gt;BFGS算法&lt;/strong&gt;）。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;牛顿法是二阶收敛，梯度下降法是一阶收敛，所以牛顿法更快，下图形象化地显示了这一点：&lt;/p&gt;
+
+    &lt;p&gt;其中，红色路径代表牛顿法，绿色路径代表梯度下降法。&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;牛顿法和深度学习&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;p&gt;深度学习中，往往采用梯度下降法作为优化算子，而很少采用牛顿法，主要原因有以下几点：&lt;/p&gt;
+
+    &lt;ol&gt;
+      &lt;li&gt;1.神经网络通常是非凸的，这种情况下，牛顿法的收敛性难以保证；&lt;/li&gt;
+      &lt;li&gt;2.即使是凸优化，只有在迭代点离全局最优很近时，牛顿法才会体现出收敛快的优势；&lt;/li&gt;
+      &lt;li&gt;3.可能被鞍点吸引。(鞍点：不是局部极值点的驻点)&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;3、推荐中如何模拟人的期望与偏好，是基于学术理论或研究建立一个用户偏好模型吗？标签怎么弄？&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;是的&lt;/li&gt;
+  &lt;li&gt;假设对一个交友活动网站来说，对于一个用户，有基础特征，行为特征等，其基础特征会包含性别、年龄、身高、体重等基础信息，除此之外我们假设一个用户老是搜索电影，那么当前用户的偏好就可以打上爱好：电影，而另一个用户喜欢搜索文学，那么可以打上爱好：读书，或者利用一些组合特征打上其他标签，比如性格（读书，女）安静，（篮球，男）活泼，那么我们再推荐一些线下读书交流会给性格安静的，而推荐一些团体运动会给活泼的&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;4、某项任务上机器已经超越人类，那么当前任务上人类存在的价值是？ 5、短文本分类的方法？（材料无关）&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;短文本分类首要问题需要标签，
+    &lt;ul&gt;
+      &lt;li&gt;可以先通过聚类（LDA），相同簇的分类比较接近，标注起来比较方便；其次对应较少的类，也可以抽取到给人工标注&lt;/li&gt;
+      &lt;li&gt;基于关键词标注，假设要给新闻标题分类，那么对于“体育”类，“足球”、“篮球”、“NBA”等就可以作为这个类的关键词&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;朴素贝叶斯、逻辑回归、支持向量机、GBDT、随机森林&lt;/li&gt;
+  &lt;li&gt;深度学习（FastText，text-cnn，bert，图模型）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;6、近似搜索算法如何避免陷入局部最优？&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;beam search&lt;/li&gt;
+  &lt;li&gt;遗传算法
+    &lt;ul&gt;
+      &lt;li&gt;模拟物竞天择的生物进化过程，通过维护一个潜在解的群体执行了多方向的搜索，并支持这些方向上的信息构成和交换。是以面为单位的搜索，比以点为单位的搜索，更能发现全局最优解。（在遗传算法中，有很多袋鼠，它们降落到喜玛拉雅山脉的任意地方。这些袋鼠并不知道它们的任务是寻找珠穆朗玛峰。但每过几年，就在一些海拔高度较低的地方射杀一些袋鼠，并希望存活下来的袋鼠是多产的，在它们所处的地方生儿育女。）（或者换个说法。从前，有一大群袋鼠，它们被莫名其妙的零散地遗弃于喜马拉雅山脉。于是只好在那里艰苦的生活。海拔低的地方弥漫着一种无色无味的毒气，海拔越高毒气越稀薄。可是可怜的袋鼠们对此全然不觉，还是习惯于活蹦乱跳。于是，不断有袋鼠死于海拔较低的地方，而越是在海拔高的袋鼠越是能活得更久，也越有机会生儿育女。就这样经过许多年，这些袋鼠们竟然都不自觉地聚拢到了一个个的山峰上，可是在所有的袋鼠中，只有聚拢到珠穆朗玛峰的袋鼠被带回了美丽的澳洲。）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;退火算法
+    &lt;ul&gt;
+      &lt;li&gt;这个方法来自金属热加工过程的启发。在金属热加工过程中，当金属的温度超过它的熔点（Melting Point）时，原子就会激烈地随机运动。与所有的其它的物理系统相类似，原子的这种运动趋向于寻找其能量的极小状态。在这个能量的变迁过程中，开始时，温度非常高， 使得原子具有很高的能量。随着温度不断降低，金属逐渐冷却，金属中的原子的能量就越来越小，最后达到所有可能的最低点。利用模拟退火的时候，让算法从较大的跳跃开始，使到它有足够的“能量”逃离可能“路过”的局部最优解而不至于限制在其中，当它停在全局最优解附近的时候，逐渐的减小跳跃量，以便使其“落脚 ”到全局最优解上。（在模拟退火中，袋鼠喝醉了，而且随机地大跳跃了很长时间。运气好的话，它从一个山峰跳过山谷，到了另外一个更高的山峰上。但最后，它渐渐清醒了并朝着它所在的峰顶跳去。）&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;进化策略&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;7、降低模型过拟合和欠拟台风险的方法?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过拟合直观解释，再对训练数据上进行拟合时，需要照顾每个点，从而导致拟合函数波动大，即方差大。&lt;/li&gt;
+  &lt;li&gt;误差图判断过拟合还是欠拟合：&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;模型再训练集与测试集上误差均很大，则说明模型bias很大，欠拟合&lt;/p&gt;
+
+  &lt;p&gt;训练集和测试集误差之间有很大的Gap，则说明Variance很大，过拟合&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;欠拟合解决方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;增加新的特征，考虑加入组合特征、高次特征，来增大假设空间&lt;/li&gt;
+    &lt;li&gt;尝试非线性模型，比如SVM、决策树、DNN等模型&lt;/li&gt;
+    &lt;li&gt;有正则项则尝试降低正则项参数\lambda&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;过拟合解决方法&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;blockquote&gt;
+  &lt;ul&gt;
+    &lt;li&gt;
+      &lt;p&gt;交叉验证，通过交叉验证得到最优的模型&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;特征选择，减少特征数或者使用较少的特征组合，对于区间化离散特征，增大划分的空间&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;正则化，常用的有L_1,L_2正则，而且L_1正则还可以自动进行特征选择&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;如果有正则项考虑增大正则项参数\lambda&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;增加训练数据可以有效的避免过拟合&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Bagging，将多个弱学习器Bagging一下效果会好很多，比如随机森林&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;DNN中常用的方法&lt;/p&gt;
+
+      &lt;ul&gt;
+        &lt;li&gt;
+          &lt;p&gt;早停。本质还是交叉验证策略，选择合适的训练次数，避免训练的网络过度拟合训练数据&lt;/p&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;集成学习策略。利用Bagging思路来正则化，首先对原始的m个训练样本进行又放回的随机采样，构建N组m个样本的数据集，然后分别用N组数据训练DNN，即得到N个DNN模型的ｗ，ｂ参数组合，最后对N个DNN模型的输出用加权平均法或者投票法决定最终输出。缺点就是参数增加了N倍，导致训练花费更多的时间和空间，因此N一般不能太多，例如5-10个。&lt;/p&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;Dropout策略。&lt;/p&gt;
+
+          &lt;blockquote&gt;
+            &lt;p&gt;训练的时候一一定的概率p让神经元失活，类似于Bagging策略，测试时所有神经元都参与，但是在其输出上乘以1-p.&lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;simpler model structure（简化模型）&lt;/p&gt;
+
+          &lt;blockquote&gt;
+            &lt;p&gt;简单模型拟合复杂数据时，导致模型很难拟合数据的真实分布，这边是模型欠拟合了，同样的，复杂模型拟合简单数据，会导致数据的噪声也被拟合了，导致模型再训练集上效果非常好，但泛化性能很差。&lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/li&gt;
+        &lt;li&gt;
+          &lt;p&gt;regularization（正则化）&lt;/p&gt;
+
+          &lt;blockquote&gt;
+            &lt;p&gt;L_1 正则项会产生稀疏解&lt;/p&gt;
+
+            &lt;p&gt;L_2正则项会产生比较小的解&lt;/p&gt;
+
+            &lt;p&gt;假设均方差误差损失函数&lt;/p&gt;
+
+            &lt;table&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}&lt;/td&gt;
+                  &lt;td&gt; &lt;/td&gt;
+                  &lt;td&gt;a^L-y&lt;/td&gt;
+                  &lt;td&gt; &lt;/td&gt;
+                  &lt;td&gt;_2^2&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+
+            &lt;p&gt;L_2通常只针对系数矩阵w,而不针对偏置系数b,则损失函数为&lt;/p&gt;
+
+            &lt;table&gt;
+              &lt;tbody&gt;
+                &lt;tr&gt;
+                  &lt;td&gt;J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}&lt;/td&gt;
+                  &lt;td&gt; &lt;/td&gt;
+                  &lt;td&gt;a^L-y&lt;/td&gt;
+                  &lt;td&gt; &lt;/td&gt;
+                  &lt;td&gt;&lt;em&gt;2^2+\frac{\lambda}{2m}\sum&lt;/em&gt;{L=2}^L&lt;/td&gt;
+                  &lt;td&gt; &lt;/td&gt;
+                  &lt;td&gt;w&lt;/td&gt;
+                  &lt;td&gt; &lt;/td&gt;
+                  &lt;td&gt;_2^2&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/tbody&gt;
+            &lt;/table&gt;
+
+            &lt;p&gt;反向传播从:&lt;/p&gt;
+
+            &lt;p&gt;w^l=w^l-\alpha\sum_{i=1}^{m}\sigma^{i,l}(a^{x,l-1})^T&lt;/p&gt;
+
+            &lt;p&gt;变为:&lt;/p&gt;
+
+            &lt;p&gt;w^l=w^l-\alpha\sum_{i=1}^{m}\sigma^{i,l}(a^{x,l-1})^T-\alpha\lambda w^l&lt;/p&gt;
+          &lt;/blockquote&gt;
+        &lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;data augmentation(数据集扩增)&lt;/p&gt;
+
+      &lt;blockquote&gt;
+        &lt;p&gt;有效前提是训练集与将来的数据是&lt;strong&gt;独立同分布&lt;/strong&gt;的,或者近似独立同分布&lt;/p&gt;
+
+        &lt;ul&gt;
+          &lt;li&gt;从数据源头采集更多的数据&lt;/li&gt;
+          &lt;li&gt;复制原有数据并加上随机噪声&lt;/li&gt;
+          &lt;li&gt;重采样&lt;/li&gt;
+          &lt;li&gt;根据当前数据估计数据分布参数,使用该分布产生更多数据&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Bootstrap/Bagging（封装）&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;ensemble（集成）&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;early stopping（提前终止训练）&lt;/p&gt;
+
+      &lt;blockquote&gt;
+        &lt;p&gt;迭代次数截断的方法来防止过拟合,再模型对训练数据集迭代收敛之前停止迭代防止过拟合.&lt;/p&gt;
+      &lt;/blockquote&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;utilize invariance（利用不变性）&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li&gt;
+      &lt;p&gt;Bayesian（贝叶斯方法）&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+</description>
+        <pubDate>Sun, 14 Nov 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%87%E6%8B%9F%E5%90%88%E6%AC%A0%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%87%E6%8B%9F%E5%90%88%E6%AC%A0%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/</guid>
+        
+        <category>机器学习</category>
+        
+        
+      </item>
     
       <item>
         <title>code</title>
@@ -326,6 +1136,147 @@ git checkout branch-zlf
         <guid isPermaLink="true">http://localhost:4000/2021/11/code/</guid>
         
         <category>代码</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>关于 GBDT 特征编码</title>
+        <description>&lt;h2 id=&quot;问题起因&quot;&gt;问题起因&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在用户风险预测模型（安全审核）中，提出了特征应该用类别特征还是 one-hot 特征，针对此问题进行调研&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;理论分析&quot;&gt;理论分析&lt;/h2&gt;
+
+&lt;h3 id=&quot;1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢&quot;&gt;1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;假设在分类场景下，某一维特征有 1000 个类别，那么采用 one-hot 编码，每一维特征就是 0 or 1，那么 GBDT 可能会错误的学习到只要某个特征为 0 或者 1 就是某个类别，这种情况下就会产生过拟合，在训练数据不充足的情况下，这种问题更严重；&lt;/li&gt;
+  &lt;li&gt;同样的场景下，不采用 one-hot 而采用 label encoding ，那么会存在什么问题，树模型在分裂的过程中，特征会变成分段划取，比如x&amp;lt;90 and x&amp;gt;50，这就会导致 50-90 之间的类别特征都有了关联来进行处理的，因此引入了额外的噪音（特征隐含信息）；&lt;/li&gt;
+  &lt;li&gt;这也就解释了为啥在薪资预测模型中，GBDT 的效果差于线性模型，原因也在于特征通过 one-hot 编码过于稀疏，而线性模型可以很好的利用正则化来解决数据系数问题。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;2那-gbdt应该用什么编码方式&quot;&gt;2、那 GBDT应该用什么编码方式&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;不适用 one-hot 编码原因
+    &lt;ul&gt;
+      &lt;li&gt;微软在 light GBM 文档里面说明了，category 特征可以直接输入，不需要 one-hot 编码，速度快八倍，准确度差不多&lt;/li&gt;
+      &lt;li&gt;one-hot 编码容易导致特征维度过大且稀疏，导致GBDT模型学校效果差很多&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;不适用 label-encoding 编码原因
+    &lt;ul&gt;
+      &lt;li&gt;label-encoding 编码后 GBDT 会使得特征编码之间具有了关联性，容易引入噪音，尤其对一些训练集中未出现的类别，再实际测试集中有的类别特征容易出现问题，例如88这个类别特征没有出现过，但在测试时却有，模型很容易把他和同区间的类别特征统一处理，从而导致线上不可控问题，one-hot 可以很好的解决这种问题&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;实践出真知&quot;&gt;实践出真知&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;公说公有理，婆说婆有理，不管谁有理，实践出真知&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;1label-encoding&quot;&gt;1.label-encoding&lt;/h3&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;模型&lt;/th&gt;
+      &lt;th&gt;LR&lt;/th&gt;
+      &lt;th&gt;Random Forest&lt;/th&gt;
+      &lt;th&gt;GBDT&lt;/th&gt;
+      &lt;th&gt;XGboost&lt;/th&gt;
+      &lt;th&gt;GradientBoosting + LogisticRegression&lt;/th&gt;
+      &lt;th&gt;lightgbm&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;acc&lt;/td&gt;
+      &lt;td&gt;0.7533&lt;/td&gt;
+      &lt;td&gt;0.8657&lt;/td&gt;
+      &lt;td&gt;0.8697&lt;/td&gt;
+      &lt;td&gt;0.8511&lt;/td&gt;
+      &lt;td&gt;0.8703&lt;/td&gt;
+      &lt;td&gt;0.8710&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;confusion_matrix&lt;/td&gt;
+      &lt;td&gt;[[542 163] [208 591]]&lt;/td&gt;
+      &lt;td&gt;[[671 122] [ 79 632]]&lt;/td&gt;
+      &lt;td&gt;[[668 114] [ 82 640]]&lt;/td&gt;
+      &lt;td&gt;[[669 146] [ 81 608]]&lt;/td&gt;
+      &lt;td&gt;[[660 105] [ 90 649]]&lt;/td&gt;
+      &lt;td&gt;[[662 106] [ 88 648]]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;其他指标&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.7838 1-recall: 0.7397 1-f1: 0.7611 0-precision: 0.7227 0-recall: 0.7688 0-f1: 0.745&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8382 1-recall: 0.8889 1-f1: 0.8628 0-precision: 0.8947 0-recall: 0.8462 0-f1: 0.8697&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8488 1-recall: 0.8864 1-f1: 0.8672 0-precision: 0.8907 0-recall: 0.8542 0-f1: 0.8721&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8064 1-recall: 0.8824 1-f1: 0.8427 0-precision: 0.892 0-recall: 0.8209 0-f1: 0.855&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8607 1-recall: 0.8782 1-f1: 0.8694 0-precision: 0.88 0-recall: 0.8627 0-f1: 0.8713&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8594 1-recall: 0.8804 1-f1: 0.8698 0-precision: 0.8827 0-recall: 0.862 0-f1: 0.8722&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;2.one-hot&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;模型&lt;/th&gt;
+      &lt;th&gt;LR&lt;/th&gt;
+      &lt;th&gt;Random Forest&lt;/th&gt;
+      &lt;th&gt;GBDT&lt;/th&gt;
+      &lt;th&gt;XGboost&lt;/th&gt;
+      &lt;th&gt;GradientBoosting + LogisticRegression&lt;/th&gt;
+      &lt;th&gt;lightgbm&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;acc&lt;/td&gt;
+      &lt;td&gt;0.8364&lt;/td&gt;
+      &lt;td&gt;0.8684&lt;/td&gt;
+      &lt;td&gt;0.8677&lt;/td&gt;
+      &lt;td&gt;0.8664&lt;/td&gt;
+      &lt;td&gt;0.8703&lt;/td&gt;
+      &lt;td&gt;0.8690&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;confusion_matrix&lt;/td&gt;
+      &lt;td&gt;[[[646 142] [104 612]]&lt;/td&gt;
+      &lt;td&gt;[[670 118] [ 80 636]]&lt;/td&gt;
+      &lt;td&gt;[[666 115] [ 84 639]]&lt;/td&gt;
+      &lt;td&gt;[[668 119] [ 82 635]]&lt;/td&gt;
+      &lt;td&gt;[[659 104] [ 91 650]]&lt;/td&gt;
+      &lt;td&gt;[[655 102] [ 95 652]]&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;其他指标&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8117 1-recall: 0.8547 1-f1: 0.8327 0-precision: 0.8613 0-recall: 0.8198 0-f1: 0.8401&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8435 1-recall: 0.8883 1-f1: 0.8653 0-precision: 0.8933 0-recall: 0.8503 0-f1: 0.8713&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8475 1-recall: 0.8838 1-f1: 0.8653 0-precision: 0.888 0-recall: 0.8528 0-f1: 0.87&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8422 1-recall: 0.8856 1-f1: 0.8634 0-precision: 0.8907 0-recall: 0.8488 0-f1: 0.8692&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8621 1-recall: 0.8772 1-f1: 0.8696 0-precision: 0.8787 0-recall: 0.8637 0-f1: 0.8711&lt;/td&gt;
+      &lt;td&gt;1-precision: 0.8647 1-recall: 0.8728 1-f1: 0.8688 0-precision: 0.8733 0-recall: 0.8653 0-f1: 0.8693&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;结论：两者对比发现，one-hot编码再线性模型中提升较大，但对于树模型来说基本没有起到作用，或者说两种编码方式均可，可能的原因我们数据类别特征较少，均为两个或者三个类别，用one-hot和label-encoding没有很大的区别，最后值得指出的是再实际使用场景中，应该根据实际的数据特征来进行分析，不确定的情况下两者均进行尝试，对比效果再对其进行原因分析。&lt;/strong&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 14 Nov 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021/11/GBDT%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021/11/GBDT%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</guid>
+        
+        <category>机器学习</category>
         
         
       </item>

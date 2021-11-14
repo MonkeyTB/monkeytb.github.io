@@ -1,0 +1,16 @@
+I"h
+<ul>
+  <li><a href="#问题起因">问题起因</a></li>
+  <li><a href="#理论分析">理论分析</a>
+    <ul>
+      <li><a href="#1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢">1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？</a></li>
+      <li><a href="#2那-gbdt应该用什么编码方式">2、那 GBDT应该用什么编码方式</a></li>
+    </ul>
+  </li>
+  <li><a href="#实践出真知">实践出真知</a>
+    <ul>
+      <li><a href="#1label-encoding">1.label-encoding</a></li>
+    </ul>
+  </li>
+</ul>
+:ET

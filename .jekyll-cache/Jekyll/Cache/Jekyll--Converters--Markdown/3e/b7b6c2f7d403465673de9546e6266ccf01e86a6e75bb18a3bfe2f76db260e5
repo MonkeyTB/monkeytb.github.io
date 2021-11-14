@@ -1,0 +1,13 @@
+I"<div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">"https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</span> <span class="na">type=</span><span class="s">"text/javascript"</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">"text/x-mathjax-config"</span><span class="nt">&gt;</span>
+        <span class="nx">MathJax</span><span class="p">.</span><span class="nx">Hub</span><span class="p">.</span><span class="nx">Config</span><span class="p">({</span>
+            <span class="na">tex2jax</span><span class="p">:</span> <span class="p">{</span>
+            <span class="na">skipTags</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">script</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">noscript</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">style</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">textarea</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">pre</span><span class="dl">'</span><span class="p">],</span>
+            <span class="na">inlineMath</span><span class="p">:</span> <span class="p">[[</span><span class="dl">'</span><span class="s1">$</span><span class="dl">'</span><span class="p">,</span><span class="dl">'</span><span class="s1">$</span><span class="dl">'</span><span class="p">]]</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span>
+</code></pre></div></div>
+:ET
