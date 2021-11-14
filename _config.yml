@@ -3,7 +3,8 @@ title: YiYao
 subtitle: 个人站
 description: 欢迎来到我的个人站~
 # 头像里面的标题
-avatarTitle: YiYao
+avatarTitle:
+
 # 头像里面的描述
 avatarDesc: 自然语言处理 / 机器学习
 url: "https://monkeytb.github.io/"
