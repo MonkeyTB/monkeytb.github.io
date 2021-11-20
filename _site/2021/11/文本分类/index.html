@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>关于 GBDT 特征编码</title>
-  <meta name="description" content="问题起因">
+  <title>文本分类</title>
+  <meta name="description" content="        ">
   <meta name="author" content="MonkeyTB">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="关于 GBDT 特征编码">
-  <meta name="twitter:description" content="问题起因">
+  <meta name="twitter:title" content="文本分类">
+  <meta name="twitter:description" content="        ">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="关于 GBDT 特征编码">
-  <meta property="og:description" content="问题起因">
+  <meta property="og:title" content="文本分类">
+  <meta property="og:description" content="        ">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -165,7 +165,7 @@
 
 <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">关于 GBDT 特征编码</h1>
+    <h1 class="post-title">文本分类</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2021-11-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-11-14</time>  
@@ -178,16 +178,25 @@
   
     <h2 class="post-title">目录</h2>
     <ul>
-  <li><a href="#问题起因">问题起因</a></li>
-  <li><a href="#理论分析">理论分析</a>
+  <li><a href="#三步骤">三步骤</a>
     <ul>
-      <li><a href="#1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢">1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？</a></li>
-      <li><a href="#2那-gbdt应该用什么编码方式">2、那 GBDT应该用什么编码方式</a></li>
+      <li><a href="#特征工程">特征工程</a></li>
+      <li><a href="#特征选择">特征选择</a></li>
+      <li><a href="#分类器">分类器</a></li>
     </ul>
   </li>
-  <li><a href="#实践出真知">实践出真知</a>
+  <li><a href="#rcnn">RCNN</a></li>
+  <li><a href="#han">HAN</a></li>
+  <li><a href="#gcn">GCN</a></li>
+  <li><a href="#损失函数">损失函数</a>
     <ul>
-      <li><a href="#1label-encoding">1.label-encoding</a></li>
+      <li><a href="#交叉熵损失">交叉熵损失</a></li>
+    </ul>
+  </li>
+  <li><a href="#优化方法">优化方法</a>
+    <ul>
+      <li><a href="#数据优化">数据优化</a></li>
+      <li><a href="#模型优化">模型优化</a></li>
     </ul>
   </li>
 </ul>
@@ -195,135 +204,134 @@
   
 
   <section class="post">
-    <h2 id="问题起因">问题起因</h2>
+    <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
 
-<ul>
-  <li>在用户风险预测模型（安全审核）中，提出了特征应该用类别特征还是 one-hot 特征，针对此问题进行调研</li>
-</ul>
+<ol>
+  <li>
+    <h2 id="三步骤">三步骤</h2>
 
-<h2 id="理论分析">理论分析</h2>
+    <h3 id="特征工程">特征工程</h3>
 
-<h3 id="1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢">1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？</h3>
+    <ol>
+      <li>常用的特征主要是词袋特征，复杂的特征词性标签、名词短语和树核</li>
+    </ol>
 
-<ul>
-  <li>假设在分类场景下，某一维特征有 1000 个类别，那么采用 one-hot 编码，每一维特征就是 0 or 1，那么 GBDT 可能会错误的学习到只要某个特征为 0 或者 1 就是某个类别，这种情况下就会产生过拟合，在训练数据不充足的情况下，这种问题更严重；</li>
-  <li>同样的场景下，不采用 one-hot 而采用 label encoding ，那么会存在什么问题，树模型在分裂的过程中，特征会变成分段划取，比如x&lt;90 and x&gt;50，这就会导致 50-90 之间的类别特征都有了关联来进行处理的，因此引入了额外的噪音（特征隐含信息）；</li>
-  <li>这也就解释了为啥在薪资预测模型中，GBDT 的效果差于线性模型，原因也在于特征通过 one-hot 编码过于稀疏，而线性模型可以很好的利用正则化来解决数据系数问题。</li>
-</ul>
+    <h3 id="特征选择">特征选择</h3>
 
-<h3 id="2那-gbdt应该用什么编码方式">2、那 GBDT应该用什么编码方式</h3>
+    <ol>
+      <li>特征选择旨在删除噪音特征，常用的就是移除法</li>
+      <li>信息增益、L1正则</li>
+    </ol>
 
-<ul>
-  <li>不适用 one-hot 编码原因
+    <h3 id="分类器">分类器</h3>
+
+    <ol>
+      <li>机器学习方面主要有逻辑回归、朴素贝叶斯、支持向量机 —– 数据稀疏性问题</li>
+      <li>深度学习和表征学习为解决数据稀疏问题</li>
+    </ol>
+
+    <h2 id="rcnn">RCNN</h2>
+
+    <ol>
+      <li>在我们的模型中，当学习单词表示时，我们应用递归结构来尽可能多地捕获上下文信息，与传统的基于窗口的神经网络相比，这可以引入相当少的噪声。</li>
+      <li>还使用了一个最大池层，它自动判断哪些单词在文本分类中起关键作用，以捕获文本中的关键成分。</li>
+      <li>双向递归神经网络来捕捉上下文。</li>
+    </ol>
+
+    <p><img src="/images/posts/自然语言处理/v2-198c6d37d18d1708f22fedd3043a7340_r.jpg" alt="" /></p>
+
     <ul>
-      <li>微软在 light GBM 文档里面说明了，category 特征可以直接输入，不需要 one-hot 编码，速度快八倍，准确度差不多</li>
-      <li>one-hot 编码容易导致特征维度过大且稀疏，导致GBDT模型学校效果差很多</li>
+      <li>$c_l(w_i)$用公式一计算，其中$c_l(w_{i-1})$是当前 word 的左侧的 context，$e(w_{i-1})$是单词的嵌入，稠密向量</li>
     </ul>
-  </li>
-  <li>不适用 label-encoding 编码原因
+
+    <ol>
+      <li>TextCNN比较类似，都是把文本表示为一个嵌入矩阵，再进行卷积操作。不同的是TextCNN中的文本嵌入矩阵每一行只是文本中一个词的向量表示，而在RCNN中，文本嵌入矩阵的每一行是当前词的词向量以及上下文嵌入表示的拼接</li>
+    </ol>
+
+    <h2 id="han">HAN</h2>
+
+    <p><a href="https://zhuanlan.zhihu.com/p/54165155">论文解读</a></p>
+
+    <h2 id="gcn">GCN</h2>
+
+    <p><a href="https://lsvih.com/2019/06/27/Graph Convolutional Networks for Text Classification/">论文解读</a></p>
+
+    <ol>
+      <li>提出了一种新的文本分类图形神经网络方法。据我们所知，这是第一次将整个语料库建模为异构图，并利用图神经网络联合学习单词和文档嵌入的研究。</li>
+      <li>在几个基准数据集上的结果表明，我们的方法优于现有的文本分类方法，不使用预先训练的单词嵌入或外部知识。我们的方法还自动学习预测单词和文档嵌入。</li>
+    </ol>
+
+    <div class="language-tex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>输入特征矩阵X=I：one-hot
+图边计算方式
+    word-document：tf-idf
+    word-word：PMI-为了利用全局词共现信息，我们对语料库中的所有文档使用固定大小的滑动窗口来收集共现统计。
+A<span class="p">_</span>ij计算方式如下：
+    PMI(i, j)； i, j are words, PMI(i, j) &gt; 0
+    TF-IDF<span class="p">_</span>ij；  i is document, j is word
+    1； i = j
+    0； otherwise
+</code></pre></div>    </div>
+
+    <p>不直接用$D^{-1}A$而选用$D^{-1/2}AD^{-1/2}$，是因为$D^{-1}A$的结果不是对称矩阵，这个大家动手算一下就知道了。虽然两者结果不相同，但是$D^{-1/2}AD^{-1/2}$已经做到了近似的归一化，而且保持了矩阵的对称性，我想这就是选用对称归一化的拉普拉斯矩阵的原因<a href="https://blog.csdn.net/qq_35516657/article/details/108225441">链接</a>，属于拉普拉斯对称归一化<a href="https://zhuanlan.zhihu.com/p/362416124">链接</a>。</p>
+
+    <h2 id="损失函数">损失函数</h2>
+
+    <h3 id="交叉熵损失">交叉熵损失</h3>
+
+    <p>KL距离常用来度量两个分布之间的距离，其具有如下形式其中p是真实分布，q是拟合分布，H(p)是p的熵，为常数。因此 度量了p和q之间的距离，叫做交叉熵损失。</p>
+
+    <h2 id="优化方法">优化方法</h2>
+
+    <h3 id="数据优化">数据优化</h3>
+
+    <ol>
+      <li>训练集合和测试集合部分特征抽取方式不一致</li>
+      <li>最后的结果过于依赖某一特征</li>
+    </ol>
+
     <ul>
-      <li>label-encoding 编码后 GBDT 会使得特征编码之间具有了关联性，容易引入噪音，尤其对一些训练集中未出现的类别，再实际测试集中有的类别特征容易出现问题，例如88这个类别特征没有出现过，但在测试时却有，模型很容易把他和同区间的类别特征统一处理，从而导致线上不可控问题，one-hot 可以很好的解决这种问题</li>
+      <li>优化方法
+        <ul>
+          <li>在全连接层 增加dropout层，设置神经元随机失活的比例为0.3，即keep_rate= 0.7</li>
+        </ul>
+      </li>
+      <li>在数据预处理的时候，随机去掉10%的A特征</li>
     </ul>
+
+    <ol>
+      <li>泛化能力较差</li>
+    </ol>
+
+    <ul>
+      <li>优化方法
+        <ul>
+          <li>增加槽位抽取：针对部分query, 增加槽位抽取的处理，比如将英文统一用<ENG>表示，模型见到的都是一样的，不存在缺乏泛化能力的问题. 瓶颈在于槽位抽取的准确率。</ENG></li>
+        </ul>
+      </li>
+    </ul>
+
+    <ol>
+      <li>缺乏先验知识</li>
+    </ol>
+
+    <h3 id="模型优化">模型优化</h3>
+
+    <ol>
+      <li>embedding_dim长度</li>
+      <li>在全连接层增加dropout层</li>
+    </ol>
   </li>
-</ul>
-
-<h2 id="实践出真知">实践出真知</h2>
-
-<ul>
-  <li>公说公有理，婆说婆有理，不管谁有理，实践出真知</li>
-</ul>
-
-<h3 id="1label-encoding">1.label-encoding</h3>
-
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>LR</th>
-      <th>Random Forest</th>
-      <th>GBDT</th>
-      <th>XGboost</th>
-      <th>GradientBoosting + LogisticRegression</th>
-      <th>lightgbm</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>acc</td>
-      <td>0.7533</td>
-      <td>0.8657</td>
-      <td>0.8697</td>
-      <td>0.8511</td>
-      <td>0.8703</td>
-      <td>0.8710</td>
-    </tr>
-    <tr>
-      <td>confusion_matrix</td>
-      <td>[[542 163] [208 591]]</td>
-      <td>[[671 122] [ 79 632]]</td>
-      <td>[[668 114] [ 82 640]]</td>
-      <td>[[669 146] [ 81 608]]</td>
-      <td>[[660 105] [ 90 649]]</td>
-      <td>[[662 106] [ 88 648]]</td>
-    </tr>
-    <tr>
-      <td>其他指标</td>
-      <td>1-precision: 0.7838 1-recall: 0.7397 1-f1: 0.7611 0-precision: 0.7227 0-recall: 0.7688 0-f1: 0.745</td>
-      <td>1-precision: 0.8382 1-recall: 0.8889 1-f1: 0.8628 0-precision: 0.8947 0-recall: 0.8462 0-f1: 0.8697</td>
-      <td>1-precision: 0.8488 1-recall: 0.8864 1-f1: 0.8672 0-precision: 0.8907 0-recall: 0.8542 0-f1: 0.8721</td>
-      <td>1-precision: 0.8064 1-recall: 0.8824 1-f1: 0.8427 0-precision: 0.892 0-recall: 0.8209 0-f1: 0.855</td>
-      <td>1-precision: 0.8607 1-recall: 0.8782 1-f1: 0.8694 0-precision: 0.88 0-recall: 0.8627 0-f1: 0.8713</td>
-      <td>1-precision: 0.8594 1-recall: 0.8804 1-f1: 0.8698 0-precision: 0.8827 0-recall: 0.862 0-f1: 0.8722</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>2.one-hot</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>LR</th>
-      <th>Random Forest</th>
-      <th>GBDT</th>
-      <th>XGboost</th>
-      <th>GradientBoosting + LogisticRegression</th>
-      <th>lightgbm</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>acc</td>
-      <td>0.8364</td>
-      <td>0.8684</td>
-      <td>0.8677</td>
-      <td>0.8664</td>
-      <td>0.8703</td>
-      <td>0.8690</td>
-    </tr>
-    <tr>
-      <td>confusion_matrix</td>
-      <td>[[[646 142] [104 612]]</td>
-      <td>[[670 118] [ 80 636]]</td>
-      <td>[[666 115] [ 84 639]]</td>
-      <td>[[668 119] [ 82 635]]</td>
-      <td>[[659 104] [ 91 650]]</td>
-      <td>[[655 102] [ 95 652]]</td>
-    </tr>
-    <tr>
-      <td>其他指标</td>
-      <td>1-precision: 0.8117 1-recall: 0.8547 1-f1: 0.8327 0-precision: 0.8613 0-recall: 0.8198 0-f1: 0.8401</td>
-      <td>1-precision: 0.8435 1-recall: 0.8883 1-f1: 0.8653 0-precision: 0.8933 0-recall: 0.8503 0-f1: 0.8713</td>
-      <td>1-precision: 0.8475 1-recall: 0.8838 1-f1: 0.8653 0-precision: 0.888 0-recall: 0.8528 0-f1: 0.87</td>
-      <td>1-precision: 0.8422 1-recall: 0.8856 1-f1: 0.8634 0-precision: 0.8907 0-recall: 0.8488 0-f1: 0.8692</td>
-      <td>1-precision: 0.8621 1-recall: 0.8772 1-f1: 0.8696 0-precision: 0.8787 0-recall: 0.8637 0-f1: 0.8711</td>
-      <td>1-precision: 0.8647 1-recall: 0.8728 1-f1: 0.8688 0-precision: 0.8733 0-recall: 0.8653 0-f1: 0.8693</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><strong>结论：两者对比发现，one-hot编码再线性模型中提升较大，但对于树模型来说基本没有起到作用，或者说两种编码方式均可，可能的原因我们数据类别特征较少，均为两个或者三个类别，用one-hot和label-encoding没有很大的区别，最后值得指出的是再实际使用场景中，应该根据实际的数据特征来进行分析，不确定的情况下两者均进行尝试，对比效果再对其进行原因分析。</strong></p>
+</ol>
 
   </section>
 
@@ -393,13 +401,13 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2021/11/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="十大排序算法">上一篇：  <span>十大排序算法</span>
+            <a href="/2021/11/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96-seq2seq_DGCNN)/" data-toggle="tooltip" data-placement="top" title="信息抽取-seq2seq_DGCNN">上一篇：  <span>信息抽取-seq2seq_DGCNN</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2021/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%87%E6%8B%9F%E5%90%88%E6%AC%A0%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="机器学习过拟合欠拟合">下一篇：  <span>机器学习过拟合欠拟合</span>
+            <a href="/2021/11/A-Neural-Probabilistic-Language-Model/" data-toggle="tooltip" data-placement="top" title="A Neural Probabilistic Language Model">下一篇：  <span>A Neural Probabilistic Language Model</span>
             </a>
         </li>
         

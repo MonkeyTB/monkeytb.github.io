@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>关于 GBDT 特征编码</title>
-  <meta name="description" content="问题起因">
+  <title>A Neural Probabilistic Language Model</title>
+  <meta name="description" content="        ">
   <meta name="author" content="MonkeyTB">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="关于 GBDT 特征编码">
-  <meta name="twitter:description" content="问题起因">
+  <meta name="twitter:title" content="A Neural Probabilistic Language Model">
+  <meta name="twitter:description" content="        ">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="关于 GBDT 特征编码">
-  <meta property="og:description" content="问题起因">
+  <meta property="og:title" content="A Neural Probabilistic Language Model">
+  <meta property="og:description" content="        ">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -165,7 +165,7 @@
 
 <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">关于 GBDT 特征编码</h1>
+    <h1 class="post-title">A Neural Probabilistic Language Model</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2021-11-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-11-14</time>  
@@ -178,16 +178,11 @@
   
     <h2 class="post-title">目录</h2>
     <ul>
-  <li><a href="#问题起因">问题起因</a></li>
-  <li><a href="#理论分析">理论分析</a>
+  <li><a href="#abstract">Abstract</a></li>
+  <li><a href="#introduction">Introduction</a>
     <ul>
-      <li><a href="#1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢">1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？</a></li>
-      <li><a href="#2那-gbdt应该用什么编码方式">2、那 GBDT应该用什么编码方式</a></li>
-    </ul>
-  </li>
-  <li><a href="#实践出真知">实践出真知</a>
-    <ul>
-      <li><a href="#1label-encoding">1.label-encoding</a></li>
+      <li><a href="#fighting-the-curse-of-dimensionality-with-distributed-representations">Fighting the Curse of Dimensionality with Distributed Representations</a></li>
+      <li><a href="#a-neural-model">A Neural Model</a></li>
     </ul>
   </li>
 </ul>
@@ -195,135 +190,74 @@
   
 
   <section class="post">
-    <h2 id="问题起因">问题起因</h2>
+    <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
+
+<h1 id="abstract">Abstract</h1>
+
+<p>在摘要中作者提到，通过学习一个分布式的词表示来克服维数的诅咒，它允许每个训练句子向模型告知一个指数数量的语义相邻句子。该模型同时学习 (1) 每个单词的分布式表示，以及 (2) 用这些表示 表示的单词序列的概率函数。</p>
+
+<h1 id="introduction">Introduction</h1>
+
+<p>在介绍中，作者举例到，如果相对10000个词建立连续10个词得联合分布，那么可能需要得参数是$10000^{10}-1$，当对连续变量进行建模时，我们比较容易获得泛化（光滑得函数类，神经网路模型，高斯模型等），对于离散空间泛化结构就不明显了，每个离散变量得取值很大时，大多观测对象在汉明距离上几乎是最大得。</p>
+
+<p>本文提出在高维情况下，重要的是将概率质量均匀分布在每个训练点周围的各个方向上。这里提出得泛化方式也与之前最先进得统计方法模型不同。</p>
+
+<p>语言得统计模型公式如下$P({w_1}^T)=\prod_{t=1}^T(P(w_t|w_1^{t-1}))$我们可以看出，每次计算t得概率时，都需要从1~t-1的概率，这无形中就增加了很大的计算量，本文利用统计上词序更加依赖暂时距离较近的词这一事实，因此提出了n-gram模型结构，计算公式如下$P(w_t|w_1^{t-1})=P(w_t|w_{t-n+1}^{t-1})$。</p>
+
+<p>在文本中总会出现上下文连续的词但预料中没有出现的情况，一种简单的解决办法就是将n回退到三元模型。从本质上说一个新的单词序列是通过“粘合”非常短的长度为1,2…或者在训练数据中经常出现的单词上。获取下一个片段概率的规则隐含在后退或插值n-gram算法的细节中。研究中一般采用3，但显然，单词前面的序列中又更多的信息需要预测，并不仅仅时单词前的两个单词。因此该方法至少需要两点需要改进</p>
 
 <ul>
-  <li>在用户风险预测模型（安全审核）中，提出了特征应该用类别特征还是 one-hot 特征，针对此问题进行调研</li>
+  <li>它不考虑超过1到2个单词的上下文</li>
+  <li>不考虑单词之间的“相似性”</li>
 </ul>
 
-<h2 id="理论分析">理论分析</h2>
+<h2 id="fighting-the-curse-of-dimensionality-with-distributed-representations">Fighting the Curse of Dimensionality with Distributed Representations</h2>
 
-<h3 id="1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢">1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？</h3>
+<p>论文提出方法思想总结如下：</p>
 
-<ul>
-  <li>假设在分类场景下，某一维特征有 1000 个类别，那么采用 one-hot 编码，每一维特征就是 0 or 1，那么 GBDT 可能会错误的学习到只要某个特征为 0 或者 1 就是某个类别，这种情况下就会产生过拟合，在训练数据不充足的情况下，这种问题更严重；</li>
-  <li>同样的场景下，不采用 one-hot 而采用 label encoding ，那么会存在什么问题，树模型在分裂的过程中，特征会变成分段划取，比如x&lt;90 and x&gt;50，这就会导致 50-90 之间的类别特征都有了关联来进行处理的，因此引入了额外的噪音（特征隐含信息）；</li>
-  <li>这也就解释了为啥在薪资预测模型中，GBDT 的效果差于线性模型，原因也在于特征通过 one-hot 编码过于稀疏，而线性模型可以很好的利用正则化来解决数据系数问题。</li>
-</ul>
-
-<h3 id="2那-gbdt应该用什么编码方式">2、那 GBDT应该用什么编码方式</h3>
-
-<ul>
-  <li>不适用 one-hot 编码原因
-    <ul>
-      <li>微软在 light GBM 文档里面说明了，category 特征可以直接输入，不需要 one-hot 编码，速度快八倍，准确度差不多</li>
-      <li>one-hot 编码容易导致特征维度过大且稀疏，导致GBDT模型学校效果差很多</li>
-    </ul>
+<ol>
+  <li>
+    <p>将vocabulary的每个单词关联到一个分布式单词特征上（$R^m$）</p>
   </li>
-  <li>不适用 label-encoding 编码原因
-    <ul>
-      <li>label-encoding 编码后 GBDT 会使得特征编码之间具有了关联性，容易引入噪音，尤其对一些训练集中未出现的类别，再实际测试集中有的类别特征容易出现问题，例如88这个类别特征没有出现过，但在测试时却有，模型很容易把他和同区间的类别特征统一处理，从而导致线上不可控问题，one-hot 可以很好的解决这种问题</li>
-    </ul>
+  <li>
+    <p>将词序列中的词的特征向量表示为词序列的联合概率函数</p>
   </li>
-</ul>
+  <li>
+    <p>同时学习单词特征向量和联合概率函数的参数</p>
+  </li>
+</ol>
 
-<h2 id="实践出真知">实践出真知</h2>
+<p>特征向量的不同维度表示单词的不同方位，每个单词的都与向量空间中的一个点相关联，特征的维度m远小于词汇表大小，概率函数表述为给定前一个词的情况下下个词的条件概率的乘积</p>
+
+<h2 id="a-neural-model">A Neural Model</h2>
+
+<p>论文提出的模型结构如下图所示：</p>
+
+<p><img src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MiUNPZwHQJTWEwsPhe9%2Fuploads%2FhxjpdeHfXxC46KhUdDNy%2Fimage.png?alt=media&amp;token=140d8d29-01a9-435b-bfe0-5ca432a8a846" alt="img" /></p>
+
+<p>Neural architecture</p>
+
+<p>上图输入是$W_{t-n+1}、…、w_{t-2}、w_t$，本质上就是通过前面n-1个词预测第t个词，这也就是n-gram模型</p>
 
 <ul>
-  <li>公说公有理，婆说婆有理，不管谁有理，实践出真知</li>
+  <li>$C(w_{t-n+1})$：t-n+1单词对应的词向量，也是模型最终的收获；</li>
+  <li>C：矩阵，行是vocab，列是word对应的词向量$|V*m|$；</li>
 </ul>
 
-<h3 id="1label-encoding">1.label-encoding</h3>
+<p>模型的输入即把单词concat通过隐藏层，最后通过tanh激活，模型最后输出层公是如下：$y=b+Wx+Utanh(d+Hx)$，最后加的这一项是中间隐藏层的表示，其中x的表示如下：$x=(C(w_{t-1}),C(w_{t-2}),…,C(w_{t-n+1}))$。</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>LR</th>
-      <th>Random Forest</th>
-      <th>GBDT</th>
-      <th>XGboost</th>
-      <th>GradientBoosting + LogisticRegression</th>
-      <th>lightgbm</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>acc</td>
-      <td>0.7533</td>
-      <td>0.8657</td>
-      <td>0.8697</td>
-      <td>0.8511</td>
-      <td>0.8703</td>
-      <td>0.8710</td>
-    </tr>
-    <tr>
-      <td>confusion_matrix</td>
-      <td>[[542 163] [208 591]]</td>
-      <td>[[671 122] [ 79 632]]</td>
-      <td>[[668 114] [ 82 640]]</td>
-      <td>[[669 146] [ 81 608]]</td>
-      <td>[[660 105] [ 90 649]]</td>
-      <td>[[662 106] [ 88 648]]</td>
-    </tr>
-    <tr>
-      <td>其他指标</td>
-      <td>1-precision: 0.7838 1-recall: 0.7397 1-f1: 0.7611 0-precision: 0.7227 0-recall: 0.7688 0-f1: 0.745</td>
-      <td>1-precision: 0.8382 1-recall: 0.8889 1-f1: 0.8628 0-precision: 0.8947 0-recall: 0.8462 0-f1: 0.8697</td>
-      <td>1-precision: 0.8488 1-recall: 0.8864 1-f1: 0.8672 0-precision: 0.8907 0-recall: 0.8542 0-f1: 0.8721</td>
-      <td>1-precision: 0.8064 1-recall: 0.8824 1-f1: 0.8427 0-precision: 0.892 0-recall: 0.8209 0-f1: 0.855</td>
-      <td>1-precision: 0.8607 1-recall: 0.8782 1-f1: 0.8694 0-precision: 0.88 0-recall: 0.8627 0-f1: 0.8713</td>
-      <td>1-precision: 0.8594 1-recall: 0.8804 1-f1: 0.8698 0-precision: 0.8827 0-recall: 0.862 0-f1: 0.8722</td>
-    </tr>
-  </tbody>
-</table>
+<p>【论文第三部分提出两种训练加速方式，一种是内存共享，另一种是参数共享】</p>
 
-<p>2.one-hot</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>LR</th>
-      <th>Random Forest</th>
-      <th>GBDT</th>
-      <th>XGboost</th>
-      <th>GradientBoosting + LogisticRegression</th>
-      <th>lightgbm</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>acc</td>
-      <td>0.8364</td>
-      <td>0.8684</td>
-      <td>0.8677</td>
-      <td>0.8664</td>
-      <td>0.8703</td>
-      <td>0.8690</td>
-    </tr>
-    <tr>
-      <td>confusion_matrix</td>
-      <td>[[[646 142] [104 612]]</td>
-      <td>[[670 118] [ 80 636]]</td>
-      <td>[[666 115] [ 84 639]]</td>
-      <td>[[668 119] [ 82 635]]</td>
-      <td>[[659 104] [ 91 650]]</td>
-      <td>[[655 102] [ 95 652]]</td>
-    </tr>
-    <tr>
-      <td>其他指标</td>
-      <td>1-precision: 0.8117 1-recall: 0.8547 1-f1: 0.8327 0-precision: 0.8613 0-recall: 0.8198 0-f1: 0.8401</td>
-      <td>1-precision: 0.8435 1-recall: 0.8883 1-f1: 0.8653 0-precision: 0.8933 0-recall: 0.8503 0-f1: 0.8713</td>
-      <td>1-precision: 0.8475 1-recall: 0.8838 1-f1: 0.8653 0-precision: 0.888 0-recall: 0.8528 0-f1: 0.87</td>
-      <td>1-precision: 0.8422 1-recall: 0.8856 1-f1: 0.8634 0-precision: 0.8907 0-recall: 0.8488 0-f1: 0.8692</td>
-      <td>1-precision: 0.8621 1-recall: 0.8772 1-f1: 0.8696 0-precision: 0.8787 0-recall: 0.8637 0-f1: 0.8711</td>
-      <td>1-precision: 0.8647 1-recall: 0.8728 1-f1: 0.8688 0-precision: 0.8733 0-recall: 0.8653 0-f1: 0.8693</td>
-    </tr>
-  </tbody>
-</table>
-
-<p><strong>结论：两者对比发现，one-hot编码再线性模型中提升较大，但对于树模型来说基本没有起到作用，或者说两种编码方式均可，可能的原因我们数据类别特征较少，均为两个或者三个类别，用one-hot和label-encoding没有很大的区别，最后值得指出的是再实际使用场景中，应该根据实际的数据特征来进行分析，不确定的情况下两者均进行尝试，对比效果再对其进行原因分析。</strong></p>
 
   </section>
 
@@ -393,15 +327,10 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2021/11/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="十大排序算法">上一篇：  <span>十大排序算法</span>
+            <a href="/2021/11/%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/" data-toggle="tooltip" data-placement="top" title="文本分类">上一篇：  <span>文本分类</span>
             </a>
         </li>
         
-        
-        <li class="next">
-            <a href="/2021/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%87%E6%8B%9F%E5%90%88%E6%AC%A0%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="机器学习过拟合欠拟合">下一篇：  <span>机器学习过拟合欠拟合</span>
-            </a>
-        </li>
         
     </ul>
 </section>

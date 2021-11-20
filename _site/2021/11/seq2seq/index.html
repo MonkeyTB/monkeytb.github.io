@@ -6,17 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>关于 GBDT 特征编码</title>
-  <meta name="description" content="问题起因">
+  <title>seq2seq 综述</title>
+  <meta name="description" content="        ">
   <meta name="author" content="MonkeyTB">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="关于 GBDT 特征编码">
-  <meta name="twitter:description" content="问题起因">
+  <meta name="twitter:title" content="seq2seq 综述">
+  <meta name="twitter:description" content="        ">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="关于 GBDT 特征编码">
-  <meta property="og:description" content="问题起因">
+  <meta property="og:title" content="seq2seq 综述">
+  <meta property="og:description" content="        ">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
   <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
@@ -165,7 +165,7 @@
 
 <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">关于 GBDT 特征编码</h1>
+    <h1 class="post-title">seq2seq 综述</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
       <time datetime="2021-11-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-11-14</time>  
@@ -178,152 +178,124 @@
   
     <h2 class="post-title">目录</h2>
     <ul>
-  <li><a href="#问题起因">问题起因</a></li>
-  <li><a href="#理论分析">理论分析</a>
+  <li><a href="#常见seq2seq结构">常见seq2seq结构</a>
     <ul>
-      <li><a href="#1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢">1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？</a></li>
-      <li><a href="#2那-gbdt应该用什么编码方式">2、那 GBDT应该用什么编码方式</a></li>
+      <li><a href="#encoder">Encoder</a></li>
+      <li><a href="#decoder">Decoder</a></li>
     </ul>
   </li>
-  <li><a href="#实践出真知">实践出真知</a>
+  <li><a href="#使用trick">使用trick</a>
     <ul>
-      <li><a href="#1label-encoding">1.label-encoding</a></li>
+      <li><a href="#attention">Attention</a></li>
+      <li><a href="#teacher-forcing">Teacher Forcing</a></li>
+      <li><a href="#beam-search">Beam Search</a></li>
     </ul>
   </li>
+  <li><a href="#参考">参考</a></li>
 </ul>
 
   
 
   <section class="post">
-    <h2 id="问题起因">问题起因</h2>
+    <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
 
-<ul>
-  <li>在用户风险预测模型（安全审核）中，提出了特征应该用类别特征还是 one-hot 特征，针对此问题进行调研</li>
-</ul>
+<p>seq2seq是一种循环神经网络的变种，包括编码器和解码器两部分，可用于机器翻译、对话系统、自动摘要</p>
 
-<h2 id="理论分析">理论分析</h2>
+<h1 id="常见seq2seq结构">常见seq2seq结构</h1>
 
-<h3 id="1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢">1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？</h3>
+<p>seq2seq是一种重要的RNN模型，也称为Encoder-Decoder模型，可以理解为 N<em>M</em>N<em>∗</em>M* 的模型，模型包含两部分，Encoder部分编码序列的信息，将任意长度的信息编码到一个向量 c<em>c</em> 里，而Decoder部分通过向量 c<em>c</em> 将信息解码，并输出序列，常见的结构如下几种：</p>
 
-<ul>
-  <li>假设在分类场景下，某一维特征有 1000 个类别，那么采用 one-hot 编码，每一维特征就是 0 or 1，那么 GBDT 可能会错误的学习到只要某个特征为 0 或者 1 就是某个类别，这种情况下就会产生过拟合，在训练数据不充足的情况下，这种问题更严重；</li>
-  <li>同样的场景下，不采用 one-hot 而采用 label encoding ，那么会存在什么问题，树模型在分裂的过程中，特征会变成分段划取，比如x&lt;90 and x&gt;50，这就会导致 50-90 之间的类别特征都有了关联来进行处理的，因此引入了额外的噪音（特征隐含信息）；</li>
-  <li>这也就解释了为啥在薪资预测模型中，GBDT 的效果差于线性模型，原因也在于特征通过 one-hot 编码过于稀疏，而线性模型可以很好的利用正则化来解决数据系数问题。</li>
-</ul>
+<p>第一种 seq2seq结构</p>
 
-<h3 id="2那-gbdt应该用什么编码方式">2、那 GBDT应该用什么编码方式</h3>
+<p><img src="/images/posts/自然语言处理/seq2seq1.png" alt="" /></p>
 
-<ul>
-  <li>不适用 one-hot 编码原因
-    <ul>
-      <li>微软在 light GBM 文档里面说明了，category 特征可以直接输入，不需要 one-hot 编码，速度快八倍，准确度差不多</li>
-      <li>one-hot 编码容易导致特征维度过大且稀疏，导致GBDT模型学校效果差很多</li>
-    </ul>
-  </li>
-  <li>不适用 label-encoding 编码原因
-    <ul>
-      <li>label-encoding 编码后 GBDT 会使得特征编码之间具有了关联性，容易引入噪音，尤其对一些训练集中未出现的类别，再实际测试集中有的类别特征容易出现问题，例如88这个类别特征没有出现过，但在测试时却有，模型很容易把他和同区间的类别特征统一处理，从而导致线上不可控问题，one-hot 可以很好的解决这种问题</li>
-    </ul>
-  </li>
-</ul>
+<p>第二种 seq2seq结构</p>
 
-<h2 id="实践出真知">实践出真知</h2>
+<p><img src="/images/posts/自然语言处理/seq2seq2.png" alt="" /></p>
 
-<ul>
-  <li>公说公有理，婆说婆有理，不管谁有理，实践出真知</li>
-</ul>
+<p>第三种 seq2seq结构</p>
 
-<h3 id="1label-encoding">1.label-encoding</h3>
+<p><img src="/images/posts/自然语言处理/seq2seq3.png" alt="" /></p>
 
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>LR</th>
-      <th>Random Forest</th>
-      <th>GBDT</th>
-      <th>XGboost</th>
-      <th>GradientBoosting + LogisticRegression</th>
-      <th>lightgbm</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>acc</td>
-      <td>0.7533</td>
-      <td>0.8657</td>
-      <td>0.8697</td>
-      <td>0.8511</td>
-      <td>0.8703</td>
-      <td>0.8710</td>
-    </tr>
-    <tr>
-      <td>confusion_matrix</td>
-      <td>[[542 163] [208 591]]</td>
-      <td>[[671 122] [ 79 632]]</td>
-      <td>[[668 114] [ 82 640]]</td>
-      <td>[[669 146] [ 81 608]]</td>
-      <td>[[660 105] [ 90 649]]</td>
-      <td>[[662 106] [ 88 648]]</td>
-    </tr>
-    <tr>
-      <td>其他指标</td>
-      <td>1-precision: 0.7838 1-recall: 0.7397 1-f1: 0.7611 0-precision: 0.7227 0-recall: 0.7688 0-f1: 0.745</td>
-      <td>1-precision: 0.8382 1-recall: 0.8889 1-f1: 0.8628 0-precision: 0.8947 0-recall: 0.8462 0-f1: 0.8697</td>
-      <td>1-precision: 0.8488 1-recall: 0.8864 1-f1: 0.8672 0-precision: 0.8907 0-recall: 0.8542 0-f1: 0.8721</td>
-      <td>1-precision: 0.8064 1-recall: 0.8824 1-f1: 0.8427 0-precision: 0.892 0-recall: 0.8209 0-f1: 0.855</td>
-      <td>1-precision: 0.8607 1-recall: 0.8782 1-f1: 0.8694 0-precision: 0.88 0-recall: 0.8627 0-f1: 0.8713</td>
-      <td>1-precision: 0.8594 1-recall: 0.8804 1-f1: 0.8698 0-precision: 0.8827 0-recall: 0.862 0-f1: 0.8722</td>
-    </tr>
-  </tbody>
-</table>
+<h2 id="encoder">Encoder</h2>
 
-<p>2.one-hot</p>
+<p>· 这三种模型结构的主要区别在于Decoder上，Encoder是一样的，Encoder部分的RNN通过接受输入 $X$ ，通过RNN编码所有信息到$c$（所有神经元最后的输出，不要中间神经元的输出）。</p>
 
-<table>
-  <thead>
-    <tr>
-      <th>模型</th>
-      <th>LR</th>
-      <th>Random Forest</th>
-      <th>GBDT</th>
-      <th>XGboost</th>
-      <th>GradientBoosting + LogisticRegression</th>
-      <th>lightgbm</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>acc</td>
-      <td>0.8364</td>
-      <td>0.8684</td>
-      <td>0.8677</td>
-      <td>0.8664</td>
-      <td>0.8703</td>
-      <td>0.8690</td>
-    </tr>
-    <tr>
-      <td>confusion_matrix</td>
-      <td>[[[646 142] [104 612]]</td>
-      <td>[[670 118] [ 80 636]]</td>
-      <td>[[666 115] [ 84 639]]</td>
-      <td>[[668 119] [ 82 635]]</td>
-      <td>[[659 104] [ 91 650]]</td>
-      <td>[[655 102] [ 95 652]]</td>
-    </tr>
-    <tr>
-      <td>其他指标</td>
-      <td>1-precision: 0.8117 1-recall: 0.8547 1-f1: 0.8327 0-precision: 0.8613 0-recall: 0.8198 0-f1: 0.8401</td>
-      <td>1-precision: 0.8435 1-recall: 0.8883 1-f1: 0.8653 0-precision: 0.8933 0-recall: 0.8503 0-f1: 0.8713</td>
-      <td>1-precision: 0.8475 1-recall: 0.8838 1-f1: 0.8653 0-precision: 0.888 0-recall: 0.8528 0-f1: 0.87</td>
-      <td>1-precision: 0.8422 1-recall: 0.8856 1-f1: 0.8634 0-precision: 0.8907 0-recall: 0.8488 0-f1: 0.8692</td>
-      <td>1-precision: 0.8621 1-recall: 0.8772 1-f1: 0.8696 0-precision: 0.8787 0-recall: 0.8637 0-f1: 0.8711</td>
-      <td>1-precision: 0.8647 1-recall: 0.8728 1-f1: 0.8688 0-precision: 0.8733 0-recall: 0.8653 0-f1: 0.8693</td>
-    </tr>
-  </tbody>
-</table>
+<h2 id="decoder">Decoder</h2>
 
-<p><strong>结论：两者对比发现，one-hot编码再线性模型中提升较大，但对于树模型来说基本没有起到作用，或者说两种编码方式均可，可能的原因我们数据类别特征较少，均为两个或者三个类别，用one-hot和label-encoding没有很大的区别，最后值得指出的是再实际使用场景中，应该根据实际的数据特征来进行分析，不确定的情况下两者均进行尝试，对比效果再对其进行原因分析。</strong></p>
+<p>· 第一种Decoder，结构简单，将Encoder编码信息$c$作为Decoder解码隐层的初始输入，后续神经元接受上一神经元的隐层输出状态$h`$</p>
+
+<p>· 第二种Decoder，将Encoder编码信息 $c$作为Decoder解码隐层每个神经元的输入，而不在作为隐层的初始输入；</p>
+
+<p>·  第三种Decoder，再第二种的基础上，每个神经元的输入有了两部分，一部分是Encoder编码信息 $c$，另一部分是Decoder上个神经元的输出，两部分通过不同的权重矩阵来作为当前神经元的输入。</p>
+
+<h1 id="使用trick">使用trick</h1>
+
+<h2 id="attention">Attention</h2>
+
+<p>seq2seq模型中，Encoder总是将源句子的信息编码到一个固定长度的上下文 $c$ 中，然后Decoder的过程中 $c$总是不变的，这样就存在几个问题：</p>
+
+<ol>
+  <li>当源句子较长时，很难用一个定长的向量 c<em>c</em> 表示完所有的信息；</li>
+  <li>RNN存在梯度小时的问题，只使用最后一个神经元得到的向量 c<em>c</em> 效果不理想；</li>
+  <li>与人类阅读时的注意力方式不同，人类总是把注意力放在当前句子上</li>
+</ol>
+
+<p>Attention（注意力机制），是一种将模型注意力放在当前翻译单词上的一种机制。例如翻译“I have a cat”，翻译我时注意力在”I“上，翻译猫时注意力在”cat“上。</p>
+
+<p>使用Attention后，Decoder的输入就不是固定的上下文向量 $c$了，而是根据当前翻译的信息，计算当前  $c$。</p>
+
+<p>Attention</p>
+
+<p><img src="/images/posts/自然语言处理/attention.png" alt="" /></p>
+
+<p>Attention需要保留Encoder每一个神经元的隐藏层向量 $h$ ，然后Decoder的第$t$个神经元要根据上一个神经元的隐藏层向量 $h`_{t-1}$计算当前状态与Encoder每一个神经元的相关性 $e_t$。 $e_t$是一个N维的向量（Encoder神经元个数维N），若$e_t$第$i$维越大，则说明当前节点与Encoder第$i$个神经元的相关性越大。$e_t$的计算方式有很多，即相关性系数的计算函数$a$有很多种：</p>
+
+<p><img src="/images/posts/自然语言处理/attention_scal.png" alt="img" /></p>
+
+<p>上面得到相关性向量 $e_t$后，需要进行归一化，使用 softmax 归一化。然后用归一化后的系数融合 Encoder 的多个隐藏层向量得到 Decoder 当前神经元的上下文向量 $c_t$：</p>
+
+<p><img src="/images/posts/自然语言处理/attention_scal_softmax.png" alt="img" /></p>
+
+<p>Attention 计算上下文$c$</p>
+
+<p>总体流程图</p>
+
+<p><img src="/images/posts/自然语言处理/attention_all.png" alt="img" /></p>
+
+<h2 id="teacher-forcing">Teacher Forcing</h2>
+
+<p>Teacher Forcing用于训练阶段，主要针对上面第三种Decoder模型来说，第三种Decoder模型输入包含了上一时刻的输出神经元 $y’$，这样就会有个问题，如果上一时刻$y’$是错误的，则后面的神经元也会很容易错误，导致错误传递下去。</p>
+
+<p>Teacher Forcing在一定程度上可以解决这个问题，在训练阶段，Decoder模型每个神经元接受的输入是正确的label，而并未上一时刻神经元的输出，对比如下：</p>
+
+<p><img src="/images/posts/自然语言处理/teach_1.png" alt="img" /></p>
+
+<p>不适用 Teacher Forcing</p>
+
+<p><img src="/images/posts/自然语言处理/teach_2.png" alt="img" /></p>
+
+<p>使用Teacher Forcing</p>
+
+<h2 id="beam-search">Beam Search</h2>
+
+<p>Beam Search 方法不用于训练的过程，而是用在测试的。在每一个神经元中，我们都选取当前输出概率值最大的 <strong>top k</strong> 个输出传递到下一个神经元。下一个神经元分别用这 k 个输出，计算出 L 个单词的概率 (L 为词汇表大小)，然后在 kL 个结果中得到 <strong>top k</strong> 个最大的输出，重复这一步骤。</p>
+
+<h1 id="参考">参考</h1>
+
+<p>https://www.jianshu.com/p/80436483b13b</p>
+
+<p>https://towardsdatascience.com/attn-illustrated-attention-5ec4ad276ee3</p>
 
   </section>
 
@@ -393,13 +365,13 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2021/11/%E5%8D%81%E5%A4%A7%E6%8E%92%E5%BA%8F%E7%AE%97%E6%B3%95/" data-toggle="tooltip" data-placement="top" title="十大排序算法">上一篇：  <span>十大排序算法</span>
+            <a href="/2021/11/%E7%99%BE%E9%97%AE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" data-toggle="tooltip" data-placement="top" title="百问机器学习">上一篇：  <span>百问机器学习</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2021/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%87%E6%8B%9F%E5%90%88%E6%AC%A0%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="机器学习过拟合欠拟合">下一篇：  <span>机器学习过拟合欠拟合</span>
+            <a href="/2021/11/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96-seq2seq_DGCNN)/" data-toggle="tooltip" data-placement="top" title="信息抽取-seq2seq_DGCNN">下一篇：  <span>信息抽取-seq2seq_DGCNN</span>
             </a>
         </li>
         

@@ -1,0 +1,18 @@
+I"�
+<ul>
+  <li><a href="#常见seq2seq结构">常见seq2seq结构</a>
+    <ul>
+      <li><a href="#encoder">Encoder</a></li>
+      <li><a href="#decoder">Decoder</a></li>
+    </ul>
+  </li>
+  <li><a href="#使用trick">使用trick</a>
+    <ul>
+      <li><a href="#attention">Attention</a></li>
+      <li><a href="#teacher-forcing">Teacher Forcing</a></li>
+      <li><a href="#beam-search">Beam Search</a></li>
+    </ul>
+  </li>
+  <li><a href="#参考">参考</a></li>
+</ul>
+:ET

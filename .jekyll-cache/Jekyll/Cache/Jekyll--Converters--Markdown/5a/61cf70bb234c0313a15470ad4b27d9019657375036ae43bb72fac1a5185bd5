@@ -1,0 +1,11 @@
+I"h
+<ul>
+  <li><a href="#abstract">Abstract</a></li>
+  <li><a href="#introduction">Introduction</a>
+    <ul>
+      <li><a href="#fighting-the-curse-of-dimensionality-with-distributed-representations">Fighting the Curse of Dimensionality with Distributed Representations</a></li>
+      <li><a href="#a-neural-model">A Neural Model</a></li>
+    </ul>
+  </li>
+</ul>
+:EF

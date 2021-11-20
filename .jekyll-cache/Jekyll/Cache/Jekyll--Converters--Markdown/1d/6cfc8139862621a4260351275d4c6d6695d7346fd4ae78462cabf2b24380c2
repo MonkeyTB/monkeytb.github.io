@@ -1,0 +1,25 @@
+I"�
+<ul>
+  <li><a href="#三步骤">三步骤</a>
+    <ul>
+      <li><a href="#特征工程">特征工程</a></li>
+      <li><a href="#特征选择">特征选择</a></li>
+      <li><a href="#分类器">分类器</a></li>
+    </ul>
+  </li>
+  <li><a href="#rcnn">RCNN</a></li>
+  <li><a href="#han">HAN</a></li>
+  <li><a href="#gcn">GCN</a></li>
+  <li><a href="#损失函数">损失函数</a>
+    <ul>
+      <li><a href="#交叉熵损失">交叉熵损失</a></li>
+    </ul>
+  </li>
+  <li><a href="#优化方法">优化方法</a>
+    <ul>
+      <li><a href="#数据优化">数据优化</a></li>
+      <li><a href="#模型优化">模型优化</a></li>
+    </ul>
+  </li>
+</ul>
+:ET
