@@ -1,0 +1,16 @@
+I"�
+<ul>
+  <li><a href="#1什么是transformer">1、什么是Transformer</a></li>
+  <li><a href="#2transformer结构">2、Transformer结构</a>
+    <ul>
+      <li><a href="#21-总体结构">2.1 总体结构</a></li>
+      <li><a href="#22-encoder">2.2 Encoder</a></li>
+      <li><a href="#23-decoder">2.3 Decoder</a></li>
+      <li><a href="#24-attention">2.4 Attention</a></li>
+      <li><a href="#25-multi-head-attention">2.5 Multi-head Attention</a></li>
+    </ul>
+  </li>
+  <li><a href="#3transformer相比于rnnlstm有什么优势为什么">3、Transformer相比于RNN/LSTM，有什么优势？为什么？</a></li>
+  <li><a href="#参考文献">参考文献</a></li>
+</ul>
+:ET

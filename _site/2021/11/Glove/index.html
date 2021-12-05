@@ -6,16 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>A Neural Probabilistic Language Model</title>
+  <title>Glove</title>
   <meta name="description" content="        ">
   <meta name="author" content="MonkeyTB">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="A Neural Probabilistic Language Model">
+  <meta name="twitter:title" content="Glove">
   <meta name="twitter:description" content="        ">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="A Neural Probabilistic Language Model">
+  <meta property="og:title" content="Glove">
   <meta property="og:description" content="        ">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
@@ -165,10 +165,10 @@
 
 <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">A Neural Probabilistic Language Model</h1>
+    <h1 class="post-title">Glove</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2021-11-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-11-14</time>  
+      <time datetime="2021-11-16 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-11-16</time>  
 
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -178,13 +178,11 @@
   
     <h2 class="post-title">目录</h2>
     <ul>
-  <li><a href="#abstract">Abstract</a></li>
-  <li><a href="#introduction">Introduction</a>
-    <ul>
-      <li><a href="#fighting-the-curse-of-dimensionality-with-distributed-representations">Fighting the Curse of Dimensionality with Distributed Representations</a></li>
-      <li><a href="#a-neural-model">A Neural Model</a></li>
-    </ul>
-  </li>
+  <li><a href="#glove是何方妖孽">Glove是何方妖孽</a></li>
+  <li><a href="#glove来龙去脉">Glove来龙去脉</a></li>
+  <li><a href="#glove的运动方式">Glove的运动方式</a></li>
+  <li><a href="#glove-公式1探因">Glove 公式(1)探因</a></li>
+  <li><a href="#参考链接">参考链接</a></li>
 </ul>
 
   
@@ -202,61 +200,326 @@
     </script>
 </head>
 
-<h1 id="abstract">Abstract</h1>
+<p>早上看到了Glove，细思之下发现了解不多，于是抽空网上搬砖。</p>
 
-<p>在摘要中作者提到，通过学习一个分布式的词表示来克服维数的诅咒，它允许每个训练句子向模型告知一个指数数量的语义相邻句子。该模型同时学习 (1) 每个单词的分布式表示，以及 (2) 用这些表示 表示的单词序列的概率函数。</p>
+<h2 id="glove是何方妖孽">Glove是何方妖孽</h2>
 
-<h1 id="introduction">Introduction</h1>
+<p>​	Glove 全称 Global Vectors for Word Representation，基于<strong>全局词频统计</strong>的词表征，是一种词嵌入方式，将高维稀疏向量表示为低维稠密向量，并且保留了词与词之间的相似性（即cos距离更近）。</p>
 
-<p>在介绍中，作者举例到，如果相对10000个词建立连续10个词得联合分布，那么可能需要得参数是$10000^{10}-1$，当对连续变量进行建模时，我们比较容易获得泛化（光滑得函数类，神经网路模型，高斯模型等），对于离散空间泛化结构就不明显了，每个离散变量得取值很大时，大多观测对象在汉明距离上几乎是最大得。</p>
+<h2 id="glove来龙去脉">Glove来龙去脉</h2>
 
-<p>本文提出在高维情况下，重要的是将概率质量均匀分布在每个训练点周围的各个方向上。这里提出得泛化方式也与之前最先进得统计方法模型不同。</p>
-
-<p>语言得统计模型公式如下$P({w_1}^T)=\prod_{t=1}^T(P(w_t|w_1^{t-1}))$我们可以看出，每次计算t得概率时，都需要从1~t-1的概率，这无形中就增加了很大的计算量，本文利用统计上词序更加依赖暂时距离较近的词这一事实，因此提出了n-gram模型结构，计算公式如下$P(w_t|w_1^{t-1})=P(w_t|w_{t-n+1}^{t-1})$。</p>
-
-<p>在文本中总会出现上下文连续的词但预料中没有出现的情况，一种简单的解决办法就是将n回退到三元模型。从本质上说一个新的单词序列是通过“粘合”非常短的长度为1,2…或者在训练数据中经常出现的单词上。获取下一个片段概率的规则隐含在后退或插值n-gram算法的细节中。研究中一般采用3，但显然，单词前面的序列中又更多的信息需要预测，并不仅仅时单词前的两个单词。因此该方法至少需要两点需要改进</p>
+<p>​	三步曲实现Glove</p>
 
 <ul>
-  <li>它不考虑超过1到2个单词的上下文</li>
-  <li>不考虑单词之间的“相似性”</li>
+  <li>一步预备</li>
 </ul>
 
-<h2 id="fighting-the-curse-of-dimensionality-with-distributed-representations">Fighting the Curse of Dimensionality with Distributed Representations</h2>
+<p>​	根据corpus构建一个共现矩阵（Co-ocurrence Matrix）$\color{blue}{X}$，什么是共现矩阵呢？先补充一个基本概念；</p>
 
-<p>论文提出方法思想总结如下：</p>
+<blockquote>
+  <p>共现：给定一个语料库，一对单词的再上下文窗口同时出现的次数</p>
 
-<ol>
-  <li>
-    <p>将vocabulary的每个单词关联到一个分布式单词特征上（$R^m$）</p>
-  </li>
-  <li>
-    <p>将词序列中的词的特征向量表示为词序列的联合概率函数</p>
-  </li>
-  <li>
-    <p>同时学习单词特征向量和联合概率函数的参数</p>
-  </li>
-</ol>
+  <p>上下文窗口：给定一个单词的上下文几个单词以内范围的大小，例如指定2，$\color{blue}{w_1,w_2,w_3,w_4,w_5,…}$，$\color{blue}{w_3}$的上下文就包含了$\color{blue}{w_1到w_5}$</p>
 
-<p>特征向量的不同维度表示单词的不同方位，每个单词的都与向量空间中的一个点相关联，特征的维度m远小于词汇表大小，概率函数表述为给定前一个词的情况下下个词的条件概率的乘积</p>
+  <p>假设我们有一个corpus如下：</p>
 
-<h2 id="a-neural-model">A Neural Model</h2>
+  <div class="language-tex highlighter-rouge"><div class="highlight"><pre class="highlight"><code>我爱中国；
+我爱北京；
+我爱天安门；
+我爱我家；
+</code></pre></div>  </div>
 
-<p>论文提出的模型结构如下图所示：</p>
+  <p>假设content window size = 2，就可以得到如下的矩阵</p>
 
-<p><img src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2F-MiUNPZwHQJTWEwsPhe9%2Fuploads%2FhxjpdeHfXxC46KhUdDNy%2Fimage.png?alt=media&amp;token=140d8d29-01a9-435b-bfe0-5ca432a8a846" alt="img" /></p>
+  <table>
+    <thead>
+      <tr>
+        <th> </th>
+        <th>我</th>
+        <th>爱</th>
+        <th>中</th>
+        <th>国</th>
+        <th>北</th>
+        <th>京</th>
+        <th>天</th>
+        <th>安</th>
+        <th>门</th>
+        <th>家</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>我</td>
+        <td>0</td>
+        <td>4</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>爱</td>
+        <td> </td>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+        <td>1</td>
+      </tr>
+      <tr>
+        <td>中</td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>国</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>北</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>京</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>天</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+        <td>1</td>
+        <td>1</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>安</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+        <td>1</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>门</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+      <tr>
+        <td>家</td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td> </td>
+        <td>0</td>
+      </tr>
+    </tbody>
+  </table>
 
-<p>Neural architecture</p>
+  <p>共现矩阵是一个对阵矩阵，因此下三角省了。</p>
+</blockquote>
 
-<p>上图输入是$W_{t-n+1}、…、w_{t-2}、w_t$，本质上就是通过前面n-1个词预测第t个词，这也就是n-gram模型</p>
+<p>​	矩阵中每一个元素$\color{blue}{X_{ij}}$代表单词$i$和单词$j$再content window size内共现的次数，一般而言，content window size最小位1，而Glove中根据两个单词再窗口的距离$d$提出了一个衰减函数$\color{blue}{decay = 1/d}$来计算权重，距离越远的单词再总计数的权重越小，这也符合常理，越“远”越“远”。</p>
 
 <ul>
-  <li>$C(w_{t-n+1})$：t-n+1单词对应的词向量，也是模型最终的收获；</li>
-  <li>C：矩阵，行是vocab，列是word对应的词向量$|V*m|$；</li>
+  <li>二步走</li>
 </ul>
 
-<p>模型的输入即把单词concat通过隐藏层，最后通过tanh激活，模型最后输出层公是如下：$y=b+Wx+Utanh(d+Hx)$，最后加的这一项是中间隐藏层的表示，其中x的表示如下：$x=(C(w_{t-1}),C(w_{t-2}),…,C(w_{t-n+1}))$。</p>
+<p>​	根据共现关系构建词向量，两者关系如下:</p>
 
-<p>【论文第三部分提出两种训练加速方式，一种是内存共享，另一种是参数共享】</p>
+<p>​                                  $\color{blue}{ {w_i^T} \hat{w_j} + b_i+\hat{b_j}=log(X_{ij})—–(1)}$</p>
+
+<p>其中：$\color{blue}{w_i和\hat{w_j}}$是最终的词向量，$\color{blue}{b_i和b_j}$分别是两个词向量的偏置。</p>
+
+<ul>
+  <li>三步停</li>
+</ul>
+
+<p>​	根据公式(1)构造损失函数如下：</p>
+
+<p>​            $\color{blue}{J=\sum_{i,j}^Vf(X_{ij})(W_i^T\hat{w_j}+b_i+\hat{b_j}-log(X_{i,j}))^2—–(2)}$</p>
+
+<p>可以看出是一个均方误差函数（mean square loss），额外加了个权重函数$\color{blue}{f}$，这个权重函数如下：</p>
+
+<p>​            <img src="/images/posts/自然语言处理/glove 公式.PNG" alt="权重函数" /></p>
+
+<p>$f(x)$的原因如下：</p>
+
+<blockquote>
+  <ul>
+    <li>经常一起出现的单词对权重要大于很少出现的单词对，所以是个非递减函数</li>
+    <li>随着单词对一起出现的次数越多，希望权重不要一直增大</li>
+    <li>未出现的单词对，不要参与loss的计算，即为0</li>
+  </ul>
+</blockquote>
+
+<p><img src="/images/posts/自然语言处理/glove loss权重函数.jpg" alt="glove loss权重函数" /></p>
+
+<p>​	论文中$\color{blue}\alpha$取值为0.75，$\color{blue}{x_{max}}$取值100。</p>
+
+<h2 id="glove的运动方式">Glove的运动方式</h2>
+
+<p>​	Glove是一种无监督的学习方式，但是其实是有label的，这一点和word2vec一样；而Glove的label就是公式(2)中的$\color{blue}{log(X_{ij})}$，两个$w$就是需要学习更新的参数，所以本质上和监督学习的方式没什么不同，都是基于梯度下降。</p>
+
+<p>​	论文中采用AdaGrad梯度下降法，对矩阵$X$中所有非0元素进行随机采样，学习率0.05，再vector size 300的情况下迭代50次，再其他vector size上迭代100次，直至收敛；最后得到两个vector， 分别是$\color{blue}{w}$,$\color{blue}{\hat{w}}$，因为$X$是对称的，因此理论上,$\color{blue}{w}$,$\color{blue}{\hat{w}}$也是对称的，他们唯一的区别是初始化时参数不同，导致最后的结果有差异，为了<strong>更好的鲁棒性，我们最终将两者之和作为最终的vector</strong></p>
+
+<p><img src="/images/posts/自然语言处理/glove实验结果.jpg" alt="glove实验结果" /></p>
+
+<p>​	这个图一共采用了三个指标：语义准确度，语法准确度以及总体准确度。那么我们不难发现Vector Dimension在300时能达到最佳，而context Windows size大致在6到10之间。</p>
+
+<h2 id="glove-公式1探因">Glove 公式(1)探因</h2>
+
+<p>​	公式(1)不得不写下来呀，抄也得抄下来，遵循书读百遍，其意自现，下面就开始愉快的抄写吧！</p>
+
+<p>定义一些变量：</p>
+
+<blockquote>
+  <p>$\color{blue}{X_{ij}}$：单词$j$出现再单词$i$的上下文的次数</p>
+
+  <p>$\color{blue}{X_i}$：单词$i$的上下文中出现所有单词出现的总次数，即$\color{blue}{X_i=\sum^kX_{ik}}$</p>
+
+  <p>$\color{blue}{P_{ij}}$：$\color{blue}{P(j|i)=\frac{X_{ij}}{X_i}}$，表示单词$j$出现在单词$i$的上下文中的概率</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th>Probability and Ratio</th>
+      <th><em>k=solid</em></th>
+      <th><em>k=gas</em></th>
+      <th><em>k=water</em></th>
+      <th><em>k=fashion</em></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>$P(k|ice)$</td>
+      <td>$\color{blue}{1.9*10^{-4}}$</td>
+      <td>$6.6*10^{-5}$</td>
+      <td>$3.0*10^{-3}$</td>
+      <td>$1.7*10^{-5}$</td>
+    </tr>
+    <tr>
+      <td>$P(k|steam)$</td>
+      <td>$\color{blue}{2.2*10^{-5}}$</td>
+      <td>$7.8*10^{-4}$</td>
+      <td>$2.2*10^{-3}$</td>
+      <td>$1.8*10^{-5}$</td>
+    </tr>
+    <tr>
+      <td>$P(k|ice)/P(k|stream)$</td>
+      <td>$\color{blue}{8.9}$</td>
+      <td>$8.5*10^{-2}$</td>
+      <td>$1.36$</td>
+      <td>$0.96$</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>​	通过上面的表格可以分析得出，当<em>k=solid</em>时，$\color{blue}{P(solid|ice)/P(solid|stream)}$比1大很多，这说明<em>solid</em>和<em>ice</em>相比<em>solid</em>和<em>steam</em>更相关，其他同理。由此得出结论，通过<strong>概率比率相比概率本身学习词向量可能是一个更恰当的方法</strong>。</p>
+
+<p>​	为了达到上述目标，构造函数</p>
+
+<p>​							$\color{blue}{F(w_i,w_j,\hat{w_k})=\frac{P_{ik}}{P_{jk}}—–(4)}$</p>
+
+<p>利用向量空间的线性结构做差，可以得到</p>
+
+<p>​						$\color{blue}{F(w_i-w_j,\hat{w_k})=\frac{P_{ik}}{P_{jk}}—–(5)}$</p>
+
+<p>我们可以发现公式(5)右边是一个常数，左边为了表达两个概率的比例差，左边变成两个向量的内积，如下</p>
+
+<p>​						$\color{blue}{F((w_i-w_j)^T,\hat{w_k})=\frac{P_{ik}}{P_{jk}}—–(6)}$</p>
+
+<p>接下来就到高能时刻了，先补充一波电，<a href="http://www.ubinec.org/index.php?c=download&amp;id=2209">同态特性</a>，首先$X$是对称矩阵，单词和上下文单词是相对的，因此我们可以做如下交换$\color{blue}{w&lt;-&gt;\hat{w_k},X&lt;-&gt;X^T}$，公式(6)应该保持不变，为了满足这个条件，要求函数$F$满足同态特性：</p>
+
+<p>​					$\color{blue}{F((w_i-w_j)^T,\hat{w_k})=\frac{F(w_i^T\hat{w_k})}{F(w_j^T\hat{w_k})}—–(7)}$</p>
+
+<p>结合公式(6)，得到</p>
+
+<p>​						$\color{blue}{F(w_i^T)=P_{ik}=\frac {X_{ik}} {X_i} —–(8)}$</p>
+
+<p>令F=exp,可以得到下面公式(9)</p>
+
+<p>​						$\color{blue}{w_i^T\hat{w_k}=log(P_{ik})=log(X_{ik})-log(X_i)—–(9)}$</p>
+
+<p>===&gt;</p>
+
+<p>​						$\color{blue}{log(X_{ik})=w_i^T\hat{w_k}+log(X_i)—–(10)}$</p>
+
+<p>这里就和(1)很像了，我们把$log(X_i)$纳入到$w_i$的偏置中，为了对称性，也加到$\hat{w_k}$中，得到如下公式</p>
+
+<p>​					$\color{blue}{log(X_{ik})=w_i^T\hat{w_k}+b_i+\hat{b_k}—–(11)}$</p>
+
+<h2 id="参考链接">参考链接</h2>
+
+<p><a href="http://www.fanyeong.com/2018/02/19/glove-in-detail/">1、GloVe详解</a></p>
+
+<p><a href="https://blog.csdn.net/mr_tyting/article/details/80180780">2、论文分享–&gt;GloVe: Global Vectors for Word Representation</a></p>
 
 
   </section>
@@ -327,13 +590,13 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2021/11/%E6%96%87%E6%9C%AC%E5%88%86%E7%B1%BB/" data-toggle="tooltip" data-placement="top" title="文本分类">上一篇：  <span>文本分类</span>
+            <a href="/2021/11/A-Neural-Probabilistic-Language-Model/" data-toggle="tooltip" data-placement="top" title="A Neural Probabilistic Language Model">上一篇：  <span>A Neural Probabilistic Language Model</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2021/11/Glove/" data-toggle="tooltip" data-placement="top" title="Glove">下一篇：  <span>Glove</span>
+            <a href="/2021/11/%E7%94%9F%E6%88%90%E5%BC%8F%E6%A8%A1%E5%9E%8B%E6%8E%A2%E7%B4%A2/" data-toggle="tooltip" data-placement="top" title="生成式模型探索">下一篇：  <span>生成式模型探索</span>
             </a>
         </li>
         

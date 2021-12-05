@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>生成式模型探索</title>
+  <meta name="description" content="        ">
+  <meta name="author" content="MonkeyTB">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="生成式模型探索">
+  <meta name="twitter:description" content="        ">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="生成式模型探索">
+  <meta property="og:description" content="        ">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+  <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?7193fc529267517a0eea8035d7fede15";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+  </script>
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 YiYao 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                        </h2>
+                        <p>
+                           
+                                自然语言处理 / 机器学习
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for YiYao" class="blog-button">YiYao</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">个人站</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎来到我的个人站~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <head>
+  <link rel="stylesheet" href="/css/post.css">
+</head>
+
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">生成式模型探索</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2021-11-20 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-11-20</time>  
+
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  
+    <h2 class="post-title">目录</h2>
+    <ul>
+  <li><a href="#简述">简述</a></li>
+  <li><a href="#先知">先知</a></li>
+  <li><a href="#seq2seqattention">Seq2seq+Attention</a>
+    <ul>
+      <li><a href="#训练方式">训练方式</a></li>
+      <li><a href="#测试结果">测试结果</a>
+        <ul>
+          <li><a href="#停不下来寻因探究">停不下来寻因探究</a></li>
+          <li><a href="#重复问题寻因探究">重复问题寻因探究</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#参考">参考</a></li>
+</ul>
+
+  
+
+  <section class="post">
+    <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
+
+<h1 id="简述">简述</h1>
+
+<p>​	工作中需要对jd职位描述生成一些具有总结性的话语，可以理解为自动文本摘要，因此尝试了如下模型，记录以下碰到的问题以及改进，话不多说，直接上干货吧~</p>
+
+<h1 id="先知">先知</h1>
+
+<p>​	由于是工作探索阶段，因此没有很好的数据，具体方式如下：</p>
+
+<ul>
+  <li>通过训练NER提取关键词（这一步怎么来的就不再介绍），关键词组成的语句作为label；</li>
+</ul>
+
+<h1 id="seq2seqattention">Seq2seq+Attention</h1>
+
+<h2 id="训练方式">训练方式</h2>
+
+<ul>
+  <li>jieba切词，词为单元训练</li>
+  <li>训练使用 teach forcing，预测使用 Beam search</li>
+  <li>encoder 和 decoder都使用 lstm</li>
+</ul>
+
+<h2 id="测试结果">测试结果</h2>
+
+<h3 id="停不下来寻因探究">停不下来寻因探究</h3>
+
+<p>​	ICML 2020的文章<a href="https://arxiv.org/abs/2002.02492">《Consistency of a Recurrent Language Model With Respect to Incomplete Decoding》</a>比较系统地讨论了这个现象，并提出了一些对策。</p>
+
+<p>​	seq2seq解码是一个”自回归“生成模型，$\color{blue}{p(y_t)|y&lt;t,x}$，那么解码过程就是给定$\color{blue}{x}$来输出对应的$\color{blue}{y=(y_1,y_2,…,y_T)}$，解码算法大致分为$\color{red}{确定性解码和随机性解码}$，下面简单介绍以下这两种算法。</p>
+
+<ul>
+  <li>
+    <p>确定性解码</p>
+
+    <blockquote>
+      <p>确定性解码就是输入固定的文本，解码出来的结果也是固定的，这类算法包括贪心搜索(Greedy Search)和束搜索(Beam Search)，其中贪心搜索就是束搜索的极端情况，Beam Search在前面blog中简单提过，其实就是每次选取top K概率最大的。</p>
+    </blockquote>
+  </li>
+  <li>
+    <p>随机解码</p>
+  </li>
+</ul>
+
+<blockquote>
+  <p>随机性解码，就是输入固定输出却不固定，主要包括下面三种情况</p>
+
+  <p>1、原始采样随机解码，原始采样法是一种针对有向图模型的基础采样方法，指从模型所表示的联合分布中产生样本，又称祖先采样法。该方法所得出的结果即视为原始采样。具体的每步按概率随机采样一个token，比如第一步算$\color{blue}{p(y_1|y_0,x)}$，然后按照概率随机采样一个token，比如c；计算第二不，$\color{blue}{p(y_1|y_0,c,x)}$，再按随机概率采样一个token，比如a，依次下去，知道采样到<eos>停止。</eos></p>
+
+  <p>2、<em>top-k</em> 随机解码：，出自文章<a href="https://arxiv.org/abs/1805.04833">$\color{yellow}{《Hierarchical Neural Story Generation》}$</a>，就是再原生采样随机解码的基础上加了个截断，每一步只保留概率最高的$\color{blue}k$个token，然后重新归一化在采样，这么做是希望再“得分高”和“多样性”做了一个这种。$\color{bule}k=1$时，就是贪心搜索。</p>
+
+  <p>3、Nucleus随机解码：出自文章<a href="https://arxiv.org/abs/1904.09751">$\color{yellow}{《The Curious Case of Neural Text Degeneration》}$</a>,跟<em>top-k</em> 随机解码类似，也是对采样空间做了截断，阶段方式是——固定$\color{blue}p\in(0,1)$，然后只保留概率最高的、概率和刚好超过$\color{blue}p$的若干token，所以也叫<em>top-p</em> 采样。</p>
+</blockquote>
+
+<p>​	<strong>从seq2seq的模型设计和上面解码算法来看，理论上不能保证解码过程一定能停下来，只能靠模型学习，当模型学习不好的时候，就会出现根本停不下来的现象</strong></p>
+
+<ul>
+  <li>停不下来怎么解决(这部分不知道咋回事公式识别不好，遂改成图片展示)</li>
+</ul>
+
+<p>1、有界的隐向量，$\color{blue}{p(y_t|y&lt;t,x)=softmax(Wh_t+b),h_t=f(y&lt;t,x)}$是建模概率，计算个隐向量，然后全连接，softmax激活，如果对任意的$\color{blue}t,| |h_t| |$是有上界的，那么原始采样解码就能”停止“。说简单点就是只要你采样够多，就能停，实际应用价值就不大了。</p>
+
+<p>2、1的方法是针对原始采样方法的，对<em>top-k</em> 随机解码和Nucleus随机解码就不一定成功了，因为<eos>不一定会出现再采样空间，要想使用只能手动把<eos>添加到采样空间。</eos></eos></p>
+
+<p><em>这两个结论只能用于随机解码，确定性解码就不能用了，因为没法保证一定能碰到，因此可以使用下面方法</em></p>
+
+<p>3、自截断：这是论文稍微有意义的地方，自截断说白了就是随着解码过程，我们希望能碰到<eos>，这样就能停下来了，并且希望随着解码长度的增加碰到<eos>的概率也越来越多大，最终趋于1，这样就可以停下来了。定义</eos></eos></p>
+
+<p><img src="/images/posts/自然语言处理/自截断.png" alt="img" /></p>
+
+<p>这里$\color{blue}{\sigma(·)}$将$\color{blue}R$映射到$\color{blue}{[0,1-ϵ]}$，例如可以用$\color{blue}{\sigma(·)=(1-ϵ)sigmoid(·)}$。设计好$\color{blue}{p(<eos>|y&lt;t,x)}$，剩下的token概率按照原来的softmax方式计算，然后乘以$\color{blue}{ \alpha (h_t)}$即可。现在有</eos></p>
+
+<p><img src="/images/posts/自然语言处理/自截断-1.png" alt="img" /></p>
+
+<p><img src="/images/posts/自然语言处理/自截断-2.png" alt="img" /></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>预测文本</th>
+      <th>hyp.text :<START> 3 定期 组织 绩效考核 指标 目标 完成 情况 进行 过程 管控 <STOP> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></STOP></START></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>top 0 best_hyp.abstract</td>
+      <td><START> 绩效考核 指标 考核 指标 <STOP></STOP></START></td>
+    </tr>
+    <tr>
+      <td>top 1 best_hyp.abstract</td>
+      <td><START> 绩效考核 指标 考核 指标 目标 <STOP></STOP></START></td>
+    </tr>
+    <tr>
+      <td>top 2 best_hyp.abstract</td>
+      <td><START> 绩效考核 指标 考核 指标 目标 指标 <STOP></STOP></START></td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>问题：重复</li>
+</ul>
+
+<h3 id="重复问题寻因探究">重复问题寻因探究</h3>
+
+<p>​	AAAI2021有一篇论文从理论上分析了seq2seq重复解码的现象，本质上，重复和不停是同理的，算是填补了上面论文的空白，论文链接<a href="https://arxiv.org/abs/2012.14660">A Theoretical Analysisi of the repetition Problem in Text Generation</a>。</p>
+
+<p>​	先量化以下问题，解码过程中子序列$\color{blue}{s=[w_1,w_2,…,w_n]}$后面接子序列$\color{blue}{t=[w_1,w_2,…,w_n,w_1]}$，我们就称$\color{blue}{w_1,w_2,…,w_n}$是一个$\color{red}{”重复子序列”}$，而我们要做的就是分析解码过程中重复子序列的概率。</p>
+
+<ul>
+  <li>二元解码</li>
+</ul>
+
+<blockquote>
+  <p>​	一般的自回归形式为: $\color{blue}{p(y|x)=\prod_{t=1}^lp(y_t|y_{y\lt t,x})}$，可以看出位置<em>t</em> 的解码不仅依赖输入<em>x</em> ，还依赖<em>t</em> 之前已经获得的所有解码结果，我们考虑简单的情况，做个马尔可夫假设，每一步解码只依赖前一时刻的结果，与再之前的无关，即$\color{blue}{\prod_{t=1^lp(y_t|y_{t-1},x)}}$，这样对于固定的<em>x</em> 而言，解码器实际上就是一个$\color{blue}{n\times n}$的转移矩阵$\color{blue}{P=(P_{i,j})}$，其中$\color{blue}{P_{i,j}}$表示从<em>i</em> 后面接<em>j</em> 的概率，<em>n</em> 代表词表大小，还需要一个结束标记<eos>，遇到<eos>就停止解码，所以实际上转移矩阵是$\color{blue}{(n+1)\times(n+1)}$，但是我们考虑的重复解码都是终止之前，所以只需要考虑$\color{blue}{n\times n}$就可以了。</eos></eos></p>
+
+  <p>​	我们要计算的是重复子序列出现的概率，假设$\color{blue}{[i,j,k]}$，是一个三元重复子序列，那么它出现概率就是序列$\color{blue}{[i,j,k,i,j,k,i]}$出现的概率：</p>
+
+  <p>​									$\color{blue}{P_{i,j}P_{j,k}P_{k,i}P_{i,j}P_{j,k}P_{k,i}=P_{i,j}^2p_{j,k}^2P_{k,i}^2}$</p>
+
+  <p>因此所有的三元重复子序列的概率为：</p>
+
+  <p>​									$\color{blue}{\sum_{i,j,k}P_{i,j}^2P_{j,k}^2P_{k,i}^2=Tr(P\otimes P)^3}$</p>
+
+  <p>这里的$\color{blue}{\otimes}$表示逐位元素对应相乘，而$\color{blue}{Tr}$则是矩阵的迹，即对角线元素之和。最后我们将所有长度的重复子序列概率都加起来：</p>
+
+  <p>​									$\color{blue}{R=\sum_{k=1}^{\infty}}Tr(P\otimes P)^k=Tr(\sum_{k=1}^\infty(P\otimes P)^k)$</p>
+
+  <blockquote>
+    <p>两个矩阵对应位置$\color{blue}{\otimes}$的目的就是为了使得每个位置上的值变为原来的平方，因此就实现了$\color{blue}{P_{i,j}P_{j,k}P_{k,i}P_{i,j}P_{j,k}P_{k,i}=P_{i,j}^2p_{j,k}^2P_{k,i}^2}$的目的。</p>
+
+    <p>$\color{blue}{(P\otimes P)^k}$中的<em>k</em> 实际上表示<em>k</em> 元重复子序列，那为什么这个<em>k</em> 次方的矩阵求迹就是结果了？以$\color{blue}{k=2}$为例（其中蓝色矩阵中的每一项都是平方项，只不过我并没有显式的标出平方）</p>
+
+    <p><img src="/images/posts/自然语言处理/迹.png" alt="img" /></p>
+
+    <p>对角线上每一个元素代表固定<em>i</em> 而遍历<em>j</em> 的结果，那么把所有的对角线都加起来（迹），实际上就是做了一个$\color{blue}{\sum_i}$的操作。</p>
+  </blockquote>
+
+  <p>​	这就是二元解码出现<strong>重复解码的概率</strong>，目前只是一个理论公式，不过是我们重要的出发点，分别推到它的上下界。</p>
+</blockquote>
+
+<ul>
+  <li>一个下界</li>
+</ul>
+
+<blockquote>
+  <p>直接看$\color{blue}{R}$的公式看不出啥，我们可以给他先推到一个直观的下界，以三元重复子序列为例可以得到如下：</p>
+
+  <p>​								$\color{blue}{\sum_{i,j,k}P_{i,j}^2P_{j,k}^2P_{k,j}^2=n^3\times\frac{\sum_{i,j,k}P_{i,j}^2P_{j,k}^2P_{k,i}^2}{n^3}\gt n^3\times(\frac{\sum_{i,j,k}P_{i,j}^2P_{j,k}^2P_{k,i}^2}{n^3})^2=\frac{(TrP^3)^2}{n^3}}$</p>
+
+  <blockquote>
+    <p>上面的推到可以通过均值不等式得到，$\color{blue}{\sqrt{\frac{\sum x^2}{m}}\ge \frac{\sum x}{m}}$两边同时平方就医得到$\color{blue}{\frac{\sum x^2}{m}\ge (\frac{\sum x}{m})^2}$。</p>
+  </blockquote>
+
+  <p>$\color{blue}{\frac{(TrP^3)^2}{n^3}}$就是下界，但是我们可以做的更精细一点。假设<em>P</em> 矩阵中有一些元素为0，那么$\color{blue}{P_{i,j}^2P_{j,k}^2P_{k,j}^2}$中非零元素的个数就不是$\color{blue}{n^3}$，我们假设非零元素的个数为$\color{blue}{N_3(P)\lt n^3}$，那么我们在利用均值不等式的时候，可以只对非零元素进行，替换后如下：</p>
+
+  <p>​									$\color{blue}{\sum_{i,j,k}{P_{i,j}^2P_{j,k}^2P_{k,i}^2}\ge\frac{(TrP^3)^2}{N_3(P)}}$</p>
+
+  <p>其中$\color{blue}{N_3(P)}$的直接计算也比较困难，没有一般的通项公式，但我们可以做一个简单的估算：设$\color{blue}P$的非零元素的比例为$\color{blue}{\zeta}$，也就是非零元素的个数为$\color{blue}{\zeta n^2}$，那么我们一个认为$\color{blue}{P_{i,j}^2P_{j,k}^2P_{k,i}^2}$的非零元素比例近似为$\color{blue}{\zeta^3}$，而总的排列数为$\color{blue}{n^3}$，所以我们可以可以认为$\color{blue}{N_3(P)\backsim\zeta^3n^3}$。注意可以举例说明这个既不能保证上界，也不能保证下界，所以替换后无法保证等号成立。不过如果我们愿意相信是一个足够好的近似，那么可以写下</p>
+
+  <p>​								$\color{blue}{\sum_{i,j,k}{P_{i,j}^2P_{j,k}^2P_{k,i}^2}\ge\frac{(TrP^3)^2}{\zeta^3n^3}}$</p>
+
+  <p>以及</p>
+
+  <p>​								$\color{blue}{R=\sum_{k=1}^{\infty}Tr(P\otimes P)^k\ge\sum_{k=1}^{\infty}\frac{(TrP^k)^2}{\zeta^kn^k}}$</p>
+
+  <p>或者我们不关心等号，而将最右面的结果视为<em>R</em> 的一个估计。</p>
+</blockquote>
+
+<ul>
+  <li>初步结论</li>
+</ul>
+
+<blockquote>
+  <p>解码概率经过softmax出来，结果都不等于0，那么$\color{blue}{\zeta}$应该恒等于1，因此引入$\color{blue}{\zeta}$似乎没有什么价值。</p>
+
+  <p>事实上，softmax确实不会产生0概率值，但是解码算法通常会强制为零，在三种随机性解码以及两种确定性解码中，除了不靠谱的随机性解码中的原始采样随机解码外，其他都会或多或少确定若干个最优结果来作为候选值，这就相当于<strong>直接截断了转移概率矩阵</strong>，大大的降低了$\color{blue}{\zeta}$（非零概率）。</p>
+
+  <p>比如Greedy Search中，容易推出实际上对应这最小的非零概率$\color{blue}{\zeta=1/n}$，由于$\color{blue}{\zeta}$在公式的分母位置，因此$\color{blue}{\zeta}$的缩小就意味着重复了$\color{blue}{R}$的增加，这也就证明了Greedy Search的重复解码风险是相当高的，这也与实际中现象一致，也证明了在Beam Search中，我们Beam size取得越大，越不容易重复（仍会出现），但是会增加计算量。</p>
+</blockquote>
+
+<ul>
+  <li>一个上界</li>
+</ul>
+
+<blockquote>
+  <p>$\color{yellow}{下界能帮我们解释一些现象，而上界则可以给我们提供改进思路。}$</p>
+
+  <p>为了推导上界，我们利用如下的两个结论</p>
+
+  <blockquote>
+    <p>1、矩阵的迹等于它所有特征值的和</p>
+
+    <p>2、如果$\color{blue}{\lambda_1(A)\ge\lambda_2(A)\ge…\ge\lambda_n(A)}$是矩阵$\color{blue}{A}$的所有特征值，那么$\color{blue}{\lambda_1^k(A)\ge\lambda_2^k(A)\ge…\ge\lambda_n^k(A)}$是矩阵$\color{blue}{A^k}$的所有特征值。</p>
+  </blockquote>
+
+  <p>所以可以推导：</p>
+
+  <p>$\color{blue}{R=\sum_{k=1}^{\infty}Tr(P\otimes P)=\sum_{k=1}^{\infty}\sum_{i=1}^n\lambda_i((P\otimes P)^k)}$</p>
+
+  <p>$\color{blue}{=\sum_{k=1}^{\infty}\sum_{i=1}^{n}\lambda_i^k(P\otimes P)=\sum_{i=1}^{n}\sum_{k=1}^{\infty}\lambda_i^k(P\otimes P)}$</p>
+
+  <p>$\color{blue}{=\sum_{i=1}^n\frac{\lambda_i(P\otimes P)}{1-\lambda_i(P\otimes P)}}$</p>
+
+  <p>​	上述过程用到了级数$\color{blue}{\frac{x}{1-x}=\sum_{k=1}^{\infty}x^k}$，该级数只有在$\color{blue}{|x|\lt1}$才收敛，而很巧的是，我们可以证明$\color{blue}{P\otimes P}$的特征值绝对值必然不大于1，且通常都小于1：由于$\color{blue}{P}$是转移矩阵，因此它的每一行之和都为1，因此$\color{blue}{(P\otimes P)x=\lambda x}$，不失一般性，设$\color{blue}{x}$绝对值最大的元素为$\color{blue}{x_1,P\otimes P}$的第一个行向量为$\color{blue}{q_1^\top}$，那么我们有$\color{blue}|\lambda| |x_1|\le|q_1^{\top}x|\le|x_1|$，从而$\color{blue}{|\lambda|\le 1}$，并且等号成立的条件还是比较苛刻的，所以通常来说$\color{blue}{|\lambda|\lt 1}$。</p>
+
+  <p>​	注意函数$\color{blue}{\frac{x}{1-x}}$在区间[-1,1]区间是单调递增的，所以公式中主导的是第一项，如果非要给整体弄上一个上界，那么可以是$\color{blue}{\frac{n\lambda_i(P\otimes P)}{1-\lambda_i(P\otimes P)}}$。</p>
+</blockquote>
+
+<ul>
+  <li>再次结论</li>
+</ul>
+
+<blockquote>
+  <p>由此可见，如果想要降低重复率$\color{blue}{R}$，那么我们需要想办法降低矩阵$\color{blue}{P\otimes P}$的最大特征值。$\color{blue}{P\otimes P}$是一个非负矩阵，根据非负矩阵的$\color{yellow}Frobenius介值定理(非负矩阵的最大特征值在它每一行的和的最小值与最大值之间)$，我们有：</p>
+
+  <p>$\color{blue}{min_i\sum_{j}P_{i,j}^2\le\lambda_1(P\otimes P)\le max_i\sum_jP_{i,j}^2}$</p>
+
+  <p>现在我们知道，为了降低$\color{blue}{P\otimes P}$的最大特征值，我们需要想办法降低它的每一行之和，即$\color{blue}{\sum_jP_{i,j}^2}$，并且由于均值不等式</p>
+
+  <p>$\color{blue}{\sum_jP_{i,j}^2\ge n(\frac{\sum_jP_{i,j}}{n})^2=1/n}$</p>
+
+  <p>知它的最小值为$\color{blue}{1/n}$，在$\color{blue}{P_{i,1}=P_{i,2}=…=P_{i,n}}$时取到，因此最终我们得出结论：$\color{yellow}{要降低最大特征值，就要使得矩阵P每一行尽可能均匀，换言之，要降低P每一行的方差}$。</p>
+
+  <p>​	怎么降低方差呢，简单点来说就不能出现过高的概率值即可，比如某一行接近one hot的形式，那么平方之后仍然接近one hot的形式，那么求和就接近1，远远大于理论最小值$\color{blue}{1/n}$。实际中什么情况会出现过高的概率值呢，就是在某些字后面可以接的字很少，甚至只有一个候选项的时候，比如“忐”后面接“忑”，那么$\color{blue}{P_{i=忐}P_{j=忑}}$就相当高。那么怎么来避免出现这种过高的概率值呢，就是将高概率值得字合并起来，当作一个新词来看，那么“忐”哪一行就不存在，也就是无所谓得方差大了。</p>
+
+  <p>​	说白了，在文本生成任务中，以词为单位比以字为单位更加靠谱，更加不容易出现重复解码。适当地合并一些相关程度比较高的词作为新词加入到词表中，降低转移矩阵的方差，有助于降低重复解码的风险，原论文还给这个操作起了个很高端的名字，叫做Rebalanced Encoding Algorithm，事实上就是这个意思。</p>
+</blockquote>
+
+<ul>
+  <li>
+    <p>一般解码</p>
+
+    <blockquote>
+      <p>​	那这个证明过程容易推广到一般的自回归模型中吗？很遗憾，并不容易。对于一般的自回归模型来说，它相当于每一步的$\color{blue}{P}$都是不一样的，因此只要模型的性能足够好，其实基本上不会出现重复解码，事实上经过充分预训练的生成式模型，确实很少出现重复解码了。但是，我们又能观察到，哪怕是一般的自回归解码，偶尔也能观察到重复解码现象，尤其是没有经过预训练的模型，这又该怎么解释呢？</p>
+
+      <p>​	前面的小节是基于二元解码模型的，结论是二元解码模型确实容易出现重复解码，那么我们或许可以反过来想，一般的自回归模型出现重复解码现象，是因为它此时退化为了二元解码模型？对于难度比较高的输入，模型可能无法精细捕捉好每一步的转移概率，从而只能将转移矩阵退化为二元解码，这是有可能的。</p>
+    </blockquote>
+  </li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>预测文本</th>
+      <th>hyp.text :<START> 负责 人员 招募 工作 确保 公司 业务 可持续性 发展 <STOP> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD> <PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></PAD></STOP></START></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>top 0 best_hyp.abstract</td>
+      <td><START> <UNK> 业务 发展 策略 <STOP></STOP></UNK></START></td>
+    </tr>
+    <tr>
+      <td>top 1 best_hyp.abstract</td>
+      <td><START> <UNK> 业务 发展 策略 公司 <STOP></STOP></UNK></START></td>
+    </tr>
+    <tr>
+      <td>top 2 best_hyp.abstract</td>
+      <td><START> <UNK> 业务 发展 策略 公司 发展 <STOP></STOP></UNK></START></td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>问题：生成原文没有的词（统称为产生新词），这并不是想要的</li>
+</ul>
+
+<blockquote>
+  <p>​	引入先验知识，我们生成得词都是句子中出现得（出现并不一定连续）。这样以来，我们可以利用句子（文章）中得词集作为一个先验分布，加到解码过程得分类模型中，使得模型在解码输出时更倾向选用文章中已有得字词。</p>
+
+  <p>​	具体来说，就是在每一步预测时，我们得到总向量$\color{blue}{x}$（它应该是decoder当前的隐层向量、encoder的编码向量、当前decoder与encoder的Attention编码三者的拼接），然后得到全连接层，最终得到一个大小为$\color{blue}{|V|}$得向量$\color{blue}{y=(y_1,y_2,…,y_{|V|})}$，其中$\color{blue}{|V|}$就是词表得词数。经过softmax后得到原本得概率$\color{blue}{p_i=\frac{e^{y_i}}{\sum_ie^{y_i}}}$，这就是原始得分类方案。引入先验分布得方案是，对于每个句子（文章）我们得到一个大小为$\color{blue}{|V|}$得0/1向量$\color{blue}{x=(x_1,x_2,…,x_{|V|})}$，其中$\color{blue}{x_i=1}$意味该词在文章中出现过，负则为0。将这样一个0/1向量经过缩放平移层得到：</p>
+
+  <p>$\color{blue}{\hat y=s\otimes x+t=(s_1x_1+t_1,s_2x_2+t_2,…,s_{|V|}x_{|V|}+t+{|V|})}$</p>
+
+  <p>其中$\color{blue}{s,t}$为训练参数，然后将这个向量与原来得$\color{blue}{y}$取平均后才做softmax：</p>
+
+  <p>$\color{blue}{y = \frac{y+\hat y}{2},p_i=\frac{e^{y_i}}{\sum_ie^{y_i}} }$</p>
+
+  <p>经实验，这样先验分布得引入，有助于加快收敛，生成更好得短句（标题）</p>
+</blockquote>
+
+<h1 id="参考">参考</h1>
+
+<p><a href="https://kexue.fm/archives/7500">1、如何应对seq2seq中“根本停不下来”问题？</a></p>
+
+<p><a href="https://arxiv.org/abs/2002.02492">2、Consistency of a Recurrent Language Model With Respect to Incomplete Decoding</a></p>
+
+<p><a href="https://arxiv.org/abs/1805.04833">3、Hierarchical Neural Story Generation</a></p>
+
+<p><a href="https://arxiv.org/abs/1904.09751">4、《The Curious Case of Neural Text Degeneration》</a>,</p>
+
+<p><a href="https://kexue.fm/archives/8128">5、seq2seq重复解码的理论分析</a></p>
+
+<p><a href="https://www.bilibili.com/video/BV13b4y1f7jx/">6、视频讲解</a></p>
+
+<p><a href="https://wmathor.com/index.php/archives/1550/">7、Seq2Seq 重复解码问题追根溯源</a></p>
+
+<p><a href="https://spaces.ac.cn/archives/5861">8、玩转Kearas之seq2seq自动生成标题</a></p>
+
+
+  </section>
+
+</article>
+
+<section>
+
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏一个呗</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+              <div class="shang_payimg">    
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                <div class="pay_explain">扫码打赏，你说多少就多少</div>
+                <div class="shang_payselect">
+                  <div class="pay_item checked" data-id="alipay">
+                    <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                  </div>
+                  <div class="pay_item" data-id="weipay">
+                    <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                  </div>
+                </div>
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:140px;padding:10px;padding-left: 80px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:140px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin-right:10px;float:left;text-align:center;width:140px;height:140px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:0 auto;margin-top:40px;cursor:pointer;height:60px;width:500px;margin-left:110px;}
+              .shang_payselect .pay_item{display:inline-block;margin-right:140px;float:left;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2021/11/Glove/" data-toggle="tooltip" data-placement="top" title="Glove">上一篇：  <span>Glove</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2021/12/Transformer/" data-toggle="tooltip" data-placement="top" title="Transformer探索">下一篇：  <span>Transformer探索</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+<!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="Mi8xLzM=">
+<script type="text/javascript">
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+</script>
+<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+</section>
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/monkeytb" title="@monkeytb 的 Github" target="_blank">
+              <div class="footer-social-icon" style="background:url(/images/github.png);"></div>
+            </a>
+          </li>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:13689446615@163.com" title="Contact me">
+              <div class="footer-social-icon" style="background:url(/images/email.png);"></div>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+            Copyright &copy; YiYao 2021 Theme by <a href="https://monkeytb.github.io">MonkeyTB</a> |
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=monkeytb&repo=monkeytb.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

@@ -2,7 +2,7 @@
 layout: post
 title: 'Transformer探索'
 description: "Transformer讲解"
-tag: '自然语言处理，论文'
+tag: '自然语言处理'
 ---
 
 <head>
