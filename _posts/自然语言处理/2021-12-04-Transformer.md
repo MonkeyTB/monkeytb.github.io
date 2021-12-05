@@ -1,8 +1,8 @@
+---
 layout: post
 title: 'Transformer探索'
 description: "Transformer讲解"
 tag: '自然语言处理'
-
 ---
 
 <head>
@@ -54,7 +54,7 @@ tag: '自然语言处理'
   >
   > $\color{blue}{PE_{(pos,2i)}=cos(pos/10000^{\frac{2i}{d_{model}}})}$
   >
-  > 其中$\color{blue}pos$代表位置，$\color{blue}i$代表向量维度中的index，这样对每个维度都有一个位置编码，偶数位置用正弦编码，奇数位置用余弦编码，最后将位置embedding和输入embedding相加送入block模块中。
+  > 其中$\color{blue}{pos}$代表位置，$\color{blue}i$代表向量维度中的index，这样对每个维度都有一个位置编码，偶数位置用正弦编码，奇数位置用余弦编码，最后将位置embedding和输入embedding相加送入block模块中。
 
 + layer normalization
 
@@ -98,7 +98,7 @@ tag: '自然语言处理'
 >
 > + sequence mask
 >
->   > $\color{yellow}{sequence-mask}$是为了解码的时候不看到未来的信息，具体做法就是我们构造一个上三角全为0的的矩阵作用到序列上，这样我们再解码计算的时候就不会看到但前节点以后的信息了。
+> > $\color{yellow}{sequence-mask}$是为了解码的时候不看到未来的信息，具体做法就是我们构造一个上三角全为0的的矩阵作用到序列上，这样我们再解码计算的时候就不会看到但前节点以后的信息了。
 
 ### 2.5 Multi-head Attention
 
