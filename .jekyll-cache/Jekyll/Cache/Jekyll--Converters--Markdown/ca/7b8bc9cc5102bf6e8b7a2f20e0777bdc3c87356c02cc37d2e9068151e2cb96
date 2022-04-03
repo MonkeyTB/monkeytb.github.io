@@ -1,0 +1,34 @@
+I"Q
+<ul>
+  <li><a href="#简介">简介</a></li>
+  <li><a href="#gpt-1通过生成式预训练提高语言理解">GPT-1（<a href="https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf">通过生成式预训练提高语言理解</a>）</a>
+    <ul>
+      <li><a href="#数据集">数据集</a></li>
+      <li><a href="#网络结构">网络结构</a></li>
+      <li><a href="#训练">训练</a>
+        <ul>
+          <li><a href="#无监督预训练"><strong>无监督预训练</strong></a></li>
+          <li><a href="#有监督微调"><strong>有监督微调</strong></a></li>
+        </ul>
+      </li>
+      <li><a href="#相关任务输入变化">相关任务输入变化</a></li>
+      <li><a href="#对比bert">对比bert</a></li>
+    </ul>
+  </li>
+  <li><a href="#gpt-2语言模型式无监督的多任务学习">GPT-2（<a href="https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf">语言模型式无监督的多任务学习</a>）</a>
+    <ul>
+      <li><a href="#数据集-1">数据集</a></li>
+      <li><a href="#网络结构-1">网络结构</a></li>
+      <li><a href="#gpt-2小结">GPT-2小结</a></li>
+    </ul>
+  </li>
+  <li><a href="#gpt-3语言模型少量学习">GPT-3（<a href="https://arxiv.org/pdf/2005.14165.pdf">语言模型少量学习</a>）</a>
+    <ul>
+      <li><a href="#数据集-2">数据集</a></li>
+      <li><a href="#网络结构-2">网络结构</a></li>
+      <li><a href="#gpt-3-总结">GPT-3 总结</a></li>
+    </ul>
+  </li>
+  <li><a href="#巨人的肩膀">巨人的肩膀</a></li>
+</ul>
+:ET

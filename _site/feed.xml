@@ -5,9 +5,957 @@
     <description>欢迎来到我的个人站~</description>
     <link>http://localhost:4000/</link>
     <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Sun, 05 Dec 2021 13:51:34 +0800</pubDate>
-    <lastBuildDate>Sun, 05 Dec 2021 13:51:34 +0800</lastBuildDate>
+    <pubDate>Sun, 03 Apr 2022 20:54:33 +0800</pubDate>
+    <lastBuildDate>Sun, 03 Apr 2022 20:54:33 +0800</lastBuildDate>
     <generator>Jekyll v4.2.1</generator>
+    
+      <item>
+        <title>交叉熵损失函数</title>
+        <description>&lt;head&gt;
+    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;h2 id=&quot;交叉熵损失函数---cross-entropy-loss-function&quot;&gt;交叉熵损失函数 - Cross entropy loss function&lt;/h2&gt;
+
+&lt;p&gt;​	标准形式
+\(\color{blue}{C=-\frac{1}{n}\sum_x{[ylna+(1-y)ln(1-a)]}}\)
+其中$\color{blue}{x}$表示样本，$\color{blue}{y}$表示实际的标签，$\color{blue}{a}$表示预测的输出，$\color{blue}{n}$表示样本总数量。&lt;/p&gt;
+
+&lt;h3 id=&quot;特点&quot;&gt;特点&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;本质上是一种对数似然函数，可用于二分类和多分类中。二分类问题中的loss函数（输入数据是softmax或者sigmoid）的输出：
+\(\color{blue}{loss=-\frac{1}{n}\sum_x[ylna+(1-y)ln(1-a)]}\)
+多分类问题中loss函数（输入数据是softmax或者sigmoid）的输出：
+\(\color{blue}{loss=-\frac{1}{n}\sum_iy_ilna_i}\)&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;当使用sigmoid作为激活函数时，常用交叉熵损失函数而不用均方差损失函数，因为它可以完美解决平方损失函数权重更新过慢的问题，具有$\color{yellow}{”误差大的时候，权重更新快；误差小的时候，权重更新慢}$的良好兴致。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;代码&quot;&gt;代码&lt;/h3&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;numpy&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;as&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;cross_entropy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;):&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;P&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;float_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sum&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;np&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;P&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;/&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Y&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;提问&quot;&gt;提问&lt;/h3&gt;
+
+&lt;h4 id=&quot;1在用sigmoid作为激活函数时你为什么要用交叉熵损失函数而不用均方差损失函数啊&quot;&gt;1、在用sigmoid作为激活函数时，你为什么要用交叉熵损失函数，而不用均方差损失函数啊？&lt;/h4&gt;
+
+&lt;p&gt;​	均方误差的损失函数，定义为：$\color{blue}{C=\frac{1}{2n}\sum_x(a-y)^2}$，其中$\color{blue}{y}$是label，$\color{blue}{a}$是实际输出($\color{blue}{a=\sigma(z),z=wx+b}$)，在训练神经网络的时候我们使用梯度下降方式来更新$\color{blue}{w}$和$\color{blue}{b}$，因此对$\color{blue}{w}$和$\color{blue}{b}$求导：
+\(\color{blue}{\frac{\partial C}{\partial w}=(a-y)\sigma'(z)x}\)&lt;/p&gt;
+
+\[\color{blue}{\frac{\partial C}{\partial b} = (a-y)\sigma'(z)}\]
+
+&lt;p&gt;​	更新参数$\color{blue}{w}$和$\color{blue}{b}$：
+\(\color{blue}{w = w-\eta\frac{\partial C}{\partial w} = w-\eta(a-y)\sigma'(z)x }\)&lt;/p&gt;
+
+\[\color{blue}{b = b-\eta\frac{\partial C}{\partial b} = b-\eta(a-y)\sigma'(z)}\]
+
+&lt;p&gt;由于sigmoid的性质，导致$\color{blue}{\sigma’(x)}$在$\color{blue}{z}$取大部分值时会很小，这样会使得$\color{blue}{\eta(a-y)\sigma’(z)}$很小，导致$\color{blue}{w}$和$\color{blue}{b}$更新非常慢。&lt;/p&gt;
+
+&lt;p&gt;​	交叉熵损失函数，定义为：$\color{blue}{C=-\frac{1}{n}\sum_x{[ylna+(1-y)ln(1-a)]}}$，字母定义如上，同样看其对$\color{blue}{w}$和$\color{blue}{b}$求导：
+\(\color{blue}{\frac{\partial C}{\partial a}=-\frac{1}{n}\sum_x{[y\frac{1}{a}+(y-1)\frac{1}{1-a}]}=-\frac{1}{n}\sum_x{[\frac{1}{a(1-a)}y-\frac{1}{1-a}]}}\\ \color{blue}{=-\frac{1}{n}\sum_x{[\frac{1}{\sigma(x)(1-\sigma(x))}y-\frac{1}{1-\sigma(x)})]}}\)&lt;/p&gt;
+
+\[\color{blue}{\frac{\partial C}{\partial z}=\frac{\partial C}{\partial a}\frac{\partial a}{\partial z}=-\frac{1}{n}\sum_x{[\frac{1}{\sigma(x)(1-\sigma(x))}y-\frac{1}{1-\sigma(x)}]\bullet \sigma'(x)}}\]
+
+\[\color{blue}{=-\frac{1}{n}\sum_x{[\frac{1}{\sigma(x)(1-\sigma(x))}y-\frac{1}{1-\sigma(x)}]\bullet \sigma(x)(1-\sigma(x))} = -\frac{1}{n}\sum_x{y-a}}\]
+
+&lt;p&gt;所以有：
+\(\color{blue}{\frac{\partial C}{\partial w}=\frac{\partial C}{\partial z}\frac{\partial z}{\partial w}=(a-y)x}\)&lt;/p&gt;
+
+\[\color{blue}{\frac{\partial C}{\partial b}=\frac{\partial C}{\partial z}\frac{\partial z}{\partial b}=(a-y)}\]
+
+&lt;p&gt;所以更新公式为：
+\(\color{blue}{w=-\eta\frac{\partial C}{\partial w}=w-\eta(a-y)x}\)&lt;/p&gt;
+
+\[\color{blue}{b=-\eta\frac{\partial C}{\partial b}=b-\eta(a-y) }\]
+
+&lt;p&gt;可以看到参数更新公式中没有$\color{blue}{\sigma’(x)}$这一项，权重更新受$\color{blue}{a-y}$影响，收到误差的影响，当$\color{yellow}{当误差大的时候，权重更新快，当误差小的时候，权重更新慢}$，这是一个很好的性质。&lt;/p&gt;
+
+&lt;p&gt;所以当使用sigmoid作为激活函数的时候，常用&lt;strong&gt;交叉熵损失函数&lt;/strong&gt;而不用&lt;strong&gt;均方误差损失函数&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;回归问题通常用均方差损失函数，可以保证损失函数是个凸函数，即可以得到最优解。而分类问题如果用均方差的话，损失函数的表现不是凸函数，就很难得到最优解。而交叉熵函数可以保证区间内单调。&lt;/li&gt;
+  &lt;li&gt;分类问题的最后一层网络，需要分类函数，Sigmoid或者Softmax，如果再接均方差函数的话，其求导结果复杂，运算量比较大。用交叉熵函数的话，可以得到比较简单的计算结果，一个简单的减法就可以得到反向误差。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;2交叉熵函数与似然函数的滚滚红尘&quot;&gt;2、交叉熵函数与似然函数的滚滚红尘&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;联系&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;​	似然函数的通用形式$\color{blue}{L=P(X;\theta)}$，$\color{yellow}{似然函数的定义没有限定样本集X的分布函数}$。比如在机器学习中，将似然函数用于模型的损失函数，那么对应的样本集$\color{blue}{X}$就是样本集中的label，参数也不是机器学习的model的参数，而是prediction，作为一个损失函数，我们不关心选哪个的参数是怎么样的，而只接受两部分【prediction、label】，还有一个隐含的输入【分布模型】。&lt;/p&gt;
+
+&lt;p&gt;​	似然函数最终的目的就是衡量prediction背后的模型对于当前观测值的解释程度，而每个样本的prediction值恰恰就是它所服从的分布模型的参数。&lt;/p&gt;
+
+&lt;p&gt;​	机器学习分类任务中，我们假设prediction这个随机变量背后的模型是&lt;strong&gt;单次观测下的多项式分布&lt;/strong&gt;？？？&lt;/p&gt;
+
+&lt;p&gt;​	这里的单词观测就意味着独立同分布，统计学中☞一组随机变量中每个变量的概率分布都相同，且这些随机变量相互独立。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;伯努利分布&lt;/p&gt;
+
+    &lt;p&gt;​	也叫两点分布，类似抛硬币，因此概率密度函数为：
+\(\color{blue}{f_X(x)=p^x(1-p)^{1-x}={\begin{cases}p&amp;amp;{x=1,} \\q&amp;amp;{x= 0.}\end{cases}}}\)
+伯努利分布模型参数就是其中一个类别发生的概率。&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;二项分布&lt;/p&gt;
+
+    &lt;p&gt;​	二项分布就是将伯努利实验重复n次&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;多项式分布&lt;/p&gt;
+
+    &lt;p&gt;​	多项式分布就是将二项分布推广到多个面（类别），即$\color{blue}{f_{multi}(x;p)=\prod_{i=1}^Cp_{i}^{x_i}}$，其中C代表类别数，p代表向量形式的模型参数，即各个类别发生的概率，如$\color{blue}{p=[0.1,0.1,0.7,0.1]}$，则$\color{blue}{p1=0.1,p3=0.7}$。即多项分布的模型参数就是各个类别发生概率，x代表ont-hot形式的观测值。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;根据似然函数定义，单个样本的似然函数即：
+\(\color{blue}{L=f_{multi}(label;prediction)}\)
+所以整个样本集或batch的似然函数：
+\(\color{blue}{L=\prod_{X}f_{multi}(lable;prediction)=\prod_X\prod_{i=1}^Cprediction(i)^{label(i)}}\)
+由于有累积运算，所以家隔log函数转为累加以提高运算速度。如下：
+\(\color{blue}{L=\sum_X\sum_{i=1}^Clabel(i)log(prediction(i))}\)
+而最大化似然函数就是等效于最小化负对数似然函数，所以前面加个负号后就和交叉熵的形式一摸一样。对于某种分布的随机变量$\color{blue}{X\sim p(x)}$，有一个模型$\color{blue}{q(x)}$用于近似$\color{blue}{p(x)}$的概率分布，则分布$\color{blue}{X}$与模型$\color{blue}{q}$之间的交叉熵即：
+\(\color{blue}{H(X,q)=-\sum_xp(x)logq(x)}\)
+ 这里X的分布模型即样本集label的真实分布模型，这里模型$\color{blue}{q(x)}$即想要模拟真实分布模型的机器学习模型。可以说交叉熵是直接衡量两个分布，或者说两个model之间的差异。而似然函数则是解释以model的输出为参数的某分布模型对样本集的解释程度。因此，可以说这两者是“同貌不同源”，但是“殊途同归”啦。&lt;/p&gt;
+
+&lt;p&gt;而苏神也在&lt;a href=&quot;https://spaces.ac.cn/archives/4277#%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6&quot;&gt;这里&lt;/a&gt;在nlp角度做过类似的推到分析，可以参考。&lt;/p&gt;
+
+&lt;p&gt;$\color{red}{上面就是讨论了交叉熵和似然函数的联系，下面简要说一下区别}$&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;区别&lt;/p&gt;
+
+    &lt;p&gt;交叉熵函数使用来描述模型预测值和真实值的差距大小，越大代表越不相近，似然函数的本质就是衡量在某个参数下，整个估计和真实情况一样的概率，越大代表越相近。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id=&quot;3交叉熵和kl散度的种种因缘&quot;&gt;3、交叉熵和KL散度的种种因缘&lt;/h4&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;相对熵（KL散度）&lt;/p&gt;
+
+    &lt;p&gt;​	对同一个随机变量$\color{blue}{x}$有两个单独的概率分布$\color{blue}{P(x)}和\color{blue}{Q(x)}$，我们可以使用KL散度来衡量这两个分布的差异，这个相当于信息论范畴的均方差。即：
+\(\color{blue}{D_{KL}(P\|\|q)=\sum_{j=1}^n(x_j)ln\frac{p(x_j)}{q(x_j)}}\)
+$\color{blue}{n}$为事件的所有可能性。$\color{blue}{D}$的值越小，表示$\color{blue}{q}$分布和$\color{blue}{p}$分布越接近。&lt;/p&gt;
+
+    &lt;p&gt;☞变形记
+\(\color{blue}{D_{KL}(p\|\|q)=\sum_{j=1}^n(x_j)lnp(x_j)-\sum_{j=1}^{n}p(x_j)lnq(x_j)=-H(p(x))+H(p,q)}\)
+等式前一部分恰巧就是$\color{blue}{p}$的熵，等式的后一部分就是交叉熵。在机器学习中，我们将$\color{blue}{p,q}$替换为标签$\color{blue}{y}$和预测值$\color{blue}{a}$，即$\color{blue}{D_{KL}(y||a)}$，就可以衡量评估了。KL散度前一项$\color{blue}{H(y)}$不变，所以在优化的过程中需要要关注交叉熵就行，即:
+\(\color{blue}{loss=-\sum_{j=1}^ny_jlna_j }\)
+公式(21)是单个样本的情况，$\color{blue}{n}$并不是样本个数，而是分类个数，所以批量交叉熵计算公式是：
+\(\color{blue}{J=-\sum_{i=1}^m\sum_{j=1}^ny_{ij}lna_{ij}}\)
+其中$\color{blue}{m}$是样本数，$\color{blue}{n}$是分类数。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;巨人的肩膀&quot;&gt;巨人的肩膀&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/58883095&quot;&gt;1、常见的损失函数(loss function)总结&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/27719875&quot;&gt;2、哈？你还认为似然函数跟交叉熵是一个意思呀？&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://spaces.ac.cn/archives/4277#%E6%9C%80%E5%A4%A7%E4%BC%BC%E7%84%B6&quot;&gt;3、最大似然&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://microsoft.github.io/ai-edu/%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/A2-%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86/%E7%AC%AC1%E6%AD%A5%20-%20%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86/03.2-%E4%BA%A4%E5%8F%89%E7%86%B5%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0.html&quot;&gt;4、交叉熵损失函数&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sun, 03 Apr 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/04/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%87%BD%E6%95%B0/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/04/%E4%BA%A4%E5%8F%89%E7%86%B5%E5%87%BD%E6%95%B0/</guid>
+        
+        <category>自然语言处理</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>GPT1-GPT3</title>
+        <description>&lt;head&gt;
+    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;h2 id=&quot;简介&quot;&gt;简介&lt;/h2&gt;
+
+&lt;p&gt;​	GPT（Generative Pre-trained Transformer）系列是由OpenAI提出的非常强大的预训练语言模型，这一系列的模型可以在生成式任务中取得非常好的效果，对于一个新的任务，GTP只需要很少的数据便可以理解任务的需求并达到或接近state-of-the-art的方法。&lt;/p&gt;
+
+&lt;p&gt;​	GPT训练需要超大的训练语料以及堆叠的transformer，123系列具体情况如下：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;模型&lt;/th&gt;
+      &lt;th&gt;发布时间&lt;/th&gt;
+      &lt;th&gt;参数量&lt;/th&gt;
+      &lt;th&gt;预训练数据量&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GPT-1&lt;/td&gt;
+      &lt;td&gt;2018年6月&lt;/td&gt;
+      &lt;td&gt;1.17亿&lt;/td&gt;
+      &lt;td&gt;约5GB&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GPT-2&lt;/td&gt;
+      &lt;td&gt;2019年2月&lt;/td&gt;
+      &lt;td&gt;15亿&lt;/td&gt;
+      &lt;td&gt;40G&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;GPT-3&lt;/td&gt;
+      &lt;td&gt;2020年5月&lt;/td&gt;
+      &lt;td&gt;1750亿&lt;/td&gt;
+      &lt;td&gt;45TB&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;​	GPT的三个模型几乎都是&lt;strong&gt;相同架构&lt;/strong&gt;, 只是有非常非常少量的改动. 但一代比一代更大, 也更烧钱. 所以我对GPT系列的特点就是: &lt;strong&gt;钞能力, 大就完事了.&lt;/strong&gt; 其影响力和花费的成本是成正比的.&lt;/p&gt;
+
+&lt;h2 id=&quot;gpt-1通过生成式预训练提高语言理解&quot;&gt;GPT-1（&lt;a href=&quot;https://cdn.openai.com/research-covers/language-unsupervised/language_understanding_paper.pdf&quot;&gt;通过生成式预训练提高语言理解&lt;/a&gt;）&lt;/h2&gt;
+
+&lt;p&gt;​	传统的NLP模型往往使用大量的数据对有监督模型进行训练，这种任务存在两个明显的缺点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;需要大量的标注数据，高质量的数据往往很难获得；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;一个任务训练的模型很难泛化到其他任务中，这个模型只能叫“领域专家”而不是真正的理解NLP。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-1&lt;/code&gt;先通过无标签数据学习一个生成式的语言模型，然后再根据特定任务进行微调。任务包括&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;自然语言推理（NLI）：判断两个句子是否包含关系，矛盾关系，中立关系；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;问答和常识推理：类似多选题，输入文章，问题以及若干候选答案，输出为每个答案的概率；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;语义相似度：判断两个句子语义上是否相关；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;分类：判断输入文本是指定的那个类别。&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;数据集&quot;&gt;数据集&lt;/h3&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-1&lt;/code&gt;使用的数据集BooksCorpus，包含7000本没有发布的书籍。使用原因由两点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;有助于未见过的数据集上训练语言模型，该数据不太可能在下游任务的测试集中找到；&lt;/li&gt;
+  &lt;li&gt;数据集拥有长的合理的上下文依赖关系，使得模型学习更长的依赖关系。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;网络结构&quot;&gt;网络结构&lt;/h3&gt;
+
+&lt;p&gt;​	使用12层仅解码器带有掩码自注意力的transormer，掩码的使用使模型看不见未来的信息，得到模型泛化能力更强。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;实现细节&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;使用字节对编码（BPE：byte pair encoding），共有4000个字节对；&lt;/li&gt;
+  &lt;li&gt;词编码长度为768；&lt;/li&gt;
+  &lt;li&gt;位置编码也需要学习；&lt;/li&gt;
+  &lt;li&gt;12层transformer，每个transformer块有12个头；&lt;/li&gt;
+  &lt;li&gt;位置编码的长度是3072；&lt;/li&gt;
+  &lt;li&gt;Attention，残差，Dropout等机制用来进行正则化，drop比例为0.1；&lt;/li&gt;
+  &lt;li&gt;激活函数GLUE；&lt;/li&gt;
+  &lt;li&gt;训练的batchsize为64，学习率为$\color{blue}{2.5e^{-4}}$，序列长度为512，序列epoch为100。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;训练&quot;&gt;训练&lt;/h3&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-1&lt;/code&gt;的训练分为无监督训练和有监督微调，详细过程如下：&lt;/p&gt;
+
+&lt;h4 id=&quot;无监督预训练&quot;&gt;&lt;strong&gt;无监督预训练&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-1&lt;/code&gt;的无监督预训练是基于语言模型进行训练的，给定一个无标签的序列$\color{blue}{U={u_1,…,u_n}}$，语言模型的优化目标是最大化似然函数：
+\(\color{blue}{L_1(U)=\sum_xlogP(u_i|u_{i-k},...,u_{i-1};\theta)-------(1)}\)
+其中$\color{blue}{k}$是滑动窗口的大小，$\color{blue}{P}$是条件概率，$\color{blue}{\theta}$是模型参数，这些参数使用SGD进行优化。在&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-1&lt;/code&gt;中，使用12个transformer块的结构作为解码器，每个transformer块是一个多头注意力机制，然后通过全连接得到输出的概率分布。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/GPT-1.jpg&quot; alt=&quot;&quot; /&gt;
+\(\color{blue}{h_0=UW_e+W_p---------------(2)}\\ \color{blue}{h_l=transformer_block(h_{l-1})\forall i\in[1,n])-----(3)}\\ \color{blue}{P(u)=softmax(h_nW_e^T)------------(4)}\)
+​	其中 $\color{blue}{U=(u_{-k},\dots,u_{-1})}$是当前时间片的上下文token，$\color{blue}{n}$是层数，$\color{blue}{w_e}$是词嵌入矩阵，$\color{blue}{W_p}$是位置嵌入矩阵。&lt;/p&gt;
+
+&lt;h4 id=&quot;有监督微调&quot;&gt;&lt;strong&gt;有监督微调&lt;/strong&gt;&lt;/h4&gt;
+
+&lt;p&gt;​	当得到无监督预训练模型之后，我们将它的值应用到有监督任务中，对于一个有标签的数据集$\color{blue}{C}$，每个实例有$\color{blue}{m}$个输入token：$\color{blue}{x^1,…,x^m}$，它对应的标签$\color{blue}{y}$组成。首先将这些token输入到训练好的预训练模型中，得到最终的特征向量$\color{blue}{h_l^m}$。然后再通过一个全连接层得到预测结果$\color{blue}{y}$：
+\(\color{blue}{P(y|x^1, ..., x^m)=softmax(h_l^mW_y)--------(5)}\)
+其中$\color{blue}{W_y}$为全连接层的参数。有监督的目标则是最大化公式（5）的值：
+\(\color{blue}{L_2(X)=\sum_{x,y}logP(y|x^1,...,x^m)----------(6)}\)
+作者并没有直接使用$\color{blue}{L_2}$，而是向其中加入了$\color{blue}{L_1}$，并通过$\color{blue}{\lambda}$调节权重，一般采用0.5，公式(7)如下：
+\(\color{blue}{L_3(C)=L_2(C)+\lambda L_1(C) -----------(7)}\)&lt;/p&gt;
+
+&lt;h3 id=&quot;相关任务输入变化&quot;&gt;相关任务输入变化&lt;/h3&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-1&lt;/code&gt;对不同的任务形式有不同的输入形式，具体如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;分类任务：将起始和终止的token加入到原始序列两端，输入transformer中得到特征向量，最后经过一个全连接层得到预测的概率分布；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;NLI任务：将前提和假设同通过分割符隔开，两端加上起始和终止token，再一次通过transformer和全连接得到预测结果；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;语义相似度任务：输入两个句子，正向和反向各拼接一次，然后分别输入给transformer，得到特征向量拼接后再送给全连接得到预测结果；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;问答和常识推断：将$\color{blue}{n}$个选项的问题抽象化为$\color{blue}{n}$二分类问题，即每个选项分别和内容进行拼接，然后各送入transformer和全连接中，最后选择置信度最高的作为预测结果。&lt;/p&gt;
+
+    &lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/GPT-1下游任务.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;对比bert&quot;&gt;对比bert&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT&lt;/code&gt;在预训练时并没有引入&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[CLS]&lt;/code&gt;和&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[SEP]&lt;/code&gt;, Bert全程引入；&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bert&lt;/code&gt;是真正能够捕捉所有层上下文信息的，受益于自注意力机制，将所有token距离直接缩短到1，GPT-1是单向捕捉信息；&lt;/li&gt;
+  &lt;li&gt;input： &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT&lt;/code&gt;采用&lt;strong&gt;BPE&lt;/strong&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bert&lt;/code&gt;用了&lt;strong&gt;Word Piece&lt;/strong&gt;. &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT&lt;/code&gt;有位置编码, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Bert&lt;/code&gt;有位置编码和段编码.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://monkeytb.github.io/2022/01/BERT/&quot;&gt;$\color{red}{Bert 详见我另一篇blog}$&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;gpt-2语言模型式无监督的多任务学习&quot;&gt;GPT-2（&lt;a href=&quot;https://cdn.openai.com/better-language-models/language_models_are_unsupervised_multitask_learners.pdf&quot;&gt;语言模型式无监督的多任务学习&lt;/a&gt;）&lt;/h2&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-2&lt;/code&gt;的目标是为了训练一个泛化能力更强的词向量模型，它并没有对&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-1&lt;/code&gt;的网络机构进行过多的结构创新和设计，只是使用了更大的数据集和更大的网络参数。&lt;/p&gt;
+
+&lt;h3 id=&quot;数据集-1&quot;&gt;数据集&lt;/h3&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-2&lt;/code&gt;的文章取自于Reddit上高赞的文章，命名为WebText。数据集共有约800万篇文章，累计体积约40G。为了避免和测试集的冲突，WebText移除了涉及Wikipedia的文章。&lt;/p&gt;
+
+&lt;h3 id=&quot;网络结构-1&quot;&gt;网络结构&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;同样使用了字节对编码构建字典，字典大小为50257；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;有48层，词嵌入大小1600维;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;滑动窗口大小为1024；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;batchsize 512；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Layer Normalization移动到了每一块的输入部分，在每个self-attention知后额外添加了一个Layer Normalization；&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;将残差层的初始化值用$\color{blue}{1/\sqrt{N}}$，其中&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;N&lt;/code&gt;是残差层的个数。&lt;/p&gt;
+
+    &lt;p&gt;​	GPT-2训练了4组不同的层数和词向量的长度的模型，具体值见表2。通过这4个模型的实验结果我们可以看出随着模型的增大，模型的效果是不断提升的。&lt;/p&gt;
+
+    &lt;table&gt;
+      &lt;thead&gt;
+        &lt;tr&gt;
+          &lt;th&gt;参数量&lt;/th&gt;
+          &lt;th&gt;层数&lt;/th&gt;
+          &lt;th&gt;词向量长度&lt;/th&gt;
+        &lt;/tr&gt;
+      &lt;/thead&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;117M（GPT-1）&lt;/td&gt;
+          &lt;td&gt;12&lt;/td&gt;
+          &lt;td&gt;769&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;345M&lt;/td&gt;
+          &lt;td&gt;24&lt;/td&gt;
+          &lt;td&gt;1024&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;762M&lt;/td&gt;
+          &lt;td&gt;36&lt;/td&gt;
+          &lt;td&gt;1280&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;tr&gt;
+          &lt;td&gt;1542M&lt;/td&gt;
+          &lt;td&gt;48&lt;/td&gt;
+          &lt;td&gt;1600&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;gpt-2小结&quot;&gt;GPT-2小结&lt;/h3&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-2&lt;/code&gt;的最大贡献是验证了通过海量数据和大量参数训练出来的词向量模型有迁移到其它类别任务中而不需要额外的训练。但是很多实验也表明，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-2&lt;/code&gt;的无监督学习的能力还有很大的提升空间，甚至在有些任务上的表现不比随机的好。尽管在有些zero-shot的任务上的表现不错，但是我们仍不清楚&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-2&lt;/code&gt;的这种策略究竟能做成什么样子。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-2&lt;/code&gt;表明随着模型容量和数据量的增大，其潜能还有进一步开发的空间，基于这个思想，诞生了我们下面要介绍的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;。&lt;/p&gt;
+
+&lt;h2 id=&quot;gpt-3语言模型少量学习&quot;&gt;GPT-3（&lt;a href=&quot;https://arxiv.org/pdf/2005.14165.pdf&quot;&gt;语言模型少量学习&lt;/a&gt;）&lt;/h2&gt;
+
+&lt;h3 id=&quot;数据集-2&quot;&gt;数据集&lt;/h3&gt;
+
+&lt;p&gt;​	&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;共训练了5个不同的语料，分别是低质量的Common Crawl，高质量的WebText2，Books1，Books2和Wikipedia，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;根据数据集的不同的质量赋予了不同的权值，权值越高的在训练的时候越容易抽样到。&lt;/p&gt;
+
+&lt;h3 id=&quot;网络结构-2&quot;&gt;网络结构&lt;/h3&gt;
+
+&lt;p&gt;GPT-3沿用了GPT-2的结构，但是在网络容量上做了很大的提升，具体如下：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GPT-3采用了96层的多头transformer，头的个数为96；&lt;/li&gt;
+  &lt;li&gt;词向量的长度是12888 ；&lt;/li&gt;
+  &lt;li&gt;上下文划窗的窗口大小提升至2048个token；&lt;/li&gt;
+  &lt;li&gt;使用了alternating dense和locally banded sparse attention。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;gpt-3-总结&quot;&gt;GPT-3 总结&lt;/h3&gt;
+
+&lt;p&gt;本文讨论了 GPT-3 模型的几个弱点以及有待改进的领域。让我们在这里总结一下。&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;尽管 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt; 能够生成高质量的文本，但有时它会在编写长句子并一遍又一遍地重复文本序列时开始失去连贯性。此外，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;在自然语言推理（确定一个句子是否暗示另一个句子）、填空、一些阅读理解任务等任务上表现不佳。该论文引用&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT&lt;/code&gt; 模型的单向性作为可能的原因这些限制并建议以这种规模训练双向模型来克服这些问题；&lt;/li&gt;
+  &lt;li&gt;该论文指出的另一个限制是&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;的通用语言建模目标，它平等地权衡每个token，并且缺乏任务或面向目标的token预测的概念。为了解决这个问题，本文提出了诸如增强学习目标、使用强化学习来微调模型、添加其他模式等方法；&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;的其他限制包括复杂且昂贵的模型推理，因为其结构繁重，语言的可解释性和模型生成的结果较低，以及围绕什么有助于模型实现其少量学习行为的不确定性；&lt;/li&gt;
+  &lt;li&gt;除了这些限制之外，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;还存在滥用其类人文本生成能力进行网络钓鱼、垃圾邮件、传播错误信息或执行其他欺诈活动的潜在风险。此外，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;生成的文本具有其训练所用语言的偏见。&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GPT-3&lt;/code&gt;生成的文章可能存在性别、种族、种族或宗教偏见。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;巨人的肩膀&quot;&gt;巨人的肩膀&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/350017443&quot;&gt;1、词向量之GPT-1，GPT-2和GPT-3&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://medium.com/walmartglobaltech/the-journey-of-open-ai-gpt-models-32d95b7b7fb2&quot;&gt;2、&lt;strong&gt;The Journey of Open AI GPT models&lt;/strong&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;[https://ADAning.github.io/posts/3996.html](https://adaning.github.io/posts/3996.html)&quot;&gt;3、ELMo, GPT, BERT&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 03 Apr 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/04/GPT1%E5%88%B0GPT3/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/04/GPT1%E5%88%B0GPT3/</guid>
+        
+        <category>自然语言处理</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>BERT</title>
+        <description>&lt;head&gt;
+    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;p&gt;&lt;strong&gt;Bert&lt;/strong&gt;全称Bidirectional Encoder Representations from Transformers，再多项NLP任务中引起了轰动，其关键技术创新在于用双向Transformer模型，区别于之前从左向右和从右向左拼接，并添加了MLM的新技术。下面将详细介绍。&lt;/p&gt;
+
+&lt;h2 id=&quot;背景&quot;&gt;背景&lt;/h2&gt;
+
+&lt;p&gt;​	计算机视觉领域，通过对大规模数据进行网络训练，然后迁移学习进行微调适用于新的任务，去的很好的效果。近年来，这样的任务也用于许多自然语言任务。在此之前比如ELMo、GPT等。&lt;/p&gt;
+
+&lt;h2 id=&quot;前人工作&quot;&gt;前人工作&lt;/h2&gt;
+
+&lt;h3 id=&quot;elmo&quot;&gt;elmo&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;后续使用，根据任务构造结构&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;gpt&quot;&gt;gpt&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;后续使用，单向模型&lt;/li&gt;
+  &lt;li&gt;cloze task， 借鉴了mask model&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;创新点&quot;&gt;创新点&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;GPT的局限性，单向的，限制了任务的类型，比如情感分类等&lt;/li&gt;
+  &lt;li&gt;MLM（token） 、 NSP（句子）&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;工作&quot;&gt;工作&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;非监督的特征方法&lt;/li&gt;
+  &lt;li&gt;非监督的微调方法&lt;/li&gt;
+  &lt;li&gt;迁移学习&lt;/li&gt;
+  &lt;li&gt;细节
+    &lt;ul&gt;
+      &lt;li&gt;预训练&lt;/li&gt;
+      &lt;li&gt;微调&lt;/li&gt;
+      &lt;li&gt;模型架构：transformer&lt;/li&gt;
+      &lt;li&gt;模型参数&lt;/li&gt;
+      &lt;li&gt;切词：wordpiece
+        &lt;ul&gt;
+          &lt;li&gt;本意是为了减少词汇表，对一些低频词通过拆分表达，这么做的好处是通过拆分的方式对低频词做了相对较好的表达，相比直接用oov或者低频词表示来说，能学到更多的信息。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;mask 概率
+        &lt;ul&gt;
+          &lt;li&gt;具体来说，文章作者在一句话中随机选择 15% 的词汇用于预测。对于在原句中被抹去的词汇， 80% 情况下采用一个特殊符号 [MASK] 替换， 10% 情况下采用一个任意词替换，剩余 10% 情况下保持原词汇不变。这么做的主要原因是：在后续微调任务中语句中并不会出现 [MASK] 标记，而且这么做的另一个好处是：预测一个词汇时，模型并不知道输入对应位置的词汇是否为正确的词汇（ 10% 概率），这就迫使模型更多地依赖于上下文信息去预测词汇，并且赋予了模型一定的纠错能力。上述提到了这样做的一个缺点，其实这样做还有另外一个缺点，就是每批次数据中只有 15% 的标记被预测，这意味着模型可能需要更多的预训练步骤来收敛。&lt;/li&gt;
+          &lt;li&gt;在 BERT 中训练语言模型是通过预测输入中随机选择的 15% 的标记来完成的。这些标记的预处理如下——80% 被替换为“[MASK]”标记，10% 被替换为随机单词，10% 使用原始单词。导致作者选择这种方法的直觉如下（感谢来自 Google 的 Jacob Devlin 的洞察力）：
+            &lt;ul&gt;
+              &lt;li&gt;如果我们在 100% 的情况下使用 [MASK]，该模型不一定会为非屏蔽词生成良好的标记表示。非屏蔽词仍然用于上下文，但该模型针对预测屏蔽词进行了优化。&lt;/li&gt;
+              &lt;li&gt;如果我们 90% 的时间使用 [MASK]，10% 的时间使用随机单词，这将告诉模型观察到的单词&lt;em&gt;永远不会&lt;/em&gt;正确。&lt;/li&gt;
+              &lt;li&gt;如果我们 90% 的时间使用 [MASK]，10% 的时间保持相同的单词，那么模型可以简单地复制非上下文嵌入。&lt;/li&gt;
+            &lt;/ul&gt;
+          &lt;/li&gt;
+          &lt;li&gt;没有对这种方法的比率进行消融，它可能在不同的比率下效果更好。此外，模型性能没有通过简单地屏蔽 100% 的选定标记进行测试。&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;总结&quot;&gt;总结&lt;/h3&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;双向性&lt;/li&gt;
+  &lt;li&gt;生成类工作不方便
+    &lt;ul&gt;
+      &lt;li&gt;生成类工作不方便不代表不能用于生成任务，我们可以通过对生成结果进行mask，而模拟出生成效果，具体来说就是生成任务只能看到上文，而不能看到下文，与Bert的任务冲突，但是我们对生成部分用上三角mask，通过这种方式可以保证在生成的过程中只能看到上文，而看不到下文，这样就可以用Bert来做生成任务啦！&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;工作原理&quot;&gt;工作原理&lt;/h2&gt;
+
+&lt;p&gt;​	使用了Transformer，这是一种注意力机制，可以学习文本单词之间的上下文信息。普通的Transformer包含两部分，读取文本输入的编码器和生成的解码器，Bert任务的目标是生成语言模型，因此只需要编码器机制。Transformer介绍&lt;a href=&quot;https://monkeytb.github.io/2021/12/Transformer/&quot;&gt;$\color{red}{Transformer探索}$&lt;/a&gt;。&lt;/p&gt;
+
+&lt;h3 id=&quot;mlm&quot;&gt;MLM&lt;/h3&gt;
+
+&lt;p&gt;​	将单词序列输入Bert之前，每个序列中15%的单词被替换为[MASK]标记，然后Bert尝试根据非屏蔽的上下文来预测屏蔽的原始词。技术角度来讲需要以下几点：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在编码器输出之上添加一个分类层；&lt;/li&gt;
+  &lt;li&gt;将输出向量乘以嵌入矩阵，将他们转换为词汇维度；&lt;/li&gt;
+  &lt;li&gt;用softmax计算词汇表中每个单词的概率。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/论文/bert mlm.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;​	Bert损失函数只考虑掩码值的预测，而忽略非掩码词的预测，因此模型的收敛速度比定向模型慢，这一特征被其增强的上下文感知所抵消。&lt;/p&gt;
+
+&lt;h3 id=&quot;nsp&quot;&gt;NSP&lt;/h3&gt;
+
+&lt;p&gt;​	在Bert训练过程中，模型接受成对的句子作为输入，并学习预测成对中的第二个句子是否是原始文档中后续句子。在训练过程中，50%的输入是一对，其中第二个句子是原始文档中的后续句子，而另外50%的输入是从语料库中随机选择的一个句子作为第二个句子。&lt;/p&gt;
+
+&lt;p&gt;​	为了帮助模型区分训练中的两个句子，输入在进入模型之前按以下方式处理：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;在第一个句子的开头插入一个[CLS]标记，在每个句子的末尾插入一个[SEP]标记；&lt;/li&gt;
+  &lt;li&gt;表示句子A或句子B的句子嵌入被添加到每个标记中；&lt;/li&gt;
+  &lt;li&gt;将位置嵌入添加到每个标记以指示其在序列中的位置。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/论文/bert 输入.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;​	为了预测第二个句子是否确实与第一个句子相关，执行以下步骤：&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;整个输入序列经过Transformer模型&lt;/li&gt;
+  &lt;li&gt;[CLS]标记的输出使用简单的分类层转换为$\color{blue}{2\times 1}$形状的向量&lt;/li&gt;
+  &lt;li&gt;用softmax计算Is Next Sequence的概率&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;在训练Bert模型时，Masked LM 和 Next Sentence Prediction 是一起训练的，目标是最小化两种策略的组合损失函数。&lt;/p&gt;
+
+&lt;h2 id=&quot;微调&quot;&gt;微调&lt;/h2&gt;
+
+&lt;p&gt;​	将Bert用于特定的任务相对简单，可以用于各种各样的语言任务，而只在核心模型中增加一个小层&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;通过在[CLS]标记的Transformer输出顶部添加分类层，完成诸如情感分析之类的分类任务与Next Sentence分类类似；&lt;/li&gt;
+  &lt;li&gt;在问答任务（例如SQuAD v1.1）中，模型收到一个关于文本序列的问题，并需要在序列中标记答案，使用Bert，可以通过学习标记答案开始和结束的两个额外向量来训练问答模型；&lt;/li&gt;
+  &lt;li&gt;在命名实体识别中，接受一个文本序列，并需要标记文本中出现的各种类型的实体（人、组织、地点等）。使用Bert，可以通过将每个标记的输出向量输入到预测NER标签分类层来训练NER模型。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;训练相关&quot;&gt;训练相关&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;模型的大小很重要，即使规模很大。Bert large拥有3.45亿个参数，是同类模型中最大的。他在小规模任务上明显优于Bert base，后者“仅”1.1亿个参数；&lt;/li&gt;
+  &lt;li&gt;有了足够的训练数据，更多的训练步骤==更高的准确度，eg：在MNLI任务上，与具有相同批量大小的500K步相比，Bert base在1M（批量大小为128000字）上训练时的准确度提高了1%；&lt;/li&gt;
+  &lt;li&gt;Bert的双向方法（MLM）的收敛速度比从左到右的方法慢（因为每批中只有15%的单词被预测），但在少量预训练步骤后，双向训练仍然优于从左到右的训练&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/论文/bert 训练 step.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;参考文献&quot;&gt;参考文献&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.lyrn.ai/2018/11/07/explained-bert-state-of-the-art-language-model-for-nlp/&quot;&gt;1、BERT Explained&lt;/a&gt;: State of the art language model for NLP&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/95594311&quot;&gt;2、关于BERT的若干问题整理记录&lt;/a&gt;&lt;/p&gt;
+</description>
+        <pubDate>Sat, 01 Jan 2022 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2022/01/BERT/</link>
+        <guid isPermaLink="true">http://localhost:4000/2022/01/BERT/</guid>
+        
+        <category>论文</category>
+        
+        
+      </item>
+    
+      <item>
+        <title>NER谈古论今</title>
+        <description>&lt;head&gt;
+    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;h1 id=&quot;定义&quot;&gt;定义&lt;/h1&gt;
+
+&lt;p&gt;命名实体识别（NER）是自然语言处理领域的核心问题之一，他的目标是为了再一段文本中识别出特定类型的字段，eg：人名、地名等。从而应用到下游任务中。&lt;/p&gt;
+
+&lt;h1 id=&quot;标注类型&quot;&gt;标注类型&lt;/h1&gt;
+
+&lt;p&gt;常见的标注类型BIOES或者BIOS，因为NER识别的是特定的字段，这个字段的start标记为B-xx，结尾标记为E-xx或者I-xx（对应两种标注方式），中间的部分均用I-xx标记，如果出现单独的字为一个实体，那么用S-xx进行标记，其他非提取字段用O进行标注。实例如下：&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th&gt;我&lt;/th&gt;
+      &lt;th&gt;爱&lt;/th&gt;
+      &lt;th&gt;北&lt;/th&gt;
+      &lt;th&gt;京&lt;/th&gt;
+      &lt;th&gt;天&lt;/th&gt;
+      &lt;th&gt;安&lt;/th&gt;
+      &lt;th&gt;门&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;O&lt;/td&gt;
+      &lt;td&gt;O&lt;/td&gt;
+      &lt;td&gt;B-location&lt;/td&gt;
+      &lt;td&gt;I-location&lt;/td&gt;
+      &lt;td&gt;I-location&lt;/td&gt;
+      &lt;td&gt;I-location&lt;/td&gt;
+      &lt;td&gt;I-location&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;O&lt;/td&gt;
+      &lt;td&gt;O&lt;/td&gt;
+      &lt;td&gt;B-location&lt;/td&gt;
+      &lt;td&gt;I-location&lt;/td&gt;
+      &lt;td&gt;I-location&lt;/td&gt;
+      &lt;td&gt;I-location&lt;/td&gt;
+      &lt;td&gt;E-location&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;评测指标&quot;&gt;评测指标&lt;/h1&gt;
+
+&lt;p&gt;对于NER识别的评测一般需要保证完整的实体识别准确才行，也就是说不是根据每个字的标签去评测，而是根据完整的字段来进行统计评测。具体的指标和其他分类任务一样，也是准确召回等。&lt;/p&gt;
+
+&lt;h1 id=&quot;理论&quot;&gt;理论&lt;/h1&gt;
+
+&lt;h1 id=&quot;方法&quot;&gt;方法&lt;/h1&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;标准&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;LSTM+CRF&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;问题&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;标准成本昂贵&lt;/p&gt;
+
+  &lt;p&gt;泛化迁移能力不足&lt;/p&gt;
+
+  &lt;p&gt;可解释性不强&lt;/p&gt;
+
+  &lt;p&gt;计算资源&lt;/p&gt;
+
+  &lt;ul&gt;
+    &lt;li&gt;JD和CV描述形式不一样&lt;/li&gt;
+    &lt;li&gt;严谨性，简历内容要识别出能力词以及深层挖掘能力词（看起来并不是能力词，但是代表实际的某项能力），所以的深度挖掘词意&lt;/li&gt;
+    &lt;li&gt;不依赖NER，根据词典或者特定语句形式（规则）提出实体词，最后进行标准化（💡现在做的实体标准化是不是应该也是这个作用？）&lt;/li&gt;
+    &lt;li&gt;模型应该又轻又快，抛弃万能的bert系列&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;建议&lt;/code&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;不要对Bert模型进行蒸馏压缩&lt;/li&gt;
+  &lt;li&gt;NER是一个重底层任务（待补充）&lt;/li&gt;
+  &lt;li&gt;NER任务尽量不要引入嵌套实体，例如：&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python开发&lt;/code&gt;，模型识别出&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python开发&lt;/code&gt;标记为一个技能词，这时候就倾向于所有出现的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python开发&lt;/code&gt;都标记为技能词。但是如果模型能够在识别&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python开发&lt;/code&gt;的同时能将&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python&lt;/code&gt;标记为一种语言或者编程语言，那么所有出现的&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;[语言]开发&lt;/code&gt;都能够识别为技能词，这样模型就学到一种模式，并非单独一个词。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;**快速提升NER性能 **&lt;/p&gt;
+
+&lt;p&gt;——————————————————————————————————————————————————&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;垂直领域的词典+规则，词典不断积累，迭代，快速应急处理badcase， 通⽤领域，可以多种分词工具和多种句法短语⼯具进行融合来提取候选实体，并结合词典进行NER&lt;/p&gt;
+
+  &lt;p&gt;embedding层，引入丰富的char、bigram、词典、词性以及业务相关特征，垂直领域可以预训练一个领域相关字向量模型、词向量模型以及bigram模型和语言模型💡？，底层特征越丰富，差异化越大越好，不同视角的特征&lt;/p&gt;
+
+  &lt;p&gt;&lt;strong&gt;&lt;em&gt;如何构建引入词汇信息（词向量）的NER？&lt;/em&gt;&lt;/strong&gt; 我们知道中文NER通常是基于字符进行标注的，这是由于基于词汇标注存在分词误差问题。但词汇边界对于实体边界是很有用的，我们该怎么把蕴藏词汇信息的词向量“恰当”地引入到模型中呢？一种行之有效的方法就是&lt;strong&gt;信息无损的、引入词汇信息的NER方法&lt;/strong&gt;，我称之为&lt;strong&gt;词汇增强&lt;/strong&gt;，可参考《中文NER的正确打开方式：词汇增强方法总结》。&lt;strong&gt;&lt;em&gt;ACL2020的Simple-Lexicon&lt;/em&gt;&lt;/strong&gt;和&lt;strong&gt;&lt;em&gt;FLAT&lt;/em&gt;&lt;/strong&gt;两篇论文，不仅词汇增强模型十分轻量、而且可以比肩BERT的效果&lt;/p&gt;
+
+  &lt;p&gt;粗暴的方法将词向量引入到模型中，就是将词向量对齐到相应的字符，然后将字词向量进行混合，但这需要对原始文本进行分词（存在误差），&lt;strong&gt;性能提升通常是有限的&lt;/strong&gt;。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;——————————————————————————————————————————————————&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;词汇增强方式&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;主要分为两个方向&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Dynamic Architecture：设计一个动态框架，能够兼容词汇输入–&amp;gt; 结构融入词汇信息&lt;/li&gt;
+  &lt;li&gt;Adaptive Embedding：基于词汇信息，构建自适应Embedding–&amp;gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/词汇增强.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[1] &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1805.02023&quot;&gt;Lattice LSTM：Chinese NER Using Lattice LSTM（ACL2018）&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;中文词汇信息开山之作，通过词典匹配句子，得到一个Lattice的结构&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/Lattice.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lattice是一个有向无环图，词汇的开始和结束字符决定了其位置，Lattice LSTM融合了词汇信息到原生的LSTM中&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/Lattice_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lattice LSTM引入了一个word cell结构，对当前字符融合以该字符为结束的所有word信息，例如&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;店&lt;/code&gt;融合了&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;人和药店&lt;/code&gt;，&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;药店&lt;/code&gt;的信息。对于每个字符，Lattice LSTM采用注意力机制去融合个数可变的word cell单元，表达式为：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/lstm公式.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;主要区别在于&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;当前字符有词汇信息可以融入，则利用公式15，采用公式15，不利用上一时刻记忆状态$\color{blue}{c_{j-1}^c}$,如果没有则用原生的LSTM，这种方式提升了NER性能，但是缺点也比较明显，其中&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/1596638537931.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;集合D类似对&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;桥&lt;/code&gt;来说，有&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;大桥&lt;/code&gt;、&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;长江大桥&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;缺点&lt;/code&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;计算性能低下，不能batch并行，因为每个词增加的word cell数目不一样&lt;/p&gt;
+
+  &lt;p&gt;信息损失，字符只能获取以他结尾的词汇信息，无之前状态，另一个就是BiLSTM时前后向词汇信息不能共享&lt;/p&gt;
+
+  &lt;p&gt;可迁移性差&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;[2] &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//pdfs.semanticscholar.org/1698/d96c6fffee9ec969e07a58bab62cb4836614.pdf&quot;&gt;LR-CNN:CNN-Based Chinese NER with Lexicon Rethinking(IJCAI2019)&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/LRCNN.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lattice LSTM没有办法并行化，并且无法处理&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;词汇信息冲突问题&lt;/code&gt;，上图中，长可以匹配市长，长隆，得到不同的实体标签，对于LSTM结构，仅依靠前一步的信息输入、而不是利用全局信息，没法解决冲突问题。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/LRCNN_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;论文提出两种方法&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Lexicon-Based CNNs：采用CNN对字符特征进行编码，感受野为2提取Bi-gram特征，多层堆叠得到Multi-gram信息，同时采用注意力机制融入词汇信息&lt;/li&gt;
+  &lt;li&gt;Refining Networks with Lexicon Rethinking（ 用Lexicon重新思考完善网络 ）：由于上述提到的词汇信息冲突问题，LR-CNN采取rethinking机制增加feedback layer（反馈层）来调整词汇信息的权值： 具体地，将高层特征作为输入通过注意力模块调节每一层词汇特征分布。如上图，高层特征得到的 [广州市] 和 [长隆]会降低 [市长] 在输出特征中的权重分布。最终对每一个字符位置提取对应的调整词汇信息分布后的multi-gram特征，喂入CRF中解码。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;最终提速3.21倍，但是仍然计算复杂不具备迁移性&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[3] &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//www.aclweb.org/anthology/D19-1396.pdf&quot;&gt;CGN: Leverage Lexical Knowledge for Chinese Named Entity Recognition via Collaborative Graph Network（ EMNLP2019）&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;CGN：利用词汇知识通过协作图网络进行中文命名实体识别（EMNLP2019）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/CGN.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Lattice LSTM存在信息损失，特别是无法获得‘inside’的词汇信息，论文提出了基于协作的图网络，由编码层、图网络层、融合层、解码层组成，图网络层由三种不同的构建方式&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Word-Character Containing graph（C-graph）：字与字之间无连接，词与其inside的字之间有连接&lt;/li&gt;
+  &lt;li&gt;Word-Character Transition graph（T-graph）：相邻字符相连接，词与其前后字符连接&lt;/li&gt;
+  &lt;li&gt;Word-Character Lattice graph（L-graph）：相邻字符相连接，词与其开始字符相连&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;图网络层通过Graph Attention Network（GAN）进行特征提取，提取三种图网络的钱n个字符节点的特征：&lt;/p&gt;
+
+&lt;p&gt;$\color{blue}{Q_k=G_k[:,0:n],k\in{1,2,3}}$&lt;/p&gt;
+
+&lt;p&gt;特征融合则基于字符的上下文表征H与图网络表征加权融合：&lt;/p&gt;
+
+&lt;p&gt;$\color{blue}{R = W_1H+W_2Q_1+W_3Q_2+W_4Q_3}$&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[4] &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//www.aclweb.org/anthology/D19-1096.pdf&quot;&gt;LGN: A Lexicon-Based Graph Neural Network for Chinese NER(EMNLP2019)&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;LGN：面向中文NER的基于词典的图神经网络（EMNLP2019）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/LGN.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;论文与LR-CNN出发点类似，Lattice LSTM这种RNN结构仅仅依靠前一步的信息输入，而不是利用全局信息，如上图所示：字符 [流]可以匹配到词汇 [河流] 和 [流经]两个词汇信息，但Lattice LSTM却只能利用 [河流] ；字符 [度]只能看到前序信息，不能充分利用 [印度河] 信息，从而造成标注冲突问题 。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/LGN_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;论文通过采取 lexicon-based graph neural network (LGN)来解决上述问题。如上图所示，将每一个字符作为节点，匹配到的词汇信息构成边。通过图结构实现局部信息的聚合，并增加全局节点进行全局信息融入。聚合方式采取Multi-Head Attention&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;[5] &lt;a href=&quot;https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2004.11795.pdf&quot;&gt;FLAT: Chinese NER Using Flat-Lattice Transformer（ACL2020）&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Lattice-LSTM和LR-CNN采取的RNN和CNN结构无法捕捉长距离依赖，而动态的Lattice结构不能充分进行GPU并行&lt;/p&gt;
+
+  &lt;p&gt;CGN和LGN采取的图网络虽然可以捕捉对于NER任务至关重要的顺序结构，但这两者之间的gap是不可忽略的。其次，这类图网络通常需要RNN作为底层编码器来捕捉顺序性，通常需要复杂的模型结构。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/FLAT.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;众所周知，Transformer采取全连接的自注意力机制可以很好捕捉长距离依赖，由于自注意力机制对位置是无偏的，因此Transformer引入位置向量来保持位置信息。受到位置向量表征的启发，这篇论文提出的FLAT设计了一种巧妙position encoding来融合Lattice 结构，具体地，如上图所示，对于每一个字符和词汇都构建两个head position encoding 和 tail position encoding，可以证明，这种方式可以重构原有的Lattice结构。也正是由于此，FLAT可以直接建模字符与所有匹配的词汇信息间的交互，例如，字符[药]可以匹配词汇[人和药店]和[药店]。&lt;/p&gt;
+
+&lt;p&gt;因此，我们可以将Lattice结构展平，将其从一个有向无环图展平为一个平面的Flat-Lattice Transformer结构，由多个span构成：每个字符的head和tail是相同的，每个词汇的head和tail是skipped的。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/FLAT_2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;在知乎专栏文章《&lt;a href=&quot;https://zhuanlan.zhihu.com/p/137315695&quot;&gt;如何解决Transformer在NER任务中效果不佳的问题？&lt;/a&gt;》，我们介绍了对于Tranformer结构，绝对位置编码并不适用于NER任务。因此，FLAT这篇论文采取XLNet论文中提出相对位置编码计算attention score：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/FLAT-Attention-1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;论文提出四种相对距离表示$\color{blue}{x_i}$和$\color{blue}{x_j}$之间的关系，同时也考虑字符和词汇之间的关系：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/FLAT-Attention-2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;$\color{blue}{d_{ij}^{(hh)}}$表示$\color{blue}{x_i}$的head到$\color{blue}{x_j}$的tain距离，其余类似。相对位置encoding为：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/FLAT-Attention-3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;（圆圈加号）表示级联，四种距离编码通过简单的非线性变换得到。其中&lt;img src=&quot;https://www.zhihu.com/equation?tex=p_d&quot; alt=&quot;[公式]&quot; /&gt;的计算方式与vanilla Transformer相同，&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/1596643537145.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;综上，FLAT采取这种全连接自注意力结构，可以直接字符与其所匹配词汇间的交互，同时捕捉长距离依赖。如果将字符与词汇间的attention进行masked，性能下降明显，可见引入词汇信息对于中文NER 的重要性。此外，相关实验表明，&lt;strong&gt;FLAT有效的原因是&lt;/strong&gt;：新的相对位置encoding有利于定位实体span，而引入词汇的word embedding有利于实体type的分类。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;解决NER实体span过长&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;——————————————————————————————————————————————————&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;如果NER任务中某一类实体span比较长，比如咱们提出的能力词，有很多很长&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;软件开发技术方案编写&lt;/code&gt;，直接采取CRF解码可能会导致很多连续的实体span断裂。除了加入规则进行修正外，这时候也可尝试引入&lt;strong&gt;指针网络+CRF&lt;/strong&gt;构建&lt;strong&gt;多任务学习&lt;/strong&gt;（指针网络会更容易捕捉较长的span，不过指针网络的收敛是较慢的，可以试着调节学习率）。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;——————————————————————————————————————————————————&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;如何缓解NER标注数据的噪声问题&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;——————————————————————————————————————————————————&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;实际中，我们常常会遇到NER数据可能存在标注质量问题，也许是标注规范就不合理，正常的情况下只是存在一些小规模的噪声。一种简单地有效的方式就是对训练集进行交叉验证，然后人工去清洗这些“脏数据”。当然也可以将noisy label learning应用于NER任务，惩罚那些噪音大的样本loss权重&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;——————————————————————————————————————————————————&lt;/p&gt;
+
+&lt;h2 id=&quot;嵌套命名实体识别&quot;&gt;嵌套命名实体识别&lt;/h2&gt;
+
+&lt;p&gt;序列标准NER问题简单两步&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;选择有效的标注Schema
+    &lt;ul&gt;
+      &lt;li&gt;BIO&lt;/li&gt;
+      &lt;li&gt;BIOS&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;模型选择
+    &lt;ul&gt;
+      &lt;li&gt;CNN/Bi-LSTM/BERT等&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;解决方法&lt;/code&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python开发&lt;/code&gt; 中的 &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Python&lt;/code&gt; 同时属于B-语言，也属于B-技能&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;strong&gt;将NER的分类任务从单标签编程多标签&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Schema不变，模型也不变，将输出从单标签转变为多标签&lt;/p&gt;
+
+&lt;p&gt;1、Schema不变，训练集label从one-hot编码形式变成指定类型的均匀分布💡？，训练时将损失函数改为BCE或KL-divergence；推理时给定一个hard threshold，超过这个阈值的都被预测出来，当作这个token的类。&lt;em&gt;阈值难以设定，难以泛化&lt;/em&gt;&lt;/p&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;2、修改Schema，将共同出现的类别两两组合，构造新的标签，B-语言&lt;/td&gt;
+      &lt;td&gt;技能，最后仍然是一个单分类。&lt;em&gt;标签增加，分布稀疏难以学习，预测结果不具有唯一性&lt;/em&gt;&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h1 id=&quot;总结&quot;&gt;总结&lt;/h1&gt;
+
+&lt;h1 id=&quot;参考文献&quot;&gt;参考文献&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.its404.com/article/GJ_0418/120258136&quot;&gt;1、命名实体识别（NER）综述_SunnyGJing’s blog-程序员ITS404&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzI4MDYzNzg4Mw==&amp;amp;mid=2247505310&amp;amp;idx=2&amp;amp;sn=616b29f1d3996ae5b335e4eb1069073d&amp;amp;chksm=ebb7ed4adcc0645ce7c5970d274f7b2f2c9e85f748a42ca2c992f0357246cb65e04797b169ff&amp;amp;mpshare=1&amp;amp;scene=24&amp;amp;srcid=07227mK0wRN6V8m2kSKZvrUF&amp;amp;sharer_sharetime=1595381490241&amp;amp;sharer_shareid=5351471bb805db262b0658602c8a4f96#rd&quot;&gt;2、工业界求解NER问题的12条黄金法则&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/142615620&quot;&gt;3、中文NER的正确打开方式: 词汇增强方法总结 (从Lattice LSTM到FLAT)&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://zhuanlan.zhihu.com/p/126347862&quot;&gt;4、浅谈嵌套命名实体识别（Nested NER）&lt;/a&gt;&lt;/p&gt;
+
+</description>
+        <pubDate>Sun, 12 Dec 2021 00:00:00 +0800</pubDate>
+        <link>http://localhost:4000/2021/12/NER%E8%B0%88%E5%8F%A4%E8%AE%BA%E4%BB%8A/</link>
+        <guid isPermaLink="true">http://localhost:4000/2021/12/NER%E8%B0%88%E5%8F%A4%E8%AE%BA%E4%BB%8A/</guid>
+        
+        <category>自然语言处理</category>
+        
+        
+      </item>
     
       <item>
         <title>Transformer探索</title>
@@ -1210,1067 +2158,6 @@ Extraction as Multi-Turn Question Answering》类似。
         <guid isPermaLink="true">http://localhost:4000/2021/11/%E4%BF%A1%E6%81%AF%E6%8A%BD%E5%8F%96-seq2seq_DGCNN)/</guid>
         
         <category>自然语言处理</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>seq2seq 综述</title>
-        <description>&lt;head&gt;
-    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    &lt;/script&gt;
-&lt;/head&gt;
-
-&lt;p&gt;seq2seq是一种循环神经网络的变种，包括编码器和解码器两部分，可用于机器翻译、对话系统、自动摘要&lt;/p&gt;
-
-&lt;h1 id=&quot;常见seq2seq结构&quot;&gt;常见seq2seq结构&lt;/h1&gt;
-
-&lt;p&gt;seq2seq是一种重要的RNN模型，也称为Encoder-Decoder模型，可以理解为 N&lt;em&gt;M&lt;/em&gt;N&lt;em&gt;∗&lt;/em&gt;M* 的模型，模型包含两部分，Encoder部分编码序列的信息，将任意长度的信息编码到一个向量 c&lt;em&gt;c&lt;/em&gt; 里，而Decoder部分通过向量 c&lt;em&gt;c&lt;/em&gt; 将信息解码，并输出序列，常见的结构如下几种：&lt;/p&gt;
-
-&lt;p&gt;第一种 seq2seq结构&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/seq2seq1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;第二种 seq2seq结构&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/seq2seq2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;第三种 seq2seq结构&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/seq2seq3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;encoder&quot;&gt;Encoder&lt;/h2&gt;
-
-&lt;p&gt;· 这三种模型结构的主要区别在于Decoder上，Encoder是一样的，Encoder部分的RNN通过接受输入 $X$ ，通过RNN编码所有信息到$c$（所有神经元最后的输出，不要中间神经元的输出）。&lt;/p&gt;
-
-&lt;h2 id=&quot;decoder&quot;&gt;Decoder&lt;/h2&gt;
-
-&lt;p&gt;· 第一种Decoder，结构简单，将Encoder编码信息$c$作为Decoder解码隐层的初始输入，后续神经元接受上一神经元的隐层输出状态$h`$&lt;/p&gt;
-
-&lt;p&gt;· 第二种Decoder，将Encoder编码信息 $c$作为Decoder解码隐层每个神经元的输入，而不在作为隐层的初始输入；&lt;/p&gt;
-
-&lt;p&gt;·  第三种Decoder，再第二种的基础上，每个神经元的输入有了两部分，一部分是Encoder编码信息 $c$，另一部分是Decoder上个神经元的输出，两部分通过不同的权重矩阵来作为当前神经元的输入。&lt;/p&gt;
-
-&lt;h1 id=&quot;使用trick&quot;&gt;使用trick&lt;/h1&gt;
-
-&lt;h2 id=&quot;attention&quot;&gt;Attention&lt;/h2&gt;
-
-&lt;p&gt;seq2seq模型中，Encoder总是将源句子的信息编码到一个固定长度的上下文 $c$ 中，然后Decoder的过程中 $c$总是不变的，这样就存在几个问题：&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;当源句子较长时，很难用一个定长的向量 c&lt;em&gt;c&lt;/em&gt; 表示完所有的信息；&lt;/li&gt;
-  &lt;li&gt;RNN存在梯度小时的问题，只使用最后一个神经元得到的向量 c&lt;em&gt;c&lt;/em&gt; 效果不理想；&lt;/li&gt;
-  &lt;li&gt;与人类阅读时的注意力方式不同，人类总是把注意力放在当前句子上&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Attention（注意力机制），是一种将模型注意力放在当前翻译单词上的一种机制。例如翻译“I have a cat”，翻译我时注意力在”I“上，翻译猫时注意力在”cat“上。&lt;/p&gt;
-
-&lt;p&gt;使用Attention后，Decoder的输入就不是固定的上下文向量 $c$了，而是根据当前翻译的信息，计算当前  $c$。&lt;/p&gt;
-
-&lt;p&gt;Attention&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/attention.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Attention需要保留Encoder每一个神经元的隐藏层向量 $h$ ，然后Decoder的第$t$个神经元要根据上一个神经元的隐藏层向量 $h`_{t-1}$计算当前状态与Encoder每一个神经元的相关性 $e_t$。 $e_t$是一个N维的向量（Encoder神经元个数维N），若$e_t$第$i$维越大，则说明当前节点与Encoder第$i$个神经元的相关性越大。$e_t$的计算方式有很多，即相关性系数的计算函数$a$有很多种：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/attention_scal.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;上面得到相关性向量 $e_t$后，需要进行归一化，使用 softmax 归一化。然后用归一化后的系数融合 Encoder 的多个隐藏层向量得到 Decoder 当前神经元的上下文向量 $c_t$：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/attention_scal_softmax.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Attention 计算上下文$c$&lt;/p&gt;
-
-&lt;p&gt;总体流程图&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/attention_all.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;teacher-forcing&quot;&gt;Teacher Forcing&lt;/h2&gt;
-
-&lt;p&gt;Teacher Forcing用于训练阶段，主要针对上面第三种Decoder模型来说，第三种Decoder模型输入包含了上一时刻的输出神经元 $y’$，这样就会有个问题，如果上一时刻$y’$是错误的，则后面的神经元也会很容易错误，导致错误传递下去。&lt;/p&gt;
-
-&lt;p&gt;Teacher Forcing在一定程度上可以解决这个问题，在训练阶段，Decoder模型每个神经元接受的输入是正确的label，而并未上一时刻神经元的输出，对比如下：&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/teach_1.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;不适用 Teacher Forcing&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/posts/自然语言处理/teach_2.png&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;使用Teacher Forcing&lt;/p&gt;
-
-&lt;h2 id=&quot;beam-search&quot;&gt;Beam Search&lt;/h2&gt;
-
-&lt;p&gt;Beam Search 方法不用于训练的过程，而是用在测试的。在每一个神经元中，我们都选取当前输出概率值最大的 &lt;strong&gt;top k&lt;/strong&gt; 个输出传递到下一个神经元。下一个神经元分别用这 k 个输出，计算出 L 个单词的概率 (L 为词汇表大小)，然后在 kL 个结果中得到 &lt;strong&gt;top k&lt;/strong&gt; 个最大的输出，重复这一步骤。&lt;/p&gt;
-
-&lt;h1 id=&quot;参考&quot;&gt;参考&lt;/h1&gt;
-
-&lt;p&gt;https://www.jianshu.com/p/80436483b13b&lt;/p&gt;
-
-&lt;p&gt;https://towardsdatascience.com/attn-illustrated-attention-5ec4ad276ee3&lt;/p&gt;
-</description>
-        <pubDate>Sun, 14 Nov 2021 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2021/11/seq2seq/</link>
-        <guid isPermaLink="true">http://localhost:4000/2021/11/seq2seq/</guid>
-        
-        <category>自然语言处理</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>百问机器学习</title>
-        <description>&lt;head&gt;
-    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    &lt;/script&gt;
-&lt;/head&gt;
-
-&lt;h2 id=&quot;一特征工程&quot;&gt;一、特征工程&lt;/h2&gt;
-
-&lt;p&gt;巧妇难为无米之炊&lt;/p&gt;
-
-&lt;h3 id=&quot;1为什么归一化&quot;&gt;1、为什么归一化&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;归一化能够更快的找到迭代优化的方向，因此在实际中通过梯度下降求解的模型通常是需要归一化，eg：线性回归、逻辑回归、支持向量机、神经网络等，决策模型则不适用，eg：C4.5，决策树节点分裂主要依靠数据集D关于特征x的信息增益比，信息增益比与特征是否经过归一化是无关的。&lt;/li&gt;
-  &lt;li&gt;常用的归一化方法有线性函数归一化（最大最小值归一化），零均值归一化$z=\frac{x-\mu}{标准差}$&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2类别特征数据预处理&quot;&gt;2、类别特征数据预处理&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;类别特征主要指性别（男女）、血腥（A、B、AB、O）等&lt;/li&gt;
-  &lt;li&gt;主要方法：序号编码、独热编码、二进制编码&lt;/li&gt;
-  &lt;li&gt;序号编码：分桶，成绩高中低&lt;/li&gt;
-  &lt;li&gt;独热编码：ont-hot编码
-    &lt;ul&gt;
-      &lt;li&gt;稀疏，可以用稀疏向量来节省空间&lt;/li&gt;
-      &lt;li&gt;配合特征选择来降低维度。高维度特征会带来几方面的问题。一是在K 近邻算法中，高维空间下两点之间的距离很难得到有效的衡量；二是在逻辑回归模型中，参数的数量会随着维度的增高而增加，容易引起过拟合问题；三是通常只有部分维度是对分类、预测有帮助，因此可以考虑配合特征选择来降低维度&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;二进制编码：类别特征的个数最少用几位的二级制可以表示，转换成对应的二级制编码&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;3组合特征如何处理高维组合特征&quot;&gt;3、组合特征？如何处理高维组合特征？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;组合特征就是对当前的特征两两（nn）组合成为一个新的特征&lt;/li&gt;
-  &lt;li&gt;高维组合特征不一定有意义，并且有可能使得参数变多造成过拟合，因此可以通过矩阵分解的方式进行降维&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;4怎么有效的找到组合特征&quot;&gt;4、怎么有效的找到组合特征&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;利用决策树，决策树从根节点到叶子节点，路径上的组合特征即可以看成一种路径结合方式&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;5有那些文本表示模型他们各有什么优缺点&quot;&gt;5、有那些文本表示模型？他们各有什么优缺点？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;词袋模型和N-gram模型&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;
-        &lt;p&gt;词袋模型就是将一段文本看成一个袋子，忽略了每个词出现的顺序，一般采用TF-IDF计算权重 TF−IDF(t,d)=TF(t,d)∗IDF(t)TF-IDF(t,d) = TF(t,d)*IDF(t)TF−IDF(t,d)=TF(t,d)∗IDF(t)&lt;/p&gt;
-
-        &lt;p&gt;其中TF(t,d)为单词t再文档d中出现的频率，IDF(t)是逆文档频率，衡量单词t对表达语义所起的重要性，表示如下 IDF(t)=log文章总数包含单词t的文章总数+1IDF(t) = log^\frac{文章总数}{包含单词t的文章总数+1}IDF(t)=log包含单词t的文章总数+1文章总数&lt;/p&gt;
-      &lt;/li&gt;
-      &lt;li&gt;
-        &lt;p&gt;缺点：natural language processing（自然语言处理），分词后三个词表达的含义与之大相径庭。&lt;/p&gt;
-      &lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;主题模型&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;词嵌入和深度学习模型&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;词嵌入是一种词向量化的统称，核心思想就是将每个映射到低维空间K上的一个稠密向量，K上每一维可以看作是一个隐含的主题，只不过不像主题模型那么直观。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;6word2vec是如何工作的它和lda有什么区别和联系&quot;&gt;6、Word2Vec是如何工作的？它和LDA有什么区别和联系？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Word2Vec 见&lt;a href=&quot;https://www.cnblogs.com/monkeyT/p/12217490.html&quot;&gt;鄙人博客&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;不同
-    &lt;ul&gt;
-      &lt;li&gt;LDA是利用文档中单词的共现关系来对单词按主题聚类，可以理解为对“文档－单词”进行矩阵分解，得到“文档－主题”和“主题－单词”两个概率分布；而Word2Vec 是利用“文档-单词”矩阵学习上下文，因此Word2Vec融入了很多的上下文信息，因此两个词对应的词向量就比较相似了。&lt;/li&gt;
-      &lt;li&gt;最大的不同在于两者之间的模型本身，主题模型是一种基于概率图模型的生成式模型，而Word2Vec则利用神经网络最后映射到稠密向量。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;7图像任务中训练数据不足会带来什么问题如何缓解数据量不足带来的问题&quot;&gt;7、图像任务中，训练数据不足会带来什么问题？如何缓解数据量不足带来的问题？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;模型所能提供的信息一般来于两个方面，一个是训练数据中蕴含的信息；二十模型在形成过程中（包括构造、学习、推理等）人们提供的先验信息。&lt;/li&gt;
-  &lt;li&gt;训练数据不足容易导致过拟合，从两方面进行改进，
-    &lt;ul&gt;
-      &lt;li&gt;一方面简化模型，比如从非线性模型改为线性模型，或者添加约束条件（L1、L2）dropout等，&lt;/li&gt;
-      &lt;li&gt;另一方面就是增加数据，图像数据增加数据技术相对成熟，旋转、偏移、高斯噪声、颜色对比亮度等变换；自然语言处理中可以通过随机删除、替换以及利用深度模型等进行数据扩充；迁移学习等&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;二模型评估&quot;&gt;二、模型评估&lt;/h2&gt;
-
-&lt;p&gt;没有测量就没有科学&lt;/p&gt;
-
-&lt;h3 id=&quot;8准确率的局限性&quot;&gt;8、准确率的局限性&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;首先从数据出发，数据是否存在样本严重不平衡，在此数据下模型的准确率就不能衡量模型整体的指标，可以考虑采用平均准确率&lt;/li&gt;
-  &lt;li&gt;其次考虑模型是否存在过拟合或者欠拟合，这时候模型的准确率就不能代替实际效果&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;9精确率和召回率的权衡&quot;&gt;9、精确率和召回率的权衡&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;精确度是识别的个数中正确的占比，召回率是识别正确的占应该识别正确的总数的占比，如果只看精确度不看召回，存在线上搜索结果搜索显示不全，同样的只看召回存在召回准确性的问题&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;通常用 f1-score 来对两者进行权衡，即两者的调和平均值，计算如下$f1 = \frac{2&lt;em&gt;precision&lt;/em&gt;recall}{precision+recall}$&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;10平方根误差的意外&quot;&gt;10、平方根误差的“意外”&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;平方根误差一般用来衡量回归问题，计算公式如下$RMSE=\sqrt{\frac{\sum_{i=1}^n(y_i-\hat y_i)^2}{n}}$&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;从公式可以看出，RMSE可以衡量y的真实值和预测值之间的差距，但如果样本中存在离群点时，即使实际准确性较高，但是RMSE可能会存在较大的情况，这时候平方根误差就出现了意外，在实际中考虑两方面，一方面这些离群点是否是噪声，那么在数据处理阶段就应该踢除，另一方面如果不是噪声，那么模型应该在拟合的时候就考虑这些离群点。第一种情况时可以考虑换其他误差函数衡量，例如MPAE（平均绝对百分比误差），计算公式如下 $MPAE = \sum_{i=1}^n|\frac{y_i-\hat y_i}{y_i}|*\frac{100}{n}$&lt;/p&gt;
-
-&lt;p&gt;相比RMSE，MPAE相当于把每个点的误差都进行了归一化，这样就降低了离群点带来的绝对误差的影响；第二种情况就是一个很大的场景了，不展开叙述&lt;/p&gt;
-
-&lt;h3 id=&quot;11什么是roc曲线&quot;&gt;11、什么是ROC曲线&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;ROC曲线全称受试者工作曲线，横坐标为假阳性率（FPR），纵坐标为真阳性率（TPR），计算公式如下 $FRP=\frac{FP}{N},TPR=\frac{TP}{P}$&lt;/p&gt;
-
-    &lt;p&gt;简单点说FPR就是所有负类中识别为正类的占比，TPR就是所有正类中识别为正类的占比&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;12如何绘制roc曲线&quot;&gt;12、如何绘制ROC曲线&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;样本序号&lt;/th&gt;
-      &lt;th&gt;真实标签&lt;/th&gt;
-      &lt;th&gt;模型输出概率&lt;/th&gt;
-      &lt;th&gt;TPR&lt;/th&gt;
-      &lt;th&gt;FPR&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.9&lt;/td&gt;
-      &lt;td&gt;1/10&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;2&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.8&lt;/td&gt;
-      &lt;td&gt;2/10&lt;/td&gt;
-      &lt;td&gt;0&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;3&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.7&lt;/td&gt;
-      &lt;td&gt;2/10&lt;/td&gt;
-      &lt;td&gt;1/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;4&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.6&lt;/td&gt;
-      &lt;td&gt;3/10&lt;/td&gt;
-      &lt;td&gt;1/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;5&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.55&lt;/td&gt;
-      &lt;td&gt;4/10&lt;/td&gt;
-      &lt;td&gt;1/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;6&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.54&lt;/td&gt;
-      &lt;td&gt;5/10&lt;/td&gt;
-      &lt;td&gt;1/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;7&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.53&lt;/td&gt;
-      &lt;td&gt;5/10&lt;/td&gt;
-      &lt;td&gt;2/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;8&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.52&lt;/td&gt;
-      &lt;td&gt;5/10&lt;/td&gt;
-      &lt;td&gt;3/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;9&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.51&lt;/td&gt;
-      &lt;td&gt;6/10&lt;/td&gt;
-      &lt;td&gt;3/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;10&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.505&lt;/td&gt;
-      &lt;td&gt;6/10&lt;/td&gt;
-      &lt;td&gt;4/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;11&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.4&lt;/td&gt;
-      &lt;td&gt;7/10&lt;/td&gt;
-      &lt;td&gt;4/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;12&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.39&lt;/td&gt;
-      &lt;td&gt;7/10&lt;/td&gt;
-      &lt;td&gt;5/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;13&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.38&lt;/td&gt;
-      &lt;td&gt;8/10&lt;/td&gt;
-      &lt;td&gt;5/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;14&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.37&lt;/td&gt;
-      &lt;td&gt;8/10&lt;/td&gt;
-      &lt;td&gt;6/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;15&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.36&lt;/td&gt;
-      &lt;td&gt;8/10&lt;/td&gt;
-      &lt;td&gt;7/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;16&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.35&lt;/td&gt;
-      &lt;td&gt;8/10&lt;/td&gt;
-      &lt;td&gt;8/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;17&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.34&lt;/td&gt;
-      &lt;td&gt;9/10&lt;/td&gt;
-      &lt;td&gt;8/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;18&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.33&lt;/td&gt;
-      &lt;td&gt;9/10&lt;/td&gt;
-      &lt;td&gt;9/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;19&lt;/td&gt;
-      &lt;td&gt;p&lt;/td&gt;
-      &lt;td&gt;0.30&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;9/10&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;20&lt;/td&gt;
-      &lt;td&gt;n&lt;/td&gt;
-      &lt;td&gt;0.1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-      &lt;td&gt;1&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;h3 id=&quot;13如何计算auc&quot;&gt;13、如何计算AUC&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;AUC是ROC曲线下方面积的大小，一般对横轴做积分即可，AUC的取值范围一般在[0.5-1]之间，原因是ROC曲线总在y=x之上，如果在下方，则把p换成1-p即可以得到一个更好的分类器&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;14roc曲线相比p-r曲线有什么特点&quot;&gt;14、ROC曲线相比P-R曲线有什么特点&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;ROC曲线有一个特点是当正负样本的分布发生变化（正负样本比例1/1000–&amp;gt; 1/10000）时，ROC曲线的形状能够基本保持不变，而P-R曲线的形状一般会发生较剧烈的变化，这就是的ROC曲线能尽量降低不同测试集带来的干扰，更加客观地衡量模型本身的性能&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;15结合你的学习和研究经历探讨为什么在一些场景中要使用余弦相似度而不-是欧氏距离&quot;&gt;15、结合你的学习和研究经历，探讨为什么在一些场景中要使用余弦相似度而不 是欧氏距离？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;总体来说，欧氏距离体现数值上的绝对差异，而余弦距离体现方向上的相对差异。
-    &lt;ul&gt;
-      &lt;li&gt;1）例如，统计两部剧的用户观看行为，用户A的观看向量为(0,1)，用户B为(1,0)；此时二者的余弦距很大，而欧氏距离很小；我们分析两个用户对于不同视频的偏好，更关注相对差异，显然应当使用余弦距离。&lt;/li&gt;
-      &lt;li&gt;2）而当我们分析用户活跃度，以登陆次数(单位：次)和平均观看时长(单：分钟)作为特征时，余弦距离会认为(1,10)、(10,100)两个用户距离很近；但显然这两个用户活跃度是有着极大差异的，此时我们更关注数值绝对差异，应当使用欧氏距离。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;余弦相似度的取值范围是[−1,1]， 相同的两个向量之间的相似度为1。如果希望得到类似于距离的表示，将1减去余 弦相似度即为余弦距离。因此，余弦距离的取值范围为[0,2]，相同的两个向量余 弦距离为0，空间余弦角度在0-90°，余弦相似度在1-0，余弦距离在0-1，因此我们在使用词向量计算余弦距离时也在0-1，越小越相似&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;16在对模型进行过充分的离线评估之后为什么还要进行在线ab测试&quot;&gt;16、在对模型进行过充分的离线评估之后，为什么还要进行在线A/B测试？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;离线评估无法完全消除模型过拟合的影响，所以离线评估无法代替线上评估&lt;/li&gt;
-  &lt;li&gt;离线评估无法完全还原线上工程环境&lt;/li&gt;
-  &lt;li&gt;线上系统的某些商业指标在离线评估中无法计算，eg：点击率等&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;17如何进行线上-ab-测试&quot;&gt;17、如何进行线上 A/B 测试？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;A/B测试主要手段是通过对用户分桶，即将用户分成实验组和对照组，对实验组用新模型，对照组用旧模型，在分桶中注意样本独立性和采样方式的无偏性。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;18如何划分实验组和对照组&quot;&gt;18、如何划分实验组和对照组&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;假设我们系统中对A国的用户替换了推荐模型，再上线时希望对比实验组和对照组的结果，那么如何划分实验组和对照组；由于我们是对A国的用户推荐替换模型，因此我们实验组和对照组都应该是A国用户，并且分的时候要注意独立和无偏，而不能混进其他类型的用户进行对照，一方面会稀释我们的结果，另一方面也有可能会导致我们对比不准确&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;19在模型评估过程中有哪些主要的验证方法它们的优缺点是什么&quot;&gt;19、在模型评估过程中，有哪些主要的验证方法，它们的优缺点是什么?&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;holdout方法：模型数据按照70%-30%分为训练集和测试集，70%的数据用来训练，30%的数据用来测试，这就存在一个问题，当数据切分不均匀时，会导致测试集评估结果和训练集存在和大的gap，因此提出下面的方法&lt;/li&gt;
-  &lt;li&gt;k-fold交叉验证：数据集分为k份，每次留一份进行测试，其他用来训练，最后k次测试的平均结果作为模型结果，缺点也很明显，时间增加很多，当数据很大时会很耗费时间，当数据较少时有不适用，因此提出下面的方法&lt;/li&gt;
-  &lt;li&gt;自助法：当数据较少时我们对数据（n）进行又放回的抽样(n)次，然后用没抽样到的样本进行测试&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;20在自助法的采样过程中对n个样本进行n次自助抽样当n趋于无穷大时-最终有多少数据从未被选择过&quot;&gt;20、在自助法的采样过程中，对n个样本进行n次自助抽样，当n趋于无穷大时， 最终有多少数据从未被选择过？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;1/e，因此样本很大时，大约有36.8%的样本从未被选择过，可作为验证集&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;21超参数有那些调优方法&quot;&gt;21、超参数有那些调优方法？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;网格搜索
-    &lt;ul&gt;
-      &lt;li&gt;通过搜索查找范围所有点来确定最优点，这里所有点其实是以较小的步长进行搜索，问题是非常消耗计算资源和时间，因此再使用的时候开始会以较大的步长进行搜索，找到最优点再以小步幅进行搜索，但一般目标函数是非凸优化问题，所以可能会错过全局最优值&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;随机搜索
-    &lt;ul&gt;
-      &lt;li&gt;在搜索范围内随机搜索点，理论上只要样本点足够多，那么通过随机采样就能找到最优点，随机搜索一般比网格搜索快一些，但是也没法保证得到最优点&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;贝叶斯优化算法
-    &lt;ul&gt;
-      &lt;li&gt;贝叶斯优化算法在寻找最优最值参数时，采用了与网格搜索、随机搜索完全 不同的方法。网格搜索和随机搜索在测试一个新点时，会忽略前一个点的信息； 而贝叶斯优化算法则充分利用了之前的信息。贝叶斯优化算法通过对目标函数形 状进行学习，找到使目标函数向全局最优值提升的参数。具体来说，它学习目标 函数形状的方法是，首先根据先验分布，假设一个搜集函数；然后，每一次使用 新的采样点来测试目标函数时，利用这个信息来更新目标函数的先验分布；最 后，算法测试由后验分布给出的全局最值最可能出现的位置的点。对于贝叶斯优 化算法，有一个需要注意的地方，一旦找到了一个局部最优值，它会在该区域不 断采样，所以很容易陷入局部最优值。为了弥补这个缺陷，贝叶斯优化算法会在 探索和利用之间找到一个平衡点，“探索”就是在还未取样的区域获取采样点； 而“利用”则是根据后验分布在最可能出现全局最值的区域进行采样。&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;22在模型评估过程中过拟合和欠拟合具体是指什么现象&quot;&gt;22、在模型评估过程中，过拟合和欠拟合具体是指什么现象？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过拟合
-    &lt;ul&gt;
-      &lt;li&gt;模型在训练集上表现良好，测试集上表现很差&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;欠拟合
-    &lt;ul&gt;
-      &lt;li&gt;模型在训练集和测试集上表现都不好&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;23能否说出几种降低过拟合和欠拟合风险的方法&quot;&gt;23、能否说出几种降低过拟合和欠拟合风险的方法？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过拟合直观解释，再对训练数据上进行拟合时，需要照顾每个点，从而导致拟合函数波动大，即方差大。&lt;/li&gt;
-  &lt;li&gt;误差图判断过拟合还是欠拟合：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;模型再训练集与测试集上误差均很大，则说明模型bias很大，欠拟合&lt;/p&gt;
-
-  &lt;p&gt;训练集和测试集误差之间有很大的Gap，则说明Variance很大，过拟合&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;欠拟合解决方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;增加新的特征，考虑加入组合特征、高次特征，来增大假设空间&lt;/li&gt;
-    &lt;li&gt;尝试非线性模型，比如SVM、决策树、DNN等模型&lt;/li&gt;
-    &lt;li&gt;有正则项则尝试降低正则项参数\lambda&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过拟合解决方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;
-      &lt;p&gt;交叉验证，通过交叉验证得到最优的模型&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;特征选择，减少特征数或者使用较少的特征组合，对于区间化离散特征，增大划分的空间&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;正则化，常用的有L_1,L_2正则，而且L_1正则还可以自动进行特征选择&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;如果有正则项考虑增大正则项参数\lambda&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;增加训练数据可以有效的避免过拟合&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;Bagging，将多个弱学习器Bagging一下效果会好很多，比如随机森林&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;DNN中常用的方法&lt;/p&gt;
-
-      &lt;ul&gt;
-        &lt;li&gt;
-          &lt;p&gt;早停。本质还是交叉验证策略，选择合适的训练次数，避免训练的网络过度拟合训练数据&lt;/p&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;集成学习策略。利用Bagging思路来正则化，首先对原始的m个训练样本进行又放回的随机采样，构建N组m个样本的数据集，然后分别用N组数据训练DNN，即得到N个DNN模型的ｗ，ｂ参数组合，最后对N个DNN模型的输出用加权平均法或者投票法决定最终输出。缺点就是参数增加了N倍，导致训练花费更多的时间和空间，因此N一般不能太多，例如5-10个。&lt;/p&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;Dropout策略。&lt;/p&gt;
-
-          &lt;blockquote&gt;
-            &lt;p&gt;训练的时候一一定的概率p让神经元失活，类似于Bagging策略，测试时所有神经元都参与，但是在其输出上乘以1-p.&lt;/p&gt;
-          &lt;/blockquote&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;simpler model structure（简化模型）&lt;/p&gt;
-
-          &lt;blockquote&gt;
-            &lt;p&gt;简单模型拟合复杂数据时，导致模型很难拟合数据的真实分布，这边是模型欠拟合了，同样的，复杂模型拟合简单数据，会导致数据的噪声也被拟合了，导致模型再训练集上效果非常好，但泛化性能很差。&lt;/p&gt;
-          &lt;/blockquote&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;regularization（正则化）&lt;/p&gt;
-
-          &lt;ul&gt;
-            &lt;li&gt;
-              &lt;p&gt;$L_1$会产生稀疏解，&lt;/p&gt;
-            &lt;/li&gt;
-            &lt;li&gt;$L_2$正则会产生较小的解，&lt;/li&gt;
-            &lt;li&gt;假设均误差损失函数为$J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}||a^L-y||_2^2$;&lt;/li&gt;
-            &lt;li&gt;$L_2$通常只针对稀疏矩阵w，而不针对偏置系数b，则损失函数为$J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}||a^L-y||&lt;em&gt;2^2 + \frac{\lambda}{2m}\sum&lt;/em&gt;{l=2}^L|w|_2^2$&lt;/li&gt;
-            &lt;li&gt;反向传播从:$w^l =w^l −\alpha\sum_{i=1}^m\sigma^{i,l}(\alpha^{i,l-1})^T$变为$w^l =w^l −\alpha\sum_{i=1}^m\sigma^{i,l}(\alpha^{i,l-1})^T-\alpha\lambda w^l$&lt;/li&gt;
-          &lt;/ul&gt;
-        &lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;data augmentation(数据集扩增)&lt;/p&gt;
-
-      &lt;blockquote&gt;
-        &lt;p&gt;有效前提是训练集与将来的数据是&lt;strong&gt;独立同分布&lt;/strong&gt;的,或者近似独立同分布&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;从数据源头采集更多的数据&lt;/li&gt;
-          &lt;li&gt;复制原有数据并加上随机噪声&lt;/li&gt;
-          &lt;li&gt;重采样&lt;/li&gt;
-          &lt;li&gt;根据当前数据估计数据分布参数,使用该分布产生更多数据&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/blockquote&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;Bootstrap/Bagging（封装）&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;ensemble（集成）&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;early stopping（提前终止训练）&lt;/p&gt;
-
-      &lt;blockquote&gt;
-        &lt;p&gt;迭代次数截断的方法来防止过拟合,再模型对训练数据集迭代收敛之前停止迭代防止过拟合.&lt;/p&gt;
-      &lt;/blockquote&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;utilize invariance（利用不变性）&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;Bayesian（贝叶斯方法）&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;h2 id=&quot;三经典算法&quot;&gt;三、经典算法&lt;/h2&gt;
-
-&lt;h3 id=&quot;24在空间上线性可分的两类点分别向svm分类的超平面上做投影这些点在-超平面上的投影仍然是线性可分的吗&quot;&gt;24、在空间上线性可分的两类点，分别向SVM分类的超平面上做投影，这些点在 超平面上的投影仍然是线性可分的吗？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;对于任意线性可分的两组点，它们在SVM分类的超平面上的投影 都是线性不可分的&lt;/li&gt;
-  &lt;li&gt;该问题也可以通过凸优化理论中的超平面分离定理（Separating Hyperplane Theorem，SHT）更加轻巧地解决。该定理描述的是，对于不相交的两 个凸集，存在一个超平面，将两个凸集分离。对于二维的情况，两个凸集间距离 最短两点连线的中垂线就是一个将它们分离的超平面。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;25是否存在一组参数使svm训练误差为0&quot;&gt;25、是否存在一组参数使SVM训练误差为0？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;当所有样本都预测正确，训练误差即为0&lt;/li&gt;
-  &lt;li&gt;补充：
-    &lt;ul&gt;
-      &lt;li&gt;svm有三种，线性可分SVM（硬间隔），线性SVM（软间隔），非线性SVM（核技巧）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-</description>
-        <pubDate>Sun, 14 Nov 2021 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2021/11/%E7%99%BE%E9%97%AE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</link>
-        <guid isPermaLink="true">http://localhost:4000/2021/11/%E7%99%BE%E9%97%AE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/</guid>
-        
-        <category>机器学习</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>机器学习过拟合欠拟合</title>
-        <description>&lt;head&gt;
-    &lt;script src=&quot;https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
-    &lt;script type=&quot;text/x-mathjax-config&quot;&gt;
-        MathJax.Hub.Config({
-            tex2jax: {
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            inlineMath: [['$','$']]
-            }
-        });
-    &lt;/script&gt;
-&lt;/head&gt;
-
-&lt;p&gt;1、当遇到过拟合问题，当优化开发集和训练集的差异时，面临整体误差上升，有什么好的解决办法&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过拟合，数据简单，模型复杂，开发训练分布不一致，优化数据，整体误差上升，欠拟合，模型不能拟合数据，第一：模型不适用这个数据，第二：数据量不够或者数据特征不够&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;2、拟牛顿法比牛顿法的优点是什么&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;strong&gt;牛顿法是迭代算法，每一步都需求解目标函数的海塞矩阵（Hessian Matrix），计算比较复杂。拟牛顿法通过正定矩阵近似海塞矩阵的逆矩阵或海塞矩阵，简化了这一计算过程。&lt;/strong&gt;&lt;/p&gt;
-
-    &lt;p&gt;&lt;img src=&quot;https://www.zhihu.com/equation?tex=x_{k%2B1}%3Dx_{k}-\lambda_k+H^{-1}_{k}g_k\\&quot; alt=&quot;img&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;&lt;img src=&quot;/images/posts/机器学习/v2-dac11d82ecb2566f54ce8b518d51293c_b.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;牛顿法虽然收敛速度快，但是需要计算海塞矩阵的逆矩阵 &lt;img src=&quot;https://www.zhihu.com/equation?tex=H%5E%7B-1%7D&quot; alt=&quot;img&quot; /&gt; ，而且有时目标函数的海塞矩阵无法保持正定，从而使得牛顿法失效。为了克服这两个问题，人们提出了拟牛顿法。这个方法的基本思想是：不用二阶偏导数而构造出可以近似海塞矩阵（或海塞矩阵的逆）的正定对称阵。不同的构造方法就产生了不同的拟牛顿法（&lt;strong&gt;DFP&lt;/strong&gt;/&lt;strong&gt;BFGS算法&lt;/strong&gt;）。&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;牛顿法是二阶收敛，梯度下降法是一阶收敛，所以牛顿法更快，下图形象化地显示了这一点：&lt;/p&gt;
-
-    &lt;p&gt;其中，红色路径代表牛顿法，绿色路径代表梯度下降法。&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;牛顿法和深度学习&lt;/li&gt;
-    &lt;/ul&gt;
-
-    &lt;p&gt;深度学习中，往往采用梯度下降法作为优化算子，而很少采用牛顿法，主要原因有以下几点：&lt;/p&gt;
-
-    &lt;ol&gt;
-      &lt;li&gt;1.神经网络通常是非凸的，这种情况下，牛顿法的收敛性难以保证；&lt;/li&gt;
-      &lt;li&gt;2.即使是凸优化，只有在迭代点离全局最优很近时，牛顿法才会体现出收敛快的优势；&lt;/li&gt;
-      &lt;li&gt;3.可能被鞍点吸引。(鞍点：不是局部极值点的驻点)&lt;/li&gt;
-    &lt;/ol&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;3、推荐中如何模拟人的期望与偏好，是基于学术理论或研究建立一个用户偏好模型吗？标签怎么弄？&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;是的&lt;/li&gt;
-  &lt;li&gt;假设对一个交友活动网站来说，对于一个用户，有基础特征，行为特征等，其基础特征会包含性别、年龄、身高、体重等基础信息，除此之外我们假设一个用户老是搜索电影，那么当前用户的偏好就可以打上爱好：电影，而另一个用户喜欢搜索文学，那么可以打上爱好：读书，或者利用一些组合特征打上其他标签，比如性格（读书，女）安静，（篮球，男）活泼，那么我们再推荐一些线下读书交流会给性格安静的，而推荐一些团体运动会给活泼的&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;4、某项任务上机器已经超越人类，那么当前任务上人类存在的价值是？ 5、短文本分类的方法？（材料无关）&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;短文本分类首要问题需要标签，
-    &lt;ul&gt;
-      &lt;li&gt;可以先通过聚类（LDA），相同簇的分类比较接近，标注起来比较方便；其次对应较少的类，也可以抽取到给人工标注&lt;/li&gt;
-      &lt;li&gt;基于关键词标注，假设要给新闻标题分类，那么对于“体育”类，“足球”、“篮球”、“NBA”等就可以作为这个类的关键词&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;朴素贝叶斯、逻辑回归、支持向量机、GBDT、随机森林&lt;/li&gt;
-  &lt;li&gt;深度学习（FastText，text-cnn，bert，图模型）&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;6、近似搜索算法如何避免陷入局部最优？&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;beam search&lt;/li&gt;
-  &lt;li&gt;遗传算法
-    &lt;ul&gt;
-      &lt;li&gt;模拟物竞天择的生物进化过程，通过维护一个潜在解的群体执行了多方向的搜索，并支持这些方向上的信息构成和交换。是以面为单位的搜索，比以点为单位的搜索，更能发现全局最优解。（在遗传算法中，有很多袋鼠，它们降落到喜玛拉雅山脉的任意地方。这些袋鼠并不知道它们的任务是寻找珠穆朗玛峰。但每过几年，就在一些海拔高度较低的地方射杀一些袋鼠，并希望存活下来的袋鼠是多产的，在它们所处的地方生儿育女。）（或者换个说法。从前，有一大群袋鼠，它们被莫名其妙的零散地遗弃于喜马拉雅山脉。于是只好在那里艰苦的生活。海拔低的地方弥漫着一种无色无味的毒气，海拔越高毒气越稀薄。可是可怜的袋鼠们对此全然不觉，还是习惯于活蹦乱跳。于是，不断有袋鼠死于海拔较低的地方，而越是在海拔高的袋鼠越是能活得更久，也越有机会生儿育女。就这样经过许多年，这些袋鼠们竟然都不自觉地聚拢到了一个个的山峰上，可是在所有的袋鼠中，只有聚拢到珠穆朗玛峰的袋鼠被带回了美丽的澳洲。）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;退火算法
-    &lt;ul&gt;
-      &lt;li&gt;这个方法来自金属热加工过程的启发。在金属热加工过程中，当金属的温度超过它的熔点（Melting Point）时，原子就会激烈地随机运动。与所有的其它的物理系统相类似，原子的这种运动趋向于寻找其能量的极小状态。在这个能量的变迁过程中，开始时，温度非常高， 使得原子具有很高的能量。随着温度不断降低，金属逐渐冷却，金属中的原子的能量就越来越小，最后达到所有可能的最低点。利用模拟退火的时候，让算法从较大的跳跃开始，使到它有足够的“能量”逃离可能“路过”的局部最优解而不至于限制在其中，当它停在全局最优解附近的时候，逐渐的减小跳跃量，以便使其“落脚 ”到全局最优解上。（在模拟退火中，袋鼠喝醉了，而且随机地大跳跃了很长时间。运气好的话，它从一个山峰跳过山谷，到了另外一个更高的山峰上。但最后，它渐渐清醒了并朝着它所在的峰顶跳去。）&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;进化策略&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;7、降低模型过拟合和欠拟台风险的方法?&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过拟合直观解释，再对训练数据上进行拟合时，需要照顾每个点，从而导致拟合函数波动大，即方差大。&lt;/li&gt;
-  &lt;li&gt;误差图判断过拟合还是欠拟合：&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;模型再训练集与测试集上误差均很大，则说明模型bias很大，欠拟合&lt;/p&gt;
-
-  &lt;p&gt;训练集和测试集误差之间有很大的Gap，则说明Variance很大，过拟合&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;欠拟合解决方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;增加新的特征，考虑加入组合特征、高次特征，来增大假设空间&lt;/li&gt;
-    &lt;li&gt;尝试非线性模型，比如SVM、决策树、DNN等模型&lt;/li&gt;
-    &lt;li&gt;有正则项则尝试降低正则项参数\lambda&lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;过拟合解决方法&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;blockquote&gt;
-  &lt;ul&gt;
-    &lt;li&gt;
-      &lt;p&gt;交叉验证，通过交叉验证得到最优的模型&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;特征选择，减少特征数或者使用较少的特征组合，对于区间化离散特征，增大划分的空间&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;正则化，常用的有L_1,L_2正则，而且L_1正则还可以自动进行特征选择&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;如果有正则项考虑增大正则项参数\lambda&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;增加训练数据可以有效的避免过拟合&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;Bagging，将多个弱学习器Bagging一下效果会好很多，比如随机森林&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;DNN中常用的方法&lt;/p&gt;
-
-      &lt;ul&gt;
-        &lt;li&gt;
-          &lt;p&gt;早停。本质还是交叉验证策略，选择合适的训练次数，避免训练的网络过度拟合训练数据&lt;/p&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;集成学习策略。利用Bagging思路来正则化，首先对原始的m个训练样本进行又放回的随机采样，构建N组m个样本的数据集，然后分别用N组数据训练DNN，即得到N个DNN模型的ｗ，ｂ参数组合，最后对N个DNN模型的输出用加权平均法或者投票法决定最终输出。缺点就是参数增加了N倍，导致训练花费更多的时间和空间，因此N一般不能太多，例如5-10个。&lt;/p&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;Dropout策略。&lt;/p&gt;
-
-          &lt;blockquote&gt;
-            &lt;p&gt;训练的时候一一定的概率p让神经元失活，类似于Bagging策略，测试时所有神经元都参与，但是在其输出上乘以1-p.&lt;/p&gt;
-          &lt;/blockquote&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;simpler model structure（简化模型）&lt;/p&gt;
-
-          &lt;blockquote&gt;
-            &lt;p&gt;简单模型拟合复杂数据时，导致模型很难拟合数据的真实分布，这边是模型欠拟合了，同样的，复杂模型拟合简单数据，会导致数据的噪声也被拟合了，导致模型再训练集上效果非常好，但泛化性能很差。&lt;/p&gt;
-          &lt;/blockquote&gt;
-        &lt;/li&gt;
-        &lt;li&gt;
-          &lt;p&gt;regularization（正则化）&lt;/p&gt;
-
-          &lt;blockquote&gt;
-            &lt;p&gt;L_1 正则项会产生稀疏解&lt;/p&gt;
-
-            &lt;p&gt;L_2正则项会产生比较小的解&lt;/p&gt;
-
-            &lt;p&gt;假设均方差误差损失函数&lt;/p&gt;
-
-            &lt;table&gt;
-              &lt;tbody&gt;
-                &lt;tr&gt;
-                  &lt;td&gt;J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                  &lt;td&gt;a^L-y&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                  &lt;td&gt;_2^2&lt;/td&gt;
-                &lt;/tr&gt;
-              &lt;/tbody&gt;
-            &lt;/table&gt;
-
-            &lt;p&gt;L_2通常只针对系数矩阵w,而不针对偏置系数b,则损失函数为&lt;/p&gt;
-
-            &lt;table&gt;
-              &lt;tbody&gt;
-                &lt;tr&gt;
-                  &lt;td&gt;J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                  &lt;td&gt;a^L-y&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                  &lt;td&gt;&lt;em&gt;2^2+\frac{\lambda}{2m}\sum&lt;/em&gt;{L=2}^L&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                  &lt;td&gt;w&lt;/td&gt;
-                  &lt;td&gt; &lt;/td&gt;
-                  &lt;td&gt;_2^2&lt;/td&gt;
-                &lt;/tr&gt;
-              &lt;/tbody&gt;
-            &lt;/table&gt;
-
-            &lt;p&gt;反向传播从:&lt;/p&gt;
-
-            &lt;p&gt;w^l=w^l-\alpha\sum_{i=1}^{m}\sigma^{i,l}(a^{x,l-1})^T&lt;/p&gt;
-
-            &lt;p&gt;变为:&lt;/p&gt;
-
-            &lt;p&gt;w^l=w^l-\alpha\sum_{i=1}^{m}\sigma^{i,l}(a^{x,l-1})^T-\alpha\lambda w^l&lt;/p&gt;
-          &lt;/blockquote&gt;
-        &lt;/li&gt;
-      &lt;/ul&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;data augmentation(数据集扩增)&lt;/p&gt;
-
-      &lt;blockquote&gt;
-        &lt;p&gt;有效前提是训练集与将来的数据是&lt;strong&gt;独立同分布&lt;/strong&gt;的,或者近似独立同分布&lt;/p&gt;
-
-        &lt;ul&gt;
-          &lt;li&gt;从数据源头采集更多的数据&lt;/li&gt;
-          &lt;li&gt;复制原有数据并加上随机噪声&lt;/li&gt;
-          &lt;li&gt;重采样&lt;/li&gt;
-          &lt;li&gt;根据当前数据估计数据分布参数,使用该分布产生更多数据&lt;/li&gt;
-        &lt;/ul&gt;
-      &lt;/blockquote&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;Bootstrap/Bagging（封装）&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;ensemble（集成）&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;early stopping（提前终止训练）&lt;/p&gt;
-
-      &lt;blockquote&gt;
-        &lt;p&gt;迭代次数截断的方法来防止过拟合,再模型对训练数据集迭代收敛之前停止迭代防止过拟合.&lt;/p&gt;
-      &lt;/blockquote&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;utilize invariance（利用不变性）&lt;/p&gt;
-    &lt;/li&gt;
-    &lt;li&gt;
-      &lt;p&gt;Bayesian（贝叶斯方法）&lt;/p&gt;
-    &lt;/li&gt;
-  &lt;/ul&gt;
-&lt;/blockquote&gt;
-</description>
-        <pubDate>Sun, 14 Nov 2021 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2021/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%87%E6%8B%9F%E5%90%88%E6%AC%A0%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/</link>
-        <guid isPermaLink="true">http://localhost:4000/2021/11/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0%E8%BF%87%E6%8B%9F%E5%90%88%E6%AC%A0%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/</guid>
-        
-        <category>机器学习</category>
-        
-        
-      </item>
-    
-      <item>
-        <title>关于 GBDT 特征编码</title>
-        <description>&lt;h2 id=&quot;问题起因&quot;&gt;问题起因&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;在用户风险预测模型（安全审核）中，提出了特征应该用类别特征还是 one-hot 特征，针对此问题进行调研&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;理论分析&quot;&gt;理论分析&lt;/h2&gt;
-
-&lt;h3 id=&quot;1gbdt做为树模型对高维稀疏特征处理效果差究其原因到底是因为什么呢&quot;&gt;1、GBDT做为树模型对高维稀疏特征处理效果差，究其原因到底是因为什么呢？？&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;假设在分类场景下，某一维特征有 1000 个类别，那么采用 one-hot 编码，每一维特征就是 0 or 1，那么 GBDT 可能会错误的学习到只要某个特征为 0 或者 1 就是某个类别，这种情况下就会产生过拟合，在训练数据不充足的情况下，这种问题更严重；&lt;/li&gt;
-  &lt;li&gt;同样的场景下，不采用 one-hot 而采用 label encoding ，那么会存在什么问题，树模型在分裂的过程中，特征会变成分段划取，比如x&amp;lt;90 and x&amp;gt;50，这就会导致 50-90 之间的类别特征都有了关联来进行处理的，因此引入了额外的噪音（特征隐含信息）；&lt;/li&gt;
-  &lt;li&gt;这也就解释了为啥在薪资预测模型中，GBDT 的效果差于线性模型，原因也在于特征通过 one-hot 编码过于稀疏，而线性模型可以很好的利用正则化来解决数据系数问题。&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;2那-gbdt应该用什么编码方式&quot;&gt;2、那 GBDT应该用什么编码方式&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;不适用 one-hot 编码原因
-    &lt;ul&gt;
-      &lt;li&gt;微软在 light GBM 文档里面说明了，category 特征可以直接输入，不需要 one-hot 编码，速度快八倍，准确度差不多&lt;/li&gt;
-      &lt;li&gt;one-hot 编码容易导致特征维度过大且稀疏，导致GBDT模型学校效果差很多&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;不适用 label-encoding 编码原因
-    &lt;ul&gt;
-      &lt;li&gt;label-encoding 编码后 GBDT 会使得特征编码之间具有了关联性，容易引入噪音，尤其对一些训练集中未出现的类别，再实际测试集中有的类别特征容易出现问题，例如88这个类别特征没有出现过，但在测试时却有，模型很容易把他和同区间的类别特征统一处理，从而导致线上不可控问题，one-hot 可以很好的解决这种问题&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;实践出真知&quot;&gt;实践出真知&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;公说公有理，婆说婆有理，不管谁有理，实践出真知&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&quot;1label-encoding&quot;&gt;1.label-encoding&lt;/h3&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;模型&lt;/th&gt;
-      &lt;th&gt;LR&lt;/th&gt;
-      &lt;th&gt;Random Forest&lt;/th&gt;
-      &lt;th&gt;GBDT&lt;/th&gt;
-      &lt;th&gt;XGboost&lt;/th&gt;
-      &lt;th&gt;GradientBoosting + LogisticRegression&lt;/th&gt;
-      &lt;th&gt;lightgbm&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;acc&lt;/td&gt;
-      &lt;td&gt;0.7533&lt;/td&gt;
-      &lt;td&gt;0.8657&lt;/td&gt;
-      &lt;td&gt;0.8697&lt;/td&gt;
-      &lt;td&gt;0.8511&lt;/td&gt;
-      &lt;td&gt;0.8703&lt;/td&gt;
-      &lt;td&gt;0.8710&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;confusion_matrix&lt;/td&gt;
-      &lt;td&gt;[[542 163] [208 591]]&lt;/td&gt;
-      &lt;td&gt;[[671 122] [ 79 632]]&lt;/td&gt;
-      &lt;td&gt;[[668 114] [ 82 640]]&lt;/td&gt;
-      &lt;td&gt;[[669 146] [ 81 608]]&lt;/td&gt;
-      &lt;td&gt;[[660 105] [ 90 649]]&lt;/td&gt;
-      &lt;td&gt;[[662 106] [ 88 648]]&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;其他指标&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.7838 1-recall: 0.7397 1-f1: 0.7611 0-precision: 0.7227 0-recall: 0.7688 0-f1: 0.745&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8382 1-recall: 0.8889 1-f1: 0.8628 0-precision: 0.8947 0-recall: 0.8462 0-f1: 0.8697&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8488 1-recall: 0.8864 1-f1: 0.8672 0-precision: 0.8907 0-recall: 0.8542 0-f1: 0.8721&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8064 1-recall: 0.8824 1-f1: 0.8427 0-precision: 0.892 0-recall: 0.8209 0-f1: 0.855&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8607 1-recall: 0.8782 1-f1: 0.8694 0-precision: 0.88 0-recall: 0.8627 0-f1: 0.8713&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8594 1-recall: 0.8804 1-f1: 0.8698 0-precision: 0.8827 0-recall: 0.862 0-f1: 0.8722&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;2.one-hot&lt;/p&gt;
-
-&lt;table&gt;
-  &lt;thead&gt;
-    &lt;tr&gt;
-      &lt;th&gt;模型&lt;/th&gt;
-      &lt;th&gt;LR&lt;/th&gt;
-      &lt;th&gt;Random Forest&lt;/th&gt;
-      &lt;th&gt;GBDT&lt;/th&gt;
-      &lt;th&gt;XGboost&lt;/th&gt;
-      &lt;th&gt;GradientBoosting + LogisticRegression&lt;/th&gt;
-      &lt;th&gt;lightgbm&lt;/th&gt;
-    &lt;/tr&gt;
-  &lt;/thead&gt;
-  &lt;tbody&gt;
-    &lt;tr&gt;
-      &lt;td&gt;acc&lt;/td&gt;
-      &lt;td&gt;0.8364&lt;/td&gt;
-      &lt;td&gt;0.8684&lt;/td&gt;
-      &lt;td&gt;0.8677&lt;/td&gt;
-      &lt;td&gt;0.8664&lt;/td&gt;
-      &lt;td&gt;0.8703&lt;/td&gt;
-      &lt;td&gt;0.8690&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;confusion_matrix&lt;/td&gt;
-      &lt;td&gt;[[[646 142] [104 612]]&lt;/td&gt;
-      &lt;td&gt;[[670 118] [ 80 636]]&lt;/td&gt;
-      &lt;td&gt;[[666 115] [ 84 639]]&lt;/td&gt;
-      &lt;td&gt;[[668 119] [ 82 635]]&lt;/td&gt;
-      &lt;td&gt;[[659 104] [ 91 650]]&lt;/td&gt;
-      &lt;td&gt;[[655 102] [ 95 652]]&lt;/td&gt;
-    &lt;/tr&gt;
-    &lt;tr&gt;
-      &lt;td&gt;其他指标&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8117 1-recall: 0.8547 1-f1: 0.8327 0-precision: 0.8613 0-recall: 0.8198 0-f1: 0.8401&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8435 1-recall: 0.8883 1-f1: 0.8653 0-precision: 0.8933 0-recall: 0.8503 0-f1: 0.8713&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8475 1-recall: 0.8838 1-f1: 0.8653 0-precision: 0.888 0-recall: 0.8528 0-f1: 0.87&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8422 1-recall: 0.8856 1-f1: 0.8634 0-precision: 0.8907 0-recall: 0.8488 0-f1: 0.8692&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8621 1-recall: 0.8772 1-f1: 0.8696 0-precision: 0.8787 0-recall: 0.8637 0-f1: 0.8711&lt;/td&gt;
-      &lt;td&gt;1-precision: 0.8647 1-recall: 0.8728 1-f1: 0.8688 0-precision: 0.8733 0-recall: 0.8653 0-f1: 0.8693&lt;/td&gt;
-    &lt;/tr&gt;
-  &lt;/tbody&gt;
-&lt;/table&gt;
-
-&lt;p&gt;&lt;strong&gt;结论：两者对比发现，one-hot编码再线性模型中提升较大，但对于树模型来说基本没有起到作用，或者说两种编码方式均可，可能的原因我们数据类别特征较少，均为两个或者三个类别，用one-hot和label-encoding没有很大的区别，最后值得指出的是再实际使用场景中，应该根据实际的数据特征来进行分析，不确定的情况下两者均进行尝试，对比效果再对其进行原因分析。&lt;/strong&gt;&lt;/p&gt;
-</description>
-        <pubDate>Sun, 14 Nov 2021 00:00:00 +0800</pubDate>
-        <link>http://localhost:4000/2021/11/GBDT%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</link>
-        <guid isPermaLink="true">http://localhost:4000/2021/11/GBDT%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/</guid>
-        
-        <category>机器学习</category>
         
         
       </item>

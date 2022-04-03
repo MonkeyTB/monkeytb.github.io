@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>NER谈古论今</title>
+  <meta name="description" content="        ">
+  <meta name="author" content="MonkeyTB">
+
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="NER谈古论今">
+  <meta name="twitter:description" content="        ">
+  
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="NER谈古论今">
+  <meta property="og:description" content="        ">
+  
+  <link rel="icon" type="image/png" href="/images/favicon.png" />
+  <link href="/images/favicon.png" rel="shortcut icon" type="image/png">
+  
+  <link rel="stylesheet" href="/css/main.css">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <meta name="google-site-verification" content="1-1ZlHoRvM0T2FqPbW2S-qLgYXN6rsn52kErlMPd_gw" />
+
+<!-- 站点统计 -->
+  <script 
+  async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+  </script>  
+
+<!-- 百度统计 -->
+  
+  <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?7193fc529267517a0eea8035d7fede15";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+  </script>
+  
+
+<!-- google 统计 -->
+  
+
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-9005224472374751",
+    enable_page_level_ads: true
+  });
+</script>
+
+</head>
+
+
+  <body>
+
+    <span class="mobile btn-mobile-menu">        
+      <div class="nav_container">
+         <nav class="nav-menu-item" style = "float:right">
+            <i class="nav-menu-item">
+              <a href="/#blog" title="" class="blog-button">  博客主页
+              </a>
+            </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/archive" title="archive" class="btn-mobile-menu__icon">
+                      所有文章
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/tags" title="tags" class="btn-mobile-menu__icon">
+                      标签
+                  </a>
+                </i>
+            
+                <i class="nav-menu-item">
+
+                  <a href="/about" title="about" class="btn-mobile-menu__icon">
+                      关于我
+                  </a>
+                </i>
+            
+          </nav>
+      </div>
+    </span>
+    
+    <header class="panel-cover panel-cover--collapsed" style="background-image: url('/images/background-cover.jpg')">
+  <div class="panel-main">
+
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+        <!-- 头像效果-start -->
+        <div class="ih-item circle effect right_to_left">            
+            <a href="/#blog" title="前往 YiYao 的主页" class="blog-button">
+                <div class="img"><img src="/images/avatar.jpg" alt="img"></div>
+                <div class="info">
+                    <div class="info-back">
+                        <h2> 
+                            
+                        </h2>
+                        <p>
+                           
+                                自然语言处理 / 机器学习
+                            
+                        </p>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- 头像效果-end -->
+        <h1 class="panel-cover__title panel-title"><a href="/#blog" title="link to homepage for YiYao" class="blog-button">YiYao</a></h1>
+        
+        <span class="panel-cover__subtitle panel-subtitle">个人站</span>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description">欢迎来到我的个人站~</p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+        
+        
+
+        <div class="navigation-wrapper">
+          <div>
+            <nav class="cover-navigation cover-navigation--primary">
+              <ul class="navigation">
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">博客主页</a></li>
+                
+                  <li class="navigation__item"><a href="/archive" title="archive">所有文章</a></li>
+                
+                  <li class="navigation__item"><a href="/tags" title="tags">标签</a></li>
+                
+                  <li class="navigation__item"><a href="/about" title="about">关于我</a></li>
+                
+              </ul>
+            </nav>
+          </div>          
+        </div>
+
+
+        </div>
+      </div>
+    </div>
+    
+    
+    <div class="panel-cover--overlay cover-clear"></div>
+    
+  </div>
+</header>
+
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <head>
+  <link rel="stylesheet" href="/css/post.css">
+</head>
+
+<article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title">NER谈古论今</h1>
+    <div class="post-meta">
+      <img src="/images/calendar.png" width="20px"/> 
+      <time datetime="2021-12-12 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-12-12</time>  
+
+      <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
+    </p>
+    </div>
+  </header>
+
+  
+    <h2 class="post-title">目录</h2>
+    <ul>
+  <li><a href="#定义">定义</a></li>
+  <li><a href="#标注类型">标注类型</a></li>
+  <li><a href="#评测指标">评测指标</a></li>
+  <li><a href="#理论">理论</a></li>
+  <li><a href="#方法">方法</a>
+    <ul>
+      <li><a href="#嵌套命名实体识别">嵌套命名实体识别</a></li>
+    </ul>
+  </li>
+  <li><a href="#总结">总结</a></li>
+  <li><a href="#参考文献">参考文献</a></li>
+</ul>
+
+  
+
+  <section class="post">
+    <head>
+    <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            inlineMath: [['$','$']]
+            }
+        });
+    </script>
+</head>
+
+<h1 id="定义">定义</h1>
+
+<p>命名实体识别（NER）是自然语言处理领域的核心问题之一，他的目标是为了再一段文本中识别出特定类型的字段，eg：人名、地名等。从而应用到下游任务中。</p>
+
+<h1 id="标注类型">标注类型</h1>
+
+<p>常见的标注类型BIOES或者BIOS，因为NER识别的是特定的字段，这个字段的start标记为B-xx，结尾标记为E-xx或者I-xx（对应两种标注方式），中间的部分均用I-xx标记，如果出现单独的字为一个实体，那么用S-xx进行标记，其他非提取字段用O进行标注。实例如下：</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>我</th>
+      <th>爱</th>
+      <th>北</th>
+      <th>京</th>
+      <th>天</th>
+      <th>安</th>
+      <th>门</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>O</td>
+      <td>O</td>
+      <td>B-location</td>
+      <td>I-location</td>
+      <td>I-location</td>
+      <td>I-location</td>
+      <td>I-location</td>
+    </tr>
+    <tr>
+      <td>O</td>
+      <td>O</td>
+      <td>B-location</td>
+      <td>I-location</td>
+      <td>I-location</td>
+      <td>I-location</td>
+      <td>E-location</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="评测指标">评测指标</h1>
+
+<p>对于NER识别的评测一般需要保证完整的实体识别准确才行，也就是说不是根据每个字的标签去评测，而是根据完整的字段来进行统计评测。具体的指标和其他分类任务一样，也是准确召回等。</p>
+
+<h1 id="理论">理论</h1>
+
+<h1 id="方法">方法</h1>
+
+<p><code class="language-plaintext highlighter-rouge">标准</code></p>
+
+<blockquote>
+  <p>LSTM+CRF</p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">问题</code></p>
+
+<blockquote>
+  <p>标准成本昂贵</p>
+
+  <p>泛化迁移能力不足</p>
+
+  <p>可解释性不强</p>
+
+  <p>计算资源</p>
+
+  <ul>
+    <li>JD和CV描述形式不一样</li>
+    <li>严谨性，简历内容要识别出能力词以及深层挖掘能力词（看起来并不是能力词，但是代表实际的某项能力），所以的深度挖掘词意</li>
+    <li>不依赖NER，根据词典或者特定语句形式（规则）提出实体词，最后进行标准化（💡现在做的实体标准化是不是应该也是这个作用？）</li>
+    <li>模型应该又轻又快，抛弃万能的bert系列</li>
+  </ul>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">建议</code></p>
+
+<ul>
+  <li>不要对Bert模型进行蒸馏压缩</li>
+  <li>NER是一个重底层任务（待补充）</li>
+  <li>NER任务尽量不要引入嵌套实体，例如：<code class="language-plaintext highlighter-rouge">Python开发</code>，模型识别出<code class="language-plaintext highlighter-rouge">Python开发</code>标记为一个技能词，这时候就倾向于所有出现的<code class="language-plaintext highlighter-rouge">Python开发</code>都标记为技能词。但是如果模型能够在识别<code class="language-plaintext highlighter-rouge">Python开发</code>的同时能将<code class="language-plaintext highlighter-rouge">Python</code>标记为一种语言或者编程语言，那么所有出现的<code class="language-plaintext highlighter-rouge">[语言]开发</code>都能够识别为技能词，这样模型就学到一种模式，并非单独一个词。</li>
+</ul>
+
+<p>**快速提升NER性能 **</p>
+
+<p>——————————————————————————————————————————————————</p>
+
+<blockquote>
+  <p>垂直领域的词典+规则，词典不断积累，迭代，快速应急处理badcase， 通⽤领域，可以多种分词工具和多种句法短语⼯具进行融合来提取候选实体，并结合词典进行NER</p>
+
+  <p>embedding层，引入丰富的char、bigram、词典、词性以及业务相关特征，垂直领域可以预训练一个领域相关字向量模型、词向量模型以及bigram模型和语言模型💡？，底层特征越丰富，差异化越大越好，不同视角的特征</p>
+
+  <p><strong><em>如何构建引入词汇信息（词向量）的NER？</em></strong> 我们知道中文NER通常是基于字符进行标注的，这是由于基于词汇标注存在分词误差问题。但词汇边界对于实体边界是很有用的，我们该怎么把蕴藏词汇信息的词向量“恰当”地引入到模型中呢？一种行之有效的方法就是<strong>信息无损的、引入词汇信息的NER方法</strong>，我称之为<strong>词汇增强</strong>，可参考《中文NER的正确打开方式：词汇增强方法总结》。<strong><em>ACL2020的Simple-Lexicon</em></strong>和<strong><em>FLAT</em></strong>两篇论文，不仅词汇增强模型十分轻量、而且可以比肩BERT的效果</p>
+
+  <p>粗暴的方法将词向量引入到模型中，就是将词向量对齐到相应的字符，然后将字词向量进行混合，但这需要对原始文本进行分词（存在误差），<strong>性能提升通常是有限的</strong>。</p>
+</blockquote>
+
+<p>——————————————————————————————————————————————————</p>
+
+<p><strong>词汇增强方式</strong></p>
+
+<p>主要分为两个方向</p>
+
+<ul>
+  <li>Dynamic Architecture：设计一个动态框架，能够兼容词汇输入–&gt; 结构融入词汇信息</li>
+  <li>Adaptive Embedding：基于词汇信息，构建自适应Embedding–&gt;</li>
+</ul>
+
+<p><img src="/images/posts/自然语言处理/词汇增强.jpg" alt="" /></p>
+
+<p><strong>[1] <a href="https://link.zhihu.com/?target=https%3A//arxiv.org/abs/1805.02023">Lattice LSTM：Chinese NER Using Lattice LSTM（ACL2018）</a></strong></p>
+
+<p>中文词汇信息开山之作，通过词典匹配句子，得到一个Lattice的结构</p>
+
+<p><img src="/images/posts/自然语言处理/Lattice.jpg" alt="" /></p>
+
+<p>Lattice是一个有向无环图，词汇的开始和结束字符决定了其位置，Lattice LSTM融合了词汇信息到原生的LSTM中</p>
+
+<p><img src="/images/posts/自然语言处理/Lattice_2.jpg" alt="" /></p>
+
+<p>Lattice LSTM引入了一个word cell结构，对当前字符融合以该字符为结束的所有word信息，例如<code class="language-plaintext highlighter-rouge">店</code>融合了<code class="language-plaintext highlighter-rouge">人和药店</code>，<code class="language-plaintext highlighter-rouge">药店</code>的信息。对于每个字符，Lattice LSTM采用注意力机制去融合个数可变的word cell单元，表达式为：</p>
+
+<p><img src="/images/posts/自然语言处理/lstm公式.png" alt="" /></p>
+
+<p><strong><em>主要区别在于</em></strong></p>
+
+<p>当前字符有词汇信息可以融入，则利用公式15，采用公式15，不利用上一时刻记忆状态$\color{blue}{c_{j-1}^c}$,如果没有则用原生的LSTM，这种方式提升了NER性能，但是缺点也比较明显，其中</p>
+
+<p><img src="/images/posts/自然语言处理/1596638537931.png" alt="" /></p>
+
+<p>集合D类似对<code class="language-plaintext highlighter-rouge">桥</code>来说，有<code class="language-plaintext highlighter-rouge">大桥</code>、<code class="language-plaintext highlighter-rouge">长江大桥</code>。</p>
+
+<p><code class="language-plaintext highlighter-rouge">缺点</code></p>
+
+<blockquote>
+  <p>计算性能低下，不能batch并行，因为每个词增加的word cell数目不一样</p>
+
+  <p>信息损失，字符只能获取以他结尾的词汇信息，无之前状态，另一个就是BiLSTM时前后向词汇信息不能共享</p>
+
+  <p>可迁移性差</p>
+</blockquote>
+
+<p><strong>[2] <a href="https://link.zhihu.com/?target=https%3A//pdfs.semanticscholar.org/1698/d96c6fffee9ec969e07a58bab62cb4836614.pdf">LR-CNN:CNN-Based Chinese NER with Lexicon Rethinking(IJCAI2019)</a></strong></p>
+
+<p><img src="/images/posts/自然语言处理/LRCNN.jpg" alt="" /></p>
+
+<p>Lattice LSTM没有办法并行化，并且无法处理<code class="language-plaintext highlighter-rouge">词汇信息冲突问题</code>，上图中，长可以匹配市长，长隆，得到不同的实体标签，对于LSTM结构，仅依靠前一步的信息输入、而不是利用全局信息，没法解决冲突问题。</p>
+
+<p><img src="/images/posts/自然语言处理/LRCNN_2.jpg" alt="" /></p>
+
+<p>论文提出两种方法</p>
+
+<ul>
+  <li>Lexicon-Based CNNs：采用CNN对字符特征进行编码，感受野为2提取Bi-gram特征，多层堆叠得到Multi-gram信息，同时采用注意力机制融入词汇信息</li>
+  <li>Refining Networks with Lexicon Rethinking（ 用Lexicon重新思考完善网络 ）：由于上述提到的词汇信息冲突问题，LR-CNN采取rethinking机制增加feedback layer（反馈层）来调整词汇信息的权值： 具体地，将高层特征作为输入通过注意力模块调节每一层词汇特征分布。如上图，高层特征得到的 [广州市] 和 [长隆]会降低 [市长] 在输出特征中的权重分布。最终对每一个字符位置提取对应的调整词汇信息分布后的multi-gram特征，喂入CRF中解码。</li>
+</ul>
+
+<p><strong><em>最终提速3.21倍，但是仍然计算复杂不具备迁移性</em></strong></p>
+
+<p><strong>[3] <a href="https://link.zhihu.com/?target=https%3A//www.aclweb.org/anthology/D19-1396.pdf">CGN: Leverage Lexical Knowledge for Chinese Named Entity Recognition via Collaborative Graph Network（ EMNLP2019）</a></strong></p>
+
+<p>CGN：利用词汇知识通过协作图网络进行中文命名实体识别（EMNLP2019）</p>
+
+<p><img src="/images/posts/自然语言处理/CGN.jpg" alt="" /></p>
+
+<p>Lattice LSTM存在信息损失，特别是无法获得‘inside’的词汇信息，论文提出了基于协作的图网络，由编码层、图网络层、融合层、解码层组成，图网络层由三种不同的构建方式</p>
+
+<ul>
+  <li>Word-Character Containing graph（C-graph）：字与字之间无连接，词与其inside的字之间有连接</li>
+  <li>Word-Character Transition graph（T-graph）：相邻字符相连接，词与其前后字符连接</li>
+  <li>Word-Character Lattice graph（L-graph）：相邻字符相连接，词与其开始字符相连</li>
+</ul>
+
+<p>图网络层通过Graph Attention Network（GAN）进行特征提取，提取三种图网络的钱n个字符节点的特征：</p>
+
+<p>$\color{blue}{Q_k=G_k[:,0:n],k\in{1,2,3}}$</p>
+
+<p>特征融合则基于字符的上下文表征H与图网络表征加权融合：</p>
+
+<p>$\color{blue}{R = W_1H+W_2Q_1+W_3Q_2+W_4Q_3}$</p>
+
+<p><strong>[4] <a href="https://link.zhihu.com/?target=https%3A//www.aclweb.org/anthology/D19-1096.pdf">LGN: A Lexicon-Based Graph Neural Network for Chinese NER(EMNLP2019)</a></strong></p>
+
+<p>LGN：面向中文NER的基于词典的图神经网络（EMNLP2019）</p>
+
+<p><img src="/images/posts/自然语言处理/LGN.jpg" alt="" /></p>
+
+<p>论文与LR-CNN出发点类似，Lattice LSTM这种RNN结构仅仅依靠前一步的信息输入，而不是利用全局信息，如上图所示：字符 [流]可以匹配到词汇 [河流] 和 [流经]两个词汇信息，但Lattice LSTM却只能利用 [河流] ；字符 [度]只能看到前序信息，不能充分利用 [印度河] 信息，从而造成标注冲突问题 。</p>
+
+<p><img src="/images/posts/自然语言处理/LGN_2.jpg" alt="" /></p>
+
+<p>论文通过采取 lexicon-based graph neural network (LGN)来解决上述问题。如上图所示，将每一个字符作为节点，匹配到的词汇信息构成边。通过图结构实现局部信息的聚合，并增加全局节点进行全局信息融入。聚合方式采取Multi-Head Attention</p>
+
+<p><strong>[5] <a href="https://link.zhihu.com/?target=https%3A//arxiv.org/pdf/2004.11795.pdf">FLAT: Chinese NER Using Flat-Lattice Transformer（ACL2020）</a></strong></p>
+
+<blockquote>
+  <p>Lattice-LSTM和LR-CNN采取的RNN和CNN结构无法捕捉长距离依赖，而动态的Lattice结构不能充分进行GPU并行</p>
+
+  <p>CGN和LGN采取的图网络虽然可以捕捉对于NER任务至关重要的顺序结构，但这两者之间的gap是不可忽略的。其次，这类图网络通常需要RNN作为底层编码器来捕捉顺序性，通常需要复杂的模型结构。</p>
+</blockquote>
+
+<p><img src="/images/posts/自然语言处理/FLAT.jpg" alt="" /></p>
+
+<p>众所周知，Transformer采取全连接的自注意力机制可以很好捕捉长距离依赖，由于自注意力机制对位置是无偏的，因此Transformer引入位置向量来保持位置信息。受到位置向量表征的启发，这篇论文提出的FLAT设计了一种巧妙position encoding来融合Lattice 结构，具体地，如上图所示，对于每一个字符和词汇都构建两个head position encoding 和 tail position encoding，可以证明，这种方式可以重构原有的Lattice结构。也正是由于此，FLAT可以直接建模字符与所有匹配的词汇信息间的交互，例如，字符[药]可以匹配词汇[人和药店]和[药店]。</p>
+
+<p>因此，我们可以将Lattice结构展平，将其从一个有向无环图展平为一个平面的Flat-Lattice Transformer结构，由多个span构成：每个字符的head和tail是相同的，每个词汇的head和tail是skipped的。</p>
+
+<p><img src="/images/posts/自然语言处理/FLAT_2.jpg" alt="" /></p>
+
+<p>在知乎专栏文章《<a href="https://zhuanlan.zhihu.com/p/137315695">如何解决Transformer在NER任务中效果不佳的问题？</a>》，我们介绍了对于Tranformer结构，绝对位置编码并不适用于NER任务。因此，FLAT这篇论文采取XLNet论文中提出相对位置编码计算attention score：</p>
+
+<p><img src="/images/posts/自然语言处理/FLAT-Attention-1.jpg" alt="" /></p>
+
+<p>论文提出四种相对距离表示$\color{blue}{x_i}$和$\color{blue}{x_j}$之间的关系，同时也考虑字符和词汇之间的关系：</p>
+
+<p><img src="/images/posts/自然语言处理/FLAT-Attention-2.jpg" alt="" /></p>
+
+<p>$\color{blue}{d_{ij}^{(hh)}}$表示$\color{blue}{x_i}$的head到$\color{blue}{x_j}$的tain距离，其余类似。相对位置encoding为：</p>
+
+<p><img src="/images/posts/自然语言处理/FLAT-Attention-3.png" alt="" /></p>
+
+<p>（圆圈加号）表示级联，四种距离编码通过简单的非线性变换得到。其中<img src="https://www.zhihu.com/equation?tex=p_d" alt="[公式]" />的计算方式与vanilla Transformer相同，</p>
+
+<p><img src="/images/posts/自然语言处理/1596643537145.png" alt="" /></p>
+
+<p>综上，FLAT采取这种全连接自注意力结构，可以直接字符与其所匹配词汇间的交互，同时捕捉长距离依赖。如果将字符与词汇间的attention进行masked，性能下降明显，可见引入词汇信息对于中文NER 的重要性。此外，相关实验表明，<strong>FLAT有效的原因是</strong>：新的相对位置encoding有利于定位实体span，而引入词汇的word embedding有利于实体type的分类。</p>
+
+<p><strong>解决NER实体span过长</strong></p>
+
+<p>——————————————————————————————————————————————————</p>
+
+<blockquote>
+  <p>如果NER任务中某一类实体span比较长，比如咱们提出的能力词，有很多很长<code class="language-plaintext highlighter-rouge">软件开发技术方案编写</code>，直接采取CRF解码可能会导致很多连续的实体span断裂。除了加入规则进行修正外，这时候也可尝试引入<strong>指针网络+CRF</strong>构建<strong>多任务学习</strong>（指针网络会更容易捕捉较长的span，不过指针网络的收敛是较慢的，可以试着调节学习率）。</p>
+</blockquote>
+
+<p>——————————————————————————————————————————————————</p>
+
+<p><strong><em>如何缓解NER标注数据的噪声问题</em></strong></p>
+
+<p>——————————————————————————————————————————————————</p>
+
+<blockquote>
+  <p>实际中，我们常常会遇到NER数据可能存在标注质量问题，也许是标注规范就不合理，正常的情况下只是存在一些小规模的噪声。一种简单地有效的方式就是对训练集进行交叉验证，然后人工去清洗这些“脏数据”。当然也可以将noisy label learning应用于NER任务，惩罚那些噪音大的样本loss权重</p>
+</blockquote>
+
+<p>——————————————————————————————————————————————————</p>
+
+<h2 id="嵌套命名实体识别">嵌套命名实体识别</h2>
+
+<p>序列标准NER问题简单两步</p>
+
+<ul>
+  <li>选择有效的标注Schema
+    <ul>
+      <li>BIO</li>
+      <li>BIOS</li>
+    </ul>
+  </li>
+  <li>模型选择
+    <ul>
+      <li>CNN/Bi-LSTM/BERT等</li>
+    </ul>
+  </li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">解决方法</code></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Python开发</code> 中的 <code class="language-plaintext highlighter-rouge">Python</code> 同时属于B-语言，也属于B-技能</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>将NER的分类任务从单标签编程多标签</strong></p>
+
+<p>Schema不变，模型也不变，将输出从单标签转变为多标签</p>
+
+<p>1、Schema不变，训练集label从one-hot编码形式变成指定类型的均匀分布💡？，训练时将损失函数改为BCE或KL-divergence；推理时给定一个hard threshold，超过这个阈值的都被预测出来，当作这个token的类。<em>阈值难以设定，难以泛化</em></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>2、修改Schema，将共同出现的类别两两组合，构造新的标签，B-语言</td>
+      <td>技能，最后仍然是一个单分类。<em>标签增加，分布稀疏难以学习，预测结果不具有唯一性</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="总结">总结</h1>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="https://www.its404.com/article/GJ_0418/120258136">1、命名实体识别（NER）综述_SunnyGJing’s blog-程序员ITS404</a></p>
+
+<p><a href="https://mp.weixin.qq.com/s?__biz=MzI4MDYzNzg4Mw==&amp;mid=2247505310&amp;idx=2&amp;sn=616b29f1d3996ae5b335e4eb1069073d&amp;chksm=ebb7ed4adcc0645ce7c5970d274f7b2f2c9e85f748a42ca2c992f0357246cb65e04797b169ff&amp;mpshare=1&amp;scene=24&amp;srcid=07227mK0wRN6V8m2kSKZvrUF&amp;sharer_sharetime=1595381490241&amp;sharer_shareid=5351471bb805db262b0658602c8a4f96#rd">2、工业界求解NER问题的12条黄金法则</a></p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/142615620">3、中文NER的正确打开方式: 词汇增强方法总结 (从Lattice LSTM到FLAT)</a></p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/126347862">4、浅谈嵌套命名实体识别（Nested NER）</a></p>
+
+
+  </section>
+
+</article>
+
+<section>
+
+            <div class="content-play">
+              <p><a href="javascript:void(0)" onclick="dashangToggle()" class="dashang" title="打赏，支持一下">打赏一个呗</a></p>
+              <div class="hide_box-play"></div>
+              <div class="shang_box-play">
+                <a class="shang_close-play" href="javascript:void(0)" onclick="dashangToggle()" title="关闭"><img src="/images/payimg/close.jpg" alt="取消" /></a>
+                <div class="shang_tit-play">
+                  <p>感谢您的支持，我会继续努力的!</p>
+                </div>
+                <div class="shang_payimg">
+                    <img src="/images/payimg/alipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+              <div class="shang_payimg">    
+                    <img src="/images/payimg/weipayimg.jpg" alt="扫码支持" title="扫一扫" />
+                </div>
+                <div class="pay_explain">扫码打赏，你说多少就多少</div>
+                <div class="shang_payselect">
+                  <div class="pay_item checked" data-id="alipay">
+                    <span class="pay_logo"><img src="/images/payimg/alipay.jpg" alt="支付宝" /></span>
+                  </div>
+                  <div class="pay_item" data-id="weipay">
+                    <span class="pay_logo"><img src="/images/payimg/wechat.jpg" alt="微信" /></span>
+                  </div>
+                </div>
+                <div class="shang_info-play">
+                  <p>打开<span id="shang_pay_txt">微信</span>扫一扫，即可进行扫码打赏哦</p>
+                </div>
+              </div>
+            </div>
+            <script type="text/javascript">
+            function dashangToggle(){
+              $(".hide_box-play").fadeToggle();
+              $(".shang_box-play").fadeToggle();
+            }
+            </script>
+
+            <div style="text-align:center;margin:50px 0; font:normal 14px/24px 'MicroSoft YaHei';"></div>
+
+            <style type="text/css">
+              .content-play{width:80%;margin-top: 20px;margin-bottom: 10px;height:40px;}
+              .hide_box-play{z-index:999;filter:alpha(opacity=50);background:#666;opacity: 0.5;-moz-opacity: 0.5;left:0;top:0;height:99%;width:100%;position:fixed;display:none;}
+              .shang_box-play{width:540px;height:540px;padding:10px;background-color:#fff;border-radius:10px;position:fixed;z-index:1000;left:50%;top:50%;margin-left:-280px;margin-top:-280px;border:1px dotted #dedede;display:none;}
+              .shang_box-play img{border:none;border-width:0;}
+              .dashang{display:block;width:100px;margin:5px auto;height:25px;line-height:25px;padding:10px;background-color:#E74851;color:#fff;text-align:center;text-decoration:none;border-radius:10px;font-weight:bold;font-size:16px;transition: all 0.3s;}
+              .dashang:hover{opacity:0.8;padding:15px;font-size:18px;}
+              .shang_close-play{float:right;display:inline-block;
+                margin-right: 10px;margin-top: 20px;
+              }
+              .shang_logo{display:block;text-align:center;margin:20px auto;}
+              .shang_tit-play{width: 100%;height: 75px;text-align: center;line-height: 66px;color: #a3a3a3;font-size: 16px;background: url('/images/payimg/cy-reward-title-bg.jpg');font-family: 'Microsoft YaHei';margin-top: 7px;margin-right:2px;}
+              .shang_tit-play p{color:#a3a3a3;text-align:center;font-size:16px;}
+              .shang_payimg{width:140px;padding:10px;padding-left: 80px; /*border:6px solid #EA5F00;**/margin:0 auto;border-radius:3px;height:140px;display:inline-block;}
+              .shang_payimg img{display:inline-block;margin-right:10px;float:left;text-align:center;width:140px;height:140px; }
+              .pay_explain{text-align:center;margin:10px auto;font-size:12px;color:#545454;}
+              .shang_payselect{text-align:center;margin:0 auto;margin-top:40px;cursor:pointer;height:60px;width:500px;margin-left:110px;}
+              .shang_payselect .pay_item{display:inline-block;margin-right:140px;float:left;}
+              .shang_info-play{clear:both;}
+              .shang_info-play p,.shang_info-play a{color:#C3C3C3;text-align:center;font-size:12px;text-decoration:none;line-height:2em;}
+            </style>
+
+       <ul class="pager">
+        
+        <li class="previous">
+            <a href="/2021/12/Transformer/" data-toggle="tooltip" data-placement="top" title="Transformer探索">上一篇：  <span>Transformer探索</span>
+            </a>
+        </li>
+        
+        
+        <li class="next">
+            <a href="/2022/01/BERT/" data-toggle="tooltip" data-placement="top" title="BERT">下一篇：  <span>BERT</span>
+            </a>
+        </li>
+        
+    </ul>
+</section>
+
+<section class="post-comments">
+<!-- 来必力City版安装代码 -->
+<div id="lv-container" data-id="city" data-uid="MTAyMC81NTEyNC8zMTU5Mg==">
+	<script type="text/javascript">
+var refer = "<?=get_permalink($id);?>".replace("http://","");
+   (function(d, s) {
+       var j, e = d.getElementsByTagName(s)[0];
+
+       if (typeof LivereTower === 'function') { return; }
+
+       j = d.createElement(s);
+       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+       j.async = true;
+
+       e.parentNode.insertBefore(j, e);
+   })(document, 'script');
+	</script>
+<noscript> 为正常使用来必力评论功能请激活JavaScript</noscript>
+</div>
+<!-- City版安装代码已完成 -->
+</section>
+
+
+
+
+            <section class="footer">
+    <footer>
+        <div class = "footer_div">  
+        <nav class="cover-navigation navigation--social">
+          <ul class="navigation">
+
+          
+          <!-- Github -->
+          <li class="navigation__item_social">
+            <a href="https://github.com/monkeytb" title="@monkeytb 的 Github" target="_blank">
+              <div class="footer-social-icon" style="background:url(/images/github.png);"></div>
+            </a>
+          </li>
+          
+
+          
+
+          
+
+          
+
+          
+
+          
+          
+
+
+          
+          <!-- Email -->
+          <li class="navigation__item_social">
+            <a href="mailto:13689446615@163.com" title="Contact me">
+              <div class="footer-social-icon" style="background:url(/images/email.png);"></div>
+            </a>
+          </li>
+          
+
+          </ul>
+        </nav>
+
+        </div>
+
+        <div class = "footer_div">  
+           <p class="copyright text-muted">
+            Copyright &copy; YiYao 2022 Theme by <a href="https://monkeytb.github.io">MonkeyTB</a> |
+            <iframe
+                style="margin-left: 2px; margin-bottom:-5px;"
+                frameborder="0" scrolling="0" width="91px" height="20px"
+                src="https://ghbtns.com/github-btn.html?user=monkeytb&repo=monkeytb.github.io&type=star&count=true" >
+            </iframe>
+            </p>
+        	<div align="right">
+    			<link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+          <!-- 访问统计 -->
+          <span id="busuanzi_container_site_pv">
+            本站总访问量
+            <span id="busuanzi_value_site_pv"></span>次
+          </span>
+
+        </div>
+        <div>
+    </footer>
+</section>
+
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="/js/main.js"></script>
+
+<script type="text/javascript" src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+  </body>
+
+</html>

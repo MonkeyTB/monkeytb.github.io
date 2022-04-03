@@ -6,16 +6,16 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <title>机器学习过拟合欠拟合</title>
+  <title>BERT</title>
   <meta name="description" content="        ">
   <meta name="author" content="MonkeyTB">
 
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="机器学习过拟合欠拟合">
+  <meta name="twitter:title" content="BERT">
   <meta name="twitter:description" content="        ">
   
   <meta property="og:type" content="article">
-  <meta property="og:title" content="机器学习过拟合欠拟合">
+  <meta property="og:title" content="BERT">
   <meta property="og:description" content="        ">
   
   <link rel="icon" type="image/png" href="/images/favicon.png" />
@@ -165,10 +165,10 @@
 
 <article class="post-container post-container--single" itemscope itemtype="http://schema.org/BlogPosting">
   <header class="post-header">
-    <h1 class="post-title">机器学习过拟合欠拟合</h1>
+    <h1 class="post-title">BERT</h1>
     <div class="post-meta">
       <img src="/images/calendar.png" width="20px"/> 
-      <time datetime="2021-11-14 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2021-11-14</time>  
+      <time datetime="2022-01-01 00:00:00 +0800" itemprop="datePublished" class="post-meta__date date">2022-01-01</time>  
 
       <span id="busuanzi_container_page_pv"> | 阅读：<span id="busuanzi_value_page_pv"></span>次</span>
     </p>
@@ -177,7 +177,27 @@
 
   
     <h2 class="post-title">目录</h2>
-    
+    <ul>
+  <li><a href="#背景">背景</a></li>
+  <li><a href="#前人工作">前人工作</a>
+    <ul>
+      <li><a href="#elmo">elmo</a></li>
+      <li><a href="#gpt">gpt</a></li>
+      <li><a href="#创新点">创新点</a></li>
+      <li><a href="#工作">工作</a></li>
+      <li><a href="#总结">总结</a></li>
+    </ul>
+  </li>
+  <li><a href="#工作原理">工作原理</a>
+    <ul>
+      <li><a href="#mlm">MLM</a></li>
+      <li><a href="#nsp">NSP</a></li>
+    </ul>
+  </li>
+  <li><a href="#微调">微调</a></li>
+  <li><a href="#训练相关">训练相关</a></li>
+  <li><a href="#参考文献">参考文献</a></li>
+</ul>
 
   
 
@@ -194,241 +214,146 @@
     </script>
 </head>
 
-<p>1、当遇到过拟合问题，当优化开发集和训练集的差异时，面临整体误差上升，有什么好的解决办法</p>
+<p><strong>Bert</strong>全称Bidirectional Encoder Representations from Transformers，再多项NLP任务中引起了轰动，其关键技术创新在于用双向Transformer模型，区别于之前从左向右和从右向左拼接，并添加了MLM的新技术。下面将详细介绍。</p>
+
+<h2 id="背景">背景</h2>
+
+<p>​	计算机视觉领域，通过对大规模数据进行网络训练，然后迁移学习进行微调适用于新的任务，去的很好的效果。近年来，这样的任务也用于许多自然语言任务。在此之前比如ELMo、GPT等。</p>
+
+<h2 id="前人工作">前人工作</h2>
+
+<h3 id="elmo">elmo</h3>
 
 <ul>
-  <li>过拟合，数据简单，模型复杂，开发训练分布不一致，优化数据，整体误差上升，欠拟合，模型不能拟合数据，第一：模型不适用这个数据，第二：数据量不够或者数据特征不够</li>
+  <li>后续使用，根据任务构造结构</li>
 </ul>
 
-<p>2、拟牛顿法比牛顿法的优点是什么</p>
+<h3 id="gpt">gpt</h3>
 
 <ul>
-  <li>
-    <p><strong>牛顿法是迭代算法，每一步都需求解目标函数的海塞矩阵（Hessian Matrix），计算比较复杂。拟牛顿法通过正定矩阵近似海塞矩阵的逆矩阵或海塞矩阵，简化了这一计算过程。</strong></p>
+  <li>后续使用，单向模型</li>
+  <li>cloze task， 借鉴了mask model</li>
+</ul>
 
-    <p><img src="https://www.zhihu.com/equation?tex=x_{k%2B1}%3Dx_{k}-\lambda_k+H^{-1}_{k}g_k\\" alt="img" /></p>
-  </li>
-  <li>
-    <p><img src="/images/posts/机器学习/v2-dac11d82ecb2566f54ce8b518d51293c_b.gif" alt="" /></p>
-  </li>
-  <li>
-    <p>牛顿法虽然收敛速度快，但是需要计算海塞矩阵的逆矩阵 <img src="https://www.zhihu.com/equation?tex=H%5E%7B-1%7D" alt="img" /> ，而且有时目标函数的海塞矩阵无法保持正定，从而使得牛顿法失效。为了克服这两个问题，人们提出了拟牛顿法。这个方法的基本思想是：不用二阶偏导数而构造出可以近似海塞矩阵（或海塞矩阵的逆）的正定对称阵。不同的构造方法就产生了不同的拟牛顿法（<strong>DFP</strong>/<strong>BFGS算法</strong>）。</p>
-  </li>
-  <li>
-    <p>牛顿法是二阶收敛，梯度下降法是一阶收敛，所以牛顿法更快，下图形象化地显示了这一点：</p>
+<h3 id="创新点">创新点</h3>
 
-    <p>其中，红色路径代表牛顿法，绿色路径代表梯度下降法。</p>
+<ul>
+  <li>GPT的局限性，单向的，限制了任务的类型，比如情感分类等</li>
+  <li>MLM（token） 、 NSP（句子）</li>
+</ul>
 
+<h3 id="工作">工作</h3>
+
+<ul>
+  <li>非监督的特征方法</li>
+  <li>非监督的微调方法</li>
+  <li>迁移学习</li>
+  <li>细节
     <ul>
-      <li>牛顿法和深度学习</li>
-    </ul>
-
-    <p>深度学习中，往往采用梯度下降法作为优化算子，而很少采用牛顿法，主要原因有以下几点：</p>
-
-    <ol>
-      <li>1.神经网络通常是非凸的，这种情况下，牛顿法的收敛性难以保证；</li>
-      <li>2.即使是凸优化，只有在迭代点离全局最优很近时，牛顿法才会体现出收敛快的优势；</li>
-      <li>3.可能被鞍点吸引。(鞍点：不是局部极值点的驻点)</li>
-    </ol>
-  </li>
-</ul>
-
-<p>3、推荐中如何模拟人的期望与偏好，是基于学术理论或研究建立一个用户偏好模型吗？标签怎么弄？</p>
-
-<ul>
-  <li>是的</li>
-  <li>假设对一个交友活动网站来说，对于一个用户，有基础特征，行为特征等，其基础特征会包含性别、年龄、身高、体重等基础信息，除此之外我们假设一个用户老是搜索电影，那么当前用户的偏好就可以打上爱好：电影，而另一个用户喜欢搜索文学，那么可以打上爱好：读书，或者利用一些组合特征打上其他标签，比如性格（读书，女）安静，（篮球，男）活泼，那么我们再推荐一些线下读书交流会给性格安静的，而推荐一些团体运动会给活泼的</li>
-</ul>
-
-<p>4、某项任务上机器已经超越人类，那么当前任务上人类存在的价值是？ 5、短文本分类的方法？（材料无关）</p>
-
-<ul>
-  <li>短文本分类首要问题需要标签，
-    <ul>
-      <li>可以先通过聚类（LDA），相同簇的分类比较接近，标注起来比较方便；其次对应较少的类，也可以抽取到给人工标注</li>
-      <li>基于关键词标注，假设要给新闻标题分类，那么对于“体育”类，“足球”、“篮球”、“NBA”等就可以作为这个类的关键词</li>
-    </ul>
-  </li>
-  <li>朴素贝叶斯、逻辑回归、支持向量机、GBDT、随机森林</li>
-  <li>深度学习（FastText，text-cnn，bert，图模型）</li>
-</ul>
-
-<p>6、近似搜索算法如何避免陷入局部最优？</p>
-
-<ul>
-  <li>beam search</li>
-  <li>遗传算法
-    <ul>
-      <li>模拟物竞天择的生物进化过程，通过维护一个潜在解的群体执行了多方向的搜索，并支持这些方向上的信息构成和交换。是以面为单位的搜索，比以点为单位的搜索，更能发现全局最优解。（在遗传算法中，有很多袋鼠，它们降落到喜玛拉雅山脉的任意地方。这些袋鼠并不知道它们的任务是寻找珠穆朗玛峰。但每过几年，就在一些海拔高度较低的地方射杀一些袋鼠，并希望存活下来的袋鼠是多产的，在它们所处的地方生儿育女。）（或者换个说法。从前，有一大群袋鼠，它们被莫名其妙的零散地遗弃于喜马拉雅山脉。于是只好在那里艰苦的生活。海拔低的地方弥漫着一种无色无味的毒气，海拔越高毒气越稀薄。可是可怜的袋鼠们对此全然不觉，还是习惯于活蹦乱跳。于是，不断有袋鼠死于海拔较低的地方，而越是在海拔高的袋鼠越是能活得更久，也越有机会生儿育女。就这样经过许多年，这些袋鼠们竟然都不自觉地聚拢到了一个个的山峰上，可是在所有的袋鼠中，只有聚拢到珠穆朗玛峰的袋鼠被带回了美丽的澳洲。）</li>
-    </ul>
-  </li>
-  <li>退火算法
-    <ul>
-      <li>这个方法来自金属热加工过程的启发。在金属热加工过程中，当金属的温度超过它的熔点（Melting Point）时，原子就会激烈地随机运动。与所有的其它的物理系统相类似，原子的这种运动趋向于寻找其能量的极小状态。在这个能量的变迁过程中，开始时，温度非常高， 使得原子具有很高的能量。随着温度不断降低，金属逐渐冷却，金属中的原子的能量就越来越小，最后达到所有可能的最低点。利用模拟退火的时候，让算法从较大的跳跃开始，使到它有足够的“能量”逃离可能“路过”的局部最优解而不至于限制在其中，当它停在全局最优解附近的时候，逐渐的减小跳跃量，以便使其“落脚 ”到全局最优解上。（在模拟退火中，袋鼠喝醉了，而且随机地大跳跃了很长时间。运气好的话，它从一个山峰跳过山谷，到了另外一个更高的山峰上。但最后，它渐渐清醒了并朝着它所在的峰顶跳去。）</li>
-    </ul>
-  </li>
-  <li>进化策略</li>
-</ul>
-
-<p>7、降低模型过拟合和欠拟台风险的方法?</p>
-
-<ul>
-  <li>过拟合直观解释，再对训练数据上进行拟合时，需要照顾每个点，从而导致拟合函数波动大，即方差大。</li>
-  <li>误差图判断过拟合还是欠拟合：</li>
-</ul>
-
-<blockquote>
-  <p>模型再训练集与测试集上误差均很大，则说明模型bias很大，欠拟合</p>
-
-  <p>训练集和测试集误差之间有很大的Gap，则说明Variance很大，过拟合</p>
-</blockquote>
-
-<ul>
-  <li>欠拟合解决方法</li>
-</ul>
-
-<blockquote>
-  <ul>
-    <li>增加新的特征，考虑加入组合特征、高次特征，来增大假设空间</li>
-    <li>尝试非线性模型，比如SVM、决策树、DNN等模型</li>
-    <li>有正则项则尝试降低正则项参数\lambda</li>
-  </ul>
-</blockquote>
-
-<ul>
-  <li>过拟合解决方法</li>
-</ul>
-
-<blockquote>
-  <ul>
-    <li>
-      <p>交叉验证，通过交叉验证得到最优的模型</p>
-    </li>
-    <li>
-      <p>特征选择，减少特征数或者使用较少的特征组合，对于区间化离散特征，增大划分的空间</p>
-    </li>
-    <li>
-      <p>正则化，常用的有L_1,L_2正则，而且L_1正则还可以自动进行特征选择</p>
-    </li>
-    <li>
-      <p>如果有正则项考虑增大正则项参数\lambda</p>
-    </li>
-    <li>
-      <p>增加训练数据可以有效的避免过拟合</p>
-    </li>
-    <li>
-      <p>Bagging，将多个弱学习器Bagging一下效果会好很多，比如随机森林</p>
-    </li>
-    <li>
-      <p>DNN中常用的方法</p>
-
-      <ul>
-        <li>
-          <p>早停。本质还是交叉验证策略，选择合适的训练次数，避免训练的网络过度拟合训练数据</p>
-        </li>
-        <li>
-          <p>集成学习策略。利用Bagging思路来正则化，首先对原始的m个训练样本进行又放回的随机采样，构建N组m个样本的数据集，然后分别用N组数据训练DNN，即得到N个DNN模型的ｗ，ｂ参数组合，最后对N个DNN模型的输出用加权平均法或者投票法决定最终输出。缺点就是参数增加了N倍，导致训练花费更多的时间和空间，因此N一般不能太多，例如5-10个。</p>
-        </li>
-        <li>
-          <p>Dropout策略。</p>
-
-          <blockquote>
-            <p>训练的时候一一定的概率p让神经元失活，类似于Bagging策略，测试时所有神经元都参与，但是在其输出上乘以1-p.</p>
-          </blockquote>
-        </li>
-        <li>
-          <p>simpler model structure（简化模型）</p>
-
-          <blockquote>
-            <p>简单模型拟合复杂数据时，导致模型很难拟合数据的真实分布，这边是模型欠拟合了，同样的，复杂模型拟合简单数据，会导致数据的噪声也被拟合了，导致模型再训练集上效果非常好，但泛化性能很差。</p>
-          </blockquote>
-        </li>
-        <li>
-          <p>regularization（正则化）</p>
-
-          <blockquote>
-            <p>L_1 正则项会产生稀疏解</p>
-
-            <p>L_2正则项会产生比较小的解</p>
-
-            <p>假设均方差误差损失函数</p>
-
-            <table>
-              <tbody>
-                <tr>
-                  <td>J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}</td>
-                  <td> </td>
-                  <td>a^L-y</td>
-                  <td> </td>
-                  <td>_2^2</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p>L_2通常只针对系数矩阵w,而不针对偏置系数b,则损失函数为</p>
-
-            <table>
-              <tbody>
-                <tr>
-                  <td>J(w,b)=\frac{1}{2m}\sum_{i=1}^{m}</td>
-                  <td> </td>
-                  <td>a^L-y</td>
-                  <td> </td>
-                  <td><em>2^2+\frac{\lambda}{2m}\sum</em>{L=2}^L</td>
-                  <td> </td>
-                  <td>w</td>
-                  <td> </td>
-                  <td>_2^2</td>
-                </tr>
-              </tbody>
-            </table>
-
-            <p>反向传播从:</p>
-
-            <p>w^l=w^l-\alpha\sum_{i=1}^{m}\sigma^{i,l}(a^{x,l-1})^T</p>
-
-            <p>变为:</p>
-
-            <p>w^l=w^l-\alpha\sum_{i=1}^{m}\sigma^{i,l}(a^{x,l-1})^T-\alpha\lambda w^l</p>
-          </blockquote>
-        </li>
-      </ul>
-    </li>
-    <li>
-      <p>data augmentation(数据集扩增)</p>
-
-      <blockquote>
-        <p>有效前提是训练集与将来的数据是<strong>独立同分布</strong>的,或者近似独立同分布</p>
-
+      <li>预训练</li>
+      <li>微调</li>
+      <li>模型架构：transformer</li>
+      <li>模型参数</li>
+      <li>切词：wordpiece
         <ul>
-          <li>从数据源头采集更多的数据</li>
-          <li>复制原有数据并加上随机噪声</li>
-          <li>重采样</li>
-          <li>根据当前数据估计数据分布参数,使用该分布产生更多数据</li>
+          <li>本意是为了减少词汇表，对一些低频词通过拆分表达，这么做的好处是通过拆分的方式对低频词做了相对较好的表达，相比直接用oov或者低频词表示来说，能学到更多的信息。</li>
         </ul>
-      </blockquote>
-    </li>
-    <li>
-      <p>Bootstrap/Bagging（封装）</p>
-    </li>
-    <li>
-      <p>ensemble（集成）</p>
-    </li>
-    <li>
-      <p>early stopping（提前终止训练）</p>
+      </li>
+      <li>mask 概率
+        <ul>
+          <li>具体来说，文章作者在一句话中随机选择 15% 的词汇用于预测。对于在原句中被抹去的词汇， 80% 情况下采用一个特殊符号 [MASK] 替换， 10% 情况下采用一个任意词替换，剩余 10% 情况下保持原词汇不变。这么做的主要原因是：在后续微调任务中语句中并不会出现 [MASK] 标记，而且这么做的另一个好处是：预测一个词汇时，模型并不知道输入对应位置的词汇是否为正确的词汇（ 10% 概率），这就迫使模型更多地依赖于上下文信息去预测词汇，并且赋予了模型一定的纠错能力。上述提到了这样做的一个缺点，其实这样做还有另外一个缺点，就是每批次数据中只有 15% 的标记被预测，这意味着模型可能需要更多的预训练步骤来收敛。</li>
+          <li>在 BERT 中训练语言模型是通过预测输入中随机选择的 15% 的标记来完成的。这些标记的预处理如下——80% 被替换为“[MASK]”标记，10% 被替换为随机单词，10% 使用原始单词。导致作者选择这种方法的直觉如下（感谢来自 Google 的 Jacob Devlin 的洞察力）：
+            <ul>
+              <li>如果我们在 100% 的情况下使用 [MASK]，该模型不一定会为非屏蔽词生成良好的标记表示。非屏蔽词仍然用于上下文，但该模型针对预测屏蔽词进行了优化。</li>
+              <li>如果我们 90% 的时间使用 [MASK]，10% 的时间使用随机单词，这将告诉模型观察到的单词<em>永远不会</em>正确。</li>
+              <li>如果我们 90% 的时间使用 [MASK]，10% 的时间保持相同的单词，那么模型可以简单地复制非上下文嵌入。</li>
+            </ul>
+          </li>
+          <li>没有对这种方法的比率进行消融，它可能在不同的比率下效果更好。此外，模型性能没有通过简单地屏蔽 100% 的选定标记进行测试。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 
-      <blockquote>
-        <p>迭代次数截断的方法来防止过拟合,再模型对训练数据集迭代收敛之前停止迭代防止过拟合.</p>
-      </blockquote>
-    </li>
-    <li>
-      <p>utilize invariance（利用不变性）</p>
-    </li>
-    <li>
-      <p>Bayesian（贝叶斯方法）</p>
-    </li>
-  </ul>
-</blockquote>
+<h3 id="总结">总结</h3>
+
+<ul>
+  <li>双向性</li>
+  <li>生成类工作不方便
+    <ul>
+      <li>生成类工作不方便不代表不能用于生成任务，我们可以通过对生成结果进行mask，而模拟出生成效果，具体来说就是生成任务只能看到上文，而不能看到下文，与Bert的任务冲突，但是我们对生成部分用上三角mask，通过这种方式可以保证在生成的过程中只能看到上文，而看不到下文，这样就可以用Bert来做生成任务啦！</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="工作原理">工作原理</h2>
+
+<p>​	使用了Transformer，这是一种注意力机制，可以学习文本单词之间的上下文信息。普通的Transformer包含两部分，读取文本输入的编码器和生成的解码器，Bert任务的目标是生成语言模型，因此只需要编码器机制。Transformer介绍<a href="https://monkeytb.github.io/2021/12/Transformer/">$\color{red}{Transformer探索}$</a>。</p>
+
+<h3 id="mlm">MLM</h3>
+
+<p>​	将单词序列输入Bert之前，每个序列中15%的单词被替换为[MASK]标记，然后Bert尝试根据非屏蔽的上下文来预测屏蔽的原始词。技术角度来讲需要以下几点：</p>
+
+<ul>
+  <li>在编码器输出之上添加一个分类层；</li>
+  <li>将输出向量乘以嵌入矩阵，将他们转换为词汇维度；</li>
+  <li>用softmax计算词汇表中每个单词的概率。</li>
+</ul>
+
+<p><img src="/images/posts/论文/bert mlm.png" alt="" /></p>
+
+<p>​	Bert损失函数只考虑掩码值的预测，而忽略非掩码词的预测，因此模型的收敛速度比定向模型慢，这一特征被其增强的上下文感知所抵消。</p>
+
+<h3 id="nsp">NSP</h3>
+
+<p>​	在Bert训练过程中，模型接受成对的句子作为输入，并学习预测成对中的第二个句子是否是原始文档中后续句子。在训练过程中，50%的输入是一对，其中第二个句子是原始文档中的后续句子，而另外50%的输入是从语料库中随机选择的一个句子作为第二个句子。</p>
+
+<p>​	为了帮助模型区分训练中的两个句子，输入在进入模型之前按以下方式处理：</p>
+
+<ul>
+  <li>在第一个句子的开头插入一个[CLS]标记，在每个句子的末尾插入一个[SEP]标记；</li>
+  <li>表示句子A或句子B的句子嵌入被添加到每个标记中；</li>
+  <li>将位置嵌入添加到每个标记以指示其在序列中的位置。</li>
+</ul>
+
+<p><img src="/images/posts/论文/bert 输入.png" alt="" /></p>
+
+<p>​	为了预测第二个句子是否确实与第一个句子相关，执行以下步骤：</p>
+
+<ul>
+  <li>整个输入序列经过Transformer模型</li>
+  <li>[CLS]标记的输出使用简单的分类层转换为$\color{blue}{2\times 1}$形状的向量</li>
+  <li>用softmax计算Is Next Sequence的概率</li>
+</ul>
+
+<p>在训练Bert模型时，Masked LM 和 Next Sentence Prediction 是一起训练的，目标是最小化两种策略的组合损失函数。</p>
+
+<h2 id="微调">微调</h2>
+
+<p>​	将Bert用于特定的任务相对简单，可以用于各种各样的语言任务，而只在核心模型中增加一个小层</p>
+
+<ul>
+  <li>通过在[CLS]标记的Transformer输出顶部添加分类层，完成诸如情感分析之类的分类任务与Next Sentence分类类似；</li>
+  <li>在问答任务（例如SQuAD v1.1）中，模型收到一个关于文本序列的问题，并需要在序列中标记答案，使用Bert，可以通过学习标记答案开始和结束的两个额外向量来训练问答模型；</li>
+  <li>在命名实体识别中，接受一个文本序列，并需要标记文本中出现的各种类型的实体（人、组织、地点等）。使用Bert，可以通过将每个标记的输出向量输入到预测NER标签分类层来训练NER模型。</li>
+</ul>
+
+<h2 id="训练相关">训练相关</h2>
+
+<ul>
+  <li>模型的大小很重要，即使规模很大。Bert large拥有3.45亿个参数，是同类模型中最大的。他在小规模任务上明显优于Bert base，后者“仅”1.1亿个参数；</li>
+  <li>有了足够的训练数据，更多的训练步骤==更高的准确度，eg：在MNLI任务上，与具有相同批量大小的500K步相比，Bert base在1M（批量大小为128000字）上训练时的准确度提高了1%；</li>
+  <li>Bert的双向方法（MLM）的收敛速度比从左到右的方法慢（因为每批中只有15%的单词被预测），但在少量预训练步骤后，双向训练仍然优于从左到右的训练</li>
+</ul>
+
+<p><img src="/images/posts/论文/bert 训练 step.png" alt="" /></p>
+
+<h2 id="参考文献">参考文献</h2>
+
+<p><a href="https://www.lyrn.ai/2018/11/07/explained-bert-state-of-the-art-language-model-for-nlp/">1、BERT Explained</a>: State of the art language model for NLP</p>
+
+<p><a href="https://zhuanlan.zhihu.com/p/95594311">2、关于BERT的若干问题整理记录</a></p>
 
   </section>
 
@@ -498,13 +423,13 @@
        <ul class="pager">
         
         <li class="previous">
-            <a href="/2021/11/GBDT%E7%BC%96%E7%A0%81%E9%97%AE%E9%A2%98/" data-toggle="tooltip" data-placement="top" title="关于 GBDT 特征编码">上一篇：  <span>关于 GBDT 特征编码</span>
+            <a href="/2021/12/NER%E8%B0%88%E5%8F%A4%E8%AE%BA%E4%BB%8A/" data-toggle="tooltip" data-placement="top" title="NER谈古论今">上一篇：  <span>NER谈古论今</span>
             </a>
         </li>
         
         
         <li class="next">
-            <a href="/2021/11/%E7%99%BE%E9%97%AE%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" data-toggle="tooltip" data-placement="top" title="百问机器学习">下一篇：  <span>百问机器学习</span>
+            <a href="/2022/04/GPT1%E5%88%B0GPT3/" data-toggle="tooltip" data-placement="top" title="GPT1-GPT3">下一篇：  <span>GPT1-GPT3</span>
             </a>
         </li>
         

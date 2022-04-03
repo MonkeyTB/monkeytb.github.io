@@ -1,0 +1,18 @@
+I"|
+<ul>
+  <li><a href="#交叉熵损失函数---cross-entropy-loss-function">交叉熵损失函数 - Cross entropy loss function</a>
+    <ul>
+      <li><a href="#特点">特点</a></li>
+      <li><a href="#代码">代码</a></li>
+      <li><a href="#提问">提问</a>
+        <ul>
+          <li><a href="#1在用sigmoid作为激活函数时你为什么要用交叉熵损失函数而不用均方差损失函数啊">1、在用sigmoid作为激活函数时，你为什么要用交叉熵损失函数，而不用均方差损失函数啊？</a></li>
+          <li><a href="#2交叉熵函数与似然函数的滚滚红尘">2、交叉熵函数与似然函数的滚滚红尘</a></li>
+          <li><a href="#3交叉熵和kl散度的种种因缘">3、交叉熵和KL散度的种种因缘</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#巨人的肩膀">巨人的肩膀</a></li>
+</ul>
+:ET

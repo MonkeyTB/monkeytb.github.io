@@ -1,0 +1,23 @@
+I"|
+<ul>
+  <li><a href="#背景">背景</a></li>
+  <li><a href="#前人工作">前人工作</a>
+    <ul>
+      <li><a href="#elmo">elmo</a></li>
+      <li><a href="#gpt">gpt</a></li>
+      <li><a href="#创新点">创新点</a></li>
+      <li><a href="#工作">工作</a></li>
+      <li><a href="#总结">总结</a></li>
+    </ul>
+  </li>
+  <li><a href="#工作原理">工作原理</a>
+    <ul>
+      <li><a href="#mlm">MLM</a></li>
+      <li><a href="#nsp">NSP</a></li>
+    </ul>
+  </li>
+  <li><a href="#微调">微调</a></li>
+  <li><a href="#训练相关">训练相关</a></li>
+  <li><a href="#参考文献">参考文献</a></li>
+</ul>
+:ET
